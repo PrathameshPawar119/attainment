@@ -1,0 +1,13 @@
+.box{
+    background-color: rgb(223, 201, 249);
+    border: 3px solid transparent;
+    
+}
+
+div{
+    margin: 200px;
+    background-color: blueviolet;
+}
+.nav_logo{
+    font-size: 100px !important;
+}
