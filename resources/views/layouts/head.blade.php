@@ -5,7 +5,7 @@
 <ul class="nav nav-tabs">
     <li class="nav_logo px-2"><h2><i><u>Attainment</u>.com</i></h2></li>
         <li class="nav-item">
-        <a class="nav-link {{url('/students')==$currentUrl?'active':''}} " aria-current="page" href="{{url('/students')}}">Students</a>
+        <a class="nav-link {{url('/students/view')==$currentUrl?'active':''}} " aria-current="page" href="{{url('/students/view')}}">Students</a>
     </li>
     <li class="nav-item">
         <a class="nav-link {{url('/students/input')==$currentUrl?'active':''}} " aria-current="page" href="{{url('/students/input')}}">Input</a>

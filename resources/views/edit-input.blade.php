@@ -6,7 +6,7 @@
     @endif
 
 @push('title')
-    <title>Input</title>
+    <title>Edit Student</title>
 @endpush
 
 @php
@@ -16,19 +16,19 @@
 
 <div class="container my-4">
     <x-alert-component mainclass="col-12" color="primary" message="Successful hua ree brio!" />
-    <h2>{{ucwords(session()->get('username'))}}</h2>
+    <h2>{{session()->get('username')}}</h2>
     <span class="text-danger">
         @if (session()->has('duplicateRecordError'))
             {{session()->get('duplicateRecordError')}}
         @endif
     </span>
-    <form class="row g-3" method="POST" action="{{url("/students/input/addstudent")}}">
+    <form class="row g-3" method="POST" action="{{url("/students/view/updatestudent")}}/{{$student->id}}">
         @csrf
-        <x-input-component mainclass="col-md-2" id="roll_no" name="roll_no" type="number" label="Roll No." />
-        <x-input-component mainclass="col-md-6" id="student_id" name="student_id" type="text" label="Student ID" />
+        <x-vinput mainclass="col-md-2" id="roll_no" name="roll_no" type="number" label="Roll No." value="{{$student->roll_no}}" />
+        <x-vinput mainclass="col-md-6" id="student_id" name="student_id" type="text" label="Student ID" value="{{$student->student_id}}" />
         <div class="col-md-2">
             <label for="inputDiv" class="form-label">DIV</label>
-            <select id="inputDiv" class="form-select" name="div" value="{{old('div')}}">
+            <select id="inputDiv" class="form-select" name="div" value="{{$student->div}}">
                 {{-- Set Default Division Feature remaining --}}
                 <option value="">Select</option>
                 @foreach ($divs as $key=>$div)
@@ -42,12 +42,12 @@
             </span>
         </div>
         <div class="col-md-2 p-4">
-            <span class="badge bg-success p-3">{{$total_tuples}}</span>
+            <span class="badge bg-success p-3">87</span>
         </div>
-        <x-input-component mainclass="col-md-10" id="student_name" name="student_name" type="text" label="Name" />
+        <x-vinput mainclass="col-md-10" id="student_name" name="student_name" type="text" label="Name" value="{{$student->name}}" />
         <div class="col-md-2">
             <label for="inputGender" class="form-label">Gender</label>
-            <select id="inputGender" class="form-select" name="gender">
+            <select id="inputGender" class="form-select" name="gender" value="{{$student->gender}}">
                 <option value="">Select</option>
                 @foreach ($genders as $key=>$gender)
                     <option value="{{$gender}}" @if (old($gender)==$gender) selected @endif>{{$gender}}</option>

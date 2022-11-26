@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\studentController;
+use App\Http\Controllers\SheetsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,7 @@ use App\Http\Controllers\studentController;
 
 
 Route::group(["prefix"=>"/auth"], function(){
-    Route::get("/login", function(){return view('login');});
+    Route::get("login", function(){return view('login');});
     Route::get("signup_page", [AuthController::class, "index"]);
     Route::post("signup_user", [AuthController::class, "signup_user"]);
     Route::post("login_user", [AuthController::class, "login_user"]);
@@ -25,7 +26,17 @@ Route::group(["prefix"=>"/auth"], function(){
 });
 
 Route::group(["prefix"=>"/students", "middleware"=>'loginRedirect'], function(){
-    Route::get("", [studentController::class, 'index']);
+    Route::get("view", [studentController::class, 'viewStudents']);
+    Route::get("view/delete/{id}", [studentController::class, 'deleteStudent']);
+    Route::get("view/permdelete/{id}", [studentController::class, 'permDelete']);
     Route::get("input", [studentController::class, 'inputForm']);
-    Route::post("input/addstudent", [studentController::class, 'addStudent']);
+    Route::post("input/addstudent", [studentController::class, "addStudent"]);
+    Route::get("trash", [studentController::class, "viewStudentTrash"]);
+    Route::get("view/restore/{id}", [studentController::class, "restoreFromTrash"]);
+    Route::get("view/edit/{id}", [studentController::class, "editStudent"]);
+    Route::post("view/updatestudent/{id}", [studentController::class, "updateStudentData"]);
+});
+
+Route::group(["prefix"=>"/sheets", "middleware"=>"loginRedirect"], function (){
+    Route::get("oral", [SheetsController::class, "oralSheet"]);
 });
