@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\studentController;
 use App\Http\Controllers\SheetsController;
+use App\Http\Controllers\UpdateMarksController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,4 +40,7 @@ Route::group(["prefix"=>"/students", "middleware"=>'loginRedirect'], function(){
 
 Route::group(["prefix"=>"/sheets", "middleware"=>"loginRedirect"], function (){
     Route::get("oral", [SheetsController::class, "oralSheet"]);
+    Route::get("endsem", [SheetsController::class, "endsemSheet"]);
+    Route::post("oral/update", [UpdateMarksController::class, "updateOralMarks"])->name("updateOralMarks");
+    Route::post("endsem/update", [UpdateMarksController::class, "updateEndsemMarks"])->name("updateEndsemMarks");
 });

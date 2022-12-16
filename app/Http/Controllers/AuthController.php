@@ -40,10 +40,9 @@ class AuthController extends Controller
         if ($user) {
             $varify = password_verify($request['login_password'], $user->password);
             if($varify){
-                
-                $session = session()->put("username", $user->username);
-                $session = session()->put("user_email", $user->email);
-                $session = session()->put("user_id", $user->user_id);
+                session()->put("username", $user->username);
+                session()->put("user_email", $user->email);
+                session()->put("user_id", $user->user_id);
                 return redirect("students/input");
             }
             else {

@@ -1,10 +1,6 @@
 @extends('layouts.main')
 @section('main-section')
 
-    @if (!session()->has('user_id'))
-        {{header('Location: ')}}
-    @endif
-
 @push('title')
     <title>Edit Student</title>
 @endpush
@@ -32,7 +28,7 @@
                 {{-- Set Default Division Feature remaining --}}
                 <option value="">Select</option>
                 @foreach ($divs as $key=>$div)
-                    <option class="p-2" value="{{$div}}">{{$div}}</option>
+                    <option class="p-2" value="{{$div}}" @if ($student->div==$div) selected @endif>{{$div}}</option>
                 @endforeach
             </select>
             <span class="text-danger">
@@ -41,16 +37,13 @@
                 @enderror
             </span>
         </div>
-        <div class="col-md-2 p-4">
-            <span class="badge bg-success p-3">87</span>
-        </div>
         <x-vinput mainclass="col-md-10" id="student_name" name="student_name" type="text" label="Name" value="{{$student->name}}" />
         <div class="col-md-2">
             <label for="inputGender" class="form-label">Gender</label>
             <select id="inputGender" class="form-select" name="gender" value="{{$student->gender}}">
                 <option value="">Select</option>
                 @foreach ($genders as $key=>$gender)
-                    <option value="{{$gender}}" @if (old($gender)==$gender) selected @endif>{{$gender}}</option>
+                    <option value="{{$gender}}" @if ($student->gender==$gender) selected @endif>{{$gender}}</option>
                 @endforeach
             </select>
             <span class="text-danger">

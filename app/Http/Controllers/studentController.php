@@ -61,10 +61,10 @@ class studentController extends Controller
             return redirect()->back();
         }
         else{
-            //flashing duplicate error to students view only once 
+            //flashing duplicate error to students view 
             session()->flash("duplicateRecordError", "Student with Roll number $req->roll_no in Div $req->div allready present, check again please !");
             return redirect()->back();
-        }
+        } 
         
     }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
@@ -77,8 +77,9 @@ class studentController extends Controller
         else{
             $students = StudentDetails::where("user_key", "=", (session()->get('user_id')))->orderBy('roll_no', 'ASC')->paginate(10);
         }
+        
         $viewEditBtn = "Edit";
-        $viewEditURL = url('/students/view/edit');
+        $viewEditURL = url('/students/view/edit');               
         $viewDeleteBtn = "Trash";
         $viewDeleteURL = url('/students/view/delete');
         $trashBtn = "Trash Data";
@@ -96,6 +97,8 @@ class studentController extends Controller
     }
 
     public function permDelete($id){
+        $oral_record = OralModel::where("id", "=", $id)->delete();
+        $endsem_record = EndsemModel::where("id", "=", $id)->delete();
         $student = StudentDetails::onlyTrashed()->find($id);
         if (!is_null($student)) {
             $student->forceDelete();

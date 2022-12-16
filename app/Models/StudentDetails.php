@@ -14,7 +14,7 @@ class StudentDetails extends Model
     protected $priamaryKey = "id";
 
 
-    //  Mutators
+    //  Mutators **************************
     // this function capitalies each leteters 1st char
     public function setNameAttribute($value){
         $this->attributes['name'] = ucwords($value);
@@ -27,7 +27,7 @@ class StudentDetails extends Model
     }
 
 
-    //  Accessors
+    //  Accessors  ****************************
     // accessor to get 1st letter Capital (only on ui)
 
 

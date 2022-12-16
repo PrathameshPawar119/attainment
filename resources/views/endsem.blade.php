@@ -1,15 +1,15 @@
 @extends('layouts.main')
 @push('title')
-    <title>Oral-Practical</title>
+    <title>End-Sem</title>
 @endpush
 @section('main-section')
 
 <div class="container oralPage">
     <x-alert-component mainclass="col-12" color="primary" message="Successful hua ree brio!" />
     <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
-        <form action="{{('/sheets/oral')}}" method="get" style="display: inline-block;">
+        <form action="{{('/sheets/endsem')}}" method="get" style="display: inline-block;">
             <div class="input-group mx-1">
-                <input type="text" class="form-control" placeholder="Search name here" value="{{old("searchForm")}}" name="searchForm" aria-describedby="button-addon2">
+                <input type="text" class="form-control" placeholder="Search name here" value="{{"$searchText"}}" name="searchForm" aria-describedby="button-addon2">
                 <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
             </div>
         </form>
@@ -43,7 +43,7 @@
                         <td>{{$student->name}}</td>
                         <td>
                             <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:80px;">
-                                <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}"  id="{{$student->group_key}}-student" value="{{$student->oral_marks}}" style="height: 26px;">
+                                <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}"  id="{{$student->group_key}}-student" value="{{$student->endsem_marks}}" style="height: 26px;">
                             </div>
                         </td>
                     </tr>
@@ -51,25 +51,24 @@
             </form>
         </tbody>
     </table>
-    <div class="row center p-2" style="align-items: center; text-align:center;">
+    <div class="row center p-2" style="align-items: center; text-align:center; ">
         {{$students->links()}}
     </div>
 </div>
 <script>
     $(document).ready(function(){
-        // Change Input Marks -- autoupdate
         $(document).on("change", ".marksInputField", function(e){
             var stuId = e.target.getAttribute("name");
-            var stdValue = e.target.value;
-                $.ajax({
-                    url: "{{route('updateOralMarks')}}",
-                    type: "POST",
-                    data: {
-                        '_token':"{{csrf_token()}}",
-                        'id': stuId,
-                        'value': stdValue
-                    },
-                    success: function (res){
+            var stdVal = e.target.value;
+            $.ajax({
+                url: "{{route('updateEndsemMarks')}}",
+                type:"POST",
+                data: {
+                    '_token': "{{csrf_token()}}",
+                    'id':stuId,
+                    'value':stdVal
+                },
+                success: function(res){
                         if(res == '0' ||  res == 0){
                             alert("Oral Marks Update Not Possible");
                         }
@@ -79,10 +78,9 @@
                         else{
                             console.log(res);
                         }
-                    }
-            })
-
+                }
+            });
         });
-    })
+    });
 </script>
 @endsection
