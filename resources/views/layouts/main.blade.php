@@ -20,9 +20,8 @@
     <div class="alert-section" style="height: 32px;">
       @yield('alert-section')
     </div>
-    <div class="container">
+    <div>
         @yield('main-section')
-
     </div>
     @include('layouts.foot')
 

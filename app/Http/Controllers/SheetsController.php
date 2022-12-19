@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\OralModel;
 use App\Models\EndsemModel;
+use App\Models\AssignmentModel;
+use App\Models\IaModel;
 
 class SheetsController extends Controller
 {
@@ -58,5 +60,52 @@ class SheetsController extends Controller
                         }
         $trashBtn = "End-Sem Attainment";
         return view("endsem", compact('students', 'trashBtn', 'searchText'));
+    }
+
+    
+    public function assignmentSheet(Request $req){
+        $searchText = $req['searchForm'] ?? "";
+        if ($searchText != "") {
+            $students = AssignmentModel::join('student_details', 'student_details.id', 'assignments.id')
+                            ->select('assignments.*','student_details.*')
+                            ->where('name', "LIKE", "%$searchText%")
+                            ->where("user_key", "=", session()->get("user_id"))
+                            ->where("deleted_at", "=", null)
+                            ->orderBy('roll_no', 'ASC')
+                            ->paginate(10);
+            }
+        else{
+            $students = AssignmentModel::join('student_details', 'student_details.id', 'assignments.id')
+                            ->select('assignments.*','student_details.*')
+                            ->where("user_key", "=", session()->get("user_id"))
+                            ->where("deleted_at", "=", null)
+                            ->orderBy('roll_no', 'ASC')
+                            ->paginate(10);
+                        }
+        $trashBtn = "Assignments Attainment";
+        return view("assignment", compact('students', 'trashBtn', 'searchText'));
+    }
+
+    public function iaSheet(Request $req){
+        $searchText = $req['searchForm'] ?? "";
+        if ($searchText != "") {
+            $students = IaModel::join('student_details', 'student_details.id', 'ia.id')
+                            ->select('ia.*','student_details.*')
+                            ->where('name', "LIKE", "%$searchText%")
+                            ->where("user_key", "=", session()->get("user_id"))
+                            ->where("deleted_at", "=", null)
+                            ->orderBy('roll_no', 'ASC')
+                            ->paginate(10);
+            }
+        else{
+            $students = IaModel::join('student_details', 'student_details.id', 'ia.id')
+                            ->select('ia.*','student_details.*')
+                            ->where("user_key", "=", session()->get("user_id"))
+                            ->where("deleted_at", "=", null)
+                            ->orderBy('roll_no', 'ASC')
+                            ->paginate(10);
+                        }
+        $trashBtn = "IA Attainment";
+        return view("ia", compact('students', 'trashBtn', 'searchText'));
     }
 }

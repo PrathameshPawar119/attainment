@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\studentController;
 use App\Http\Controllers\SheetsController;
 use App\Http\Controllers\UpdateMarksController;
+use App\Models\IaModel;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,10 @@ Route::group(["prefix"=>"/students", "middleware"=>'loginRedirect'], function(){
 Route::group(["prefix"=>"/sheets", "middleware"=>"loginRedirect"], function (){
     Route::get("oral", [SheetsController::class, "oralSheet"]);
     Route::get("endsem", [SheetsController::class, "endsemSheet"]);
+    Route::get("assignment", [SheetsController::class, "assignmentSheet"]);
+    Route::get("ia", [SheetsController::class, "iaSheet"]);
     Route::post("oral/update", [UpdateMarksController::class, "updateOralMarks"])->name("updateOralMarks");
     Route::post("endsem/update", [UpdateMarksController::class, "updateEndsemMarks"])->name("updateEndsemMarks");
+    Route::post("assignment/update", [UpdateMarksController::class, "updateAssignmentMarks"])->name("updateAssignmentMarks");
+    Route::post("ia/update", [UpdateMarksController::class, "updateIaMarks"])->name("updateIaMarks");
 });

@@ -5,7 +5,6 @@
 @section('main-section')
 
 <div class="container oralPage">
-    <x-alert-component mainclass="col-12" color="primary" message="Successful hua ree brio!" />
     <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
         <form action="{{('/sheets/oral')}}" method="get" style="display: inline-block;">
             <div class="input-group mx-1">
@@ -61,6 +60,7 @@
         $(document).on("change", ".marksInputField", function(e){
             var stuId = e.target.getAttribute("name");
             var stdValue = e.target.value;
+            var stuGroupKey = e.target.getAttribute("id");
                 $.ajax({
                     url: "{{route('updateOralMarks')}}",
                     type: "POST",
@@ -71,10 +71,15 @@
                     },
                     success: function (res){
                         if(res == '0' ||  res == 0){
-                            alert("Oral Marks Update Not Possible");
-                        }
-                        else if(res == '1' ||  res == 1){
-                            console.log("done broi");
+                            document.getElementById(stuGroupKey).parentNode.style.borderColor = "red";
+                            setTimeout(() => {
+                                document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            }, 5000);                        }
+                        else if(res == '1'|| res == 1){
+                            document.getElementById(stuGroupKey).parentNode.style.borderColor = "cyan";
+                            setTimeout(() => {
+                                document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            }, 2000); 
                         }
                         else{
                             console.log(res);

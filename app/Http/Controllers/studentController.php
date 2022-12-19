@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\StudentDetails;
 use App\Models\OralModel;
 use App\Models\EndsemModel;
+use App\Models\AssignmentModel;
+use App\Models\IaModel;
 
 class studentController extends Controller
 {
@@ -58,6 +60,31 @@ class studentController extends Controller
             $endsem_tuple->endsem_marks = 0;
             $endsem_tuple->id = $last_tuple['id'];
             $endsem_tuple->save();
+            
+            //init assignments entry
+            $assign_tuple = new  AssignmentModel;
+            $assign_tuple->a1p1 = 0;
+            $assign_tuple->a1p2 = 0;
+            $assign_tuple->a1p3 = 0;
+            $assign_tuple->a2p1 = 0;
+            $assign_tuple->a2p2 = 0;
+            $assign_tuple->a2p3 = 0;
+            $assign_tuple->id = $last_tuple['id'];
+            $assign_tuple->save();
+
+            // init ia entry
+            $ia_tuple = new IaModel;
+            $ia_tuple->ia1q1 = 0;
+            $ia_tuple->ia1q2 = 0;
+            $ia_tuple->ia1q3 = 0;
+            $ia_tuple->ia1q4 = 0;
+            $ia_tuple->ia2q1 = 0;
+            $ia_tuple->ia2q2 = 0;
+            $ia_tuple->ia2q3 = 0;
+            $ia_tuple->ia2q4 = 0;
+            $ia_tuple->id = $last_tuple['id'];
+            $ia_tuple->save();
+            
             return redirect()->back();
         }
         else{
@@ -99,6 +126,9 @@ class studentController extends Controller
     public function permDelete($id){
         $oral_record = OralModel::where("id", "=", $id)->delete();
         $endsem_record = EndsemModel::where("id", "=", $id)->delete();
+        $assign_record = AssignmentModel::where("id", "=", $id)->delete();
+        $ia_record = IaModel::where("id", "=", $id)->delete();
+        
         $student = StudentDetails::onlyTrashed()->find($id);
         if (!is_null($student)) {
             $student->forceDelete();

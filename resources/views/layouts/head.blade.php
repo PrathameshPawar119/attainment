@@ -17,7 +17,7 @@
         <a class="nav-link {{url('/sheets/endsem')==$currentUrl?'active':''}}" href="{{url('/sheets/endsem')}}">End-Sem</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link {{url('/sheets/assignments')==$currentUrl?'active':''}}" href="{{url('/sheets/assignments')}}">Assignments</a>
+        <a class="nav-link {{url('/sheets/assignment')==$currentUrl?'active':''}}" href="{{url('/sheets/assignment')}}">Assignments</a>
     </li>
      <li class="nav-item">
         <a class="nav-link {{url('/sheets/ia')==$currentUrl?'active':''}}" href="{{url('/sheets/ia')}}">IA</a>
