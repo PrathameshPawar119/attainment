@@ -7,6 +7,7 @@ use App\Models\OralModel;
 use App\Models\EndsemModel;
 use App\Models\AssignmentModel;
 use App\Models\IaModel;
+use App\Models\ExperimentModel;
 
 class SheetsController extends Controller
 {
@@ -107,5 +108,28 @@ class SheetsController extends Controller
                         }
         $trashBtn = "IA Attainment";
         return view("ia", compact('students', 'trashBtn', 'searchText'));
+    }
+
+    public function experimentSheet(Request $req){
+        $searchText = $req['searchForm'] ?? "";
+        if ($searchText != "") {
+            $students = ExperimentModel::join('student_details', 'student_details.id', 'experiments.id')
+                            ->select('experiments.*','student_details.*')
+                            ->where('name', "LIKE", "%$searchText%")
+                            ->where("user_key", "=", session()->get("user_id"))
+                            ->where("deleted_at", "=", null)
+                            ->orderBy('roll_no', 'ASC')
+                            ->paginate(10);
+            }
+        else{
+            $students = ExperimentModel::join('student_details', 'student_details.id', 'experiments.id')
+                            ->select('experiments.*','student_details.*')
+                            ->where("user_key", "=", session()->get("user_id"))
+                            ->where("deleted_at", "=", null)
+                            ->orderBy('roll_no', 'ASC')
+                            ->paginate(10);
+                        }
+        $trashBtn = "Expt Attainment";
+        return view("experiment", compact('students', 'trashBtn', 'searchText'));
     }
 }

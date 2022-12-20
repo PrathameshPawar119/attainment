@@ -111,6 +111,14 @@
     // Eventlistener to switch sidecolumns by clicking maincolumns
     for (let i = 1; i <= 2; i++) {
         document.getElementsByClassName(`mainColumn${i}`)[0].addEventListener("click", ()=>{
+            // Highlighting current open experiment pillar open
+            var CurrentPillar = document.getElementsByClassName(`mainColumn${i}`)[0];
+            if (CurrentPillar.style.backgroundColor != "bisque") {
+                CurrentPillar.style.backgroundColor = "bisque";
+            }
+            else{
+                CurrentPillar.style.backgroundColor = "aliceblue";
+            }
             var arr = document.getElementsByClassName(`sideColumn${i}`);
             for (let j = 0; j < arr.length; j++) {
                 const element = arr[j];

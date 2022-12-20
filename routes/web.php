@@ -6,6 +6,7 @@ use App\Http\Controllers\studentController;
 use App\Http\Controllers\SheetsController;
 use App\Http\Controllers\UpdateMarksController;
 use App\Models\IaModel;
+use Spatie\LaravelIgnition\Http\Controllers\UpdateConfigController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +45,10 @@ Route::group(["prefix"=>"/sheets", "middleware"=>"loginRedirect"], function (){
     Route::get("endsem", [SheetsController::class, "endsemSheet"]);
     Route::get("assignment", [SheetsController::class, "assignmentSheet"]);
     Route::get("ia", [SheetsController::class, "iaSheet"]);
+    Route::get("experiments", [SheetsController::class, "experimentSheet"]);
     Route::post("oral/update", [UpdateMarksController::class, "updateOralMarks"])->name("updateOralMarks");
     Route::post("endsem/update", [UpdateMarksController::class, "updateEndsemMarks"])->name("updateEndsemMarks");
     Route::post("assignment/update", [UpdateMarksController::class, "updateAssignmentMarks"])->name("updateAssignmentMarks");
     Route::post("ia/update", [UpdateMarksController::class, "updateIaMarks"])->name("updateIaMarks");
+    Route::post("experiments/update", [UpdateMarksController::class, "updateExperimentMarks"])->name("updateExperimentMarks");
 });

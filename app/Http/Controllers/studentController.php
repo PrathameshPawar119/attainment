@@ -8,6 +8,7 @@ use App\Models\OralModel;
 use App\Models\EndsemModel;
 use App\Models\AssignmentModel;
 use App\Models\IaModel;
+use App\Models\ExperimentModel;
 
 class studentController extends Controller
 {
@@ -49,20 +50,20 @@ class studentController extends Controller
 
             
             $last_tuple = StudentDetails::latest()->first();
-            // init oral entry
+        // init oral entry
             $oral_tuple = new OralModel();
             $oral_tuple->oral_marks = 0;
             $oral_tuple->id = $last_tuple['id'];
             $oral_tuple->save();
 
-            //init endsem entry
+        //init endsem entry
             $endsem_tuple = new EndsemModel();
             $endsem_tuple->endsem_marks = 0;
             $endsem_tuple->id = $last_tuple['id'];
             $endsem_tuple->save();
             
-            //init assignments entry
-            $assign_tuple = new  AssignmentModel;
+        //init assignments entry
+            $assign_tuple = new  AssignmentModel();
             $assign_tuple->a1p1 = 0;
             $assign_tuple->a1p2 = 0;
             $assign_tuple->a1p3 = 0;
@@ -72,8 +73,8 @@ class studentController extends Controller
             $assign_tuple->id = $last_tuple['id'];
             $assign_tuple->save();
 
-            // init ia entry
-            $ia_tuple = new IaModel;
+        // init ia entry
+            $ia_tuple = new IaModel();
             $ia_tuple->ia1q1 = 0;
             $ia_tuple->ia1q2 = 0;
             $ia_tuple->ia1q3 = 0;
@@ -84,6 +85,48 @@ class studentController extends Controller
             $ia_tuple->ia2q4 = 0;
             $ia_tuple->id = $last_tuple['id'];
             $ia_tuple->save();
+
+        // init experiments entry
+            $expt_tuple = new ExperimentModel();
+            $expt_tuple->e1r1 = 0;
+            $expt_tuple->e1r2 = 0;
+            $expt_tuple->e1r3 = 0;
+            $expt_tuple->e2r1 = 0;
+            $expt_tuple->e2r2 = 0;
+            $expt_tuple->e2r3 = 0;
+            $expt_tuple->e3r1 = 0;
+            $expt_tuple->e3r2 = 0;
+            $expt_tuple->e3r3 = 0;
+            $expt_tuple->e4r1 = 0;
+            $expt_tuple->e4r2 = 0;
+            $expt_tuple->e4r3 = 0;
+            $expt_tuple->e5r1 = 0;
+            $expt_tuple->e5r2 = 0;
+            $expt_tuple->e5r3 = 0;
+            $expt_tuple->e6r1 = 0;
+            $expt_tuple->e6r2 = 0;
+            $expt_tuple->e6r3 = 0;
+            $expt_tuple->e7r1 = 0;
+            $expt_tuple->e7r2 = 0;
+            $expt_tuple->e7r3 = 0;
+            $expt_tuple->e8r1 = 0;
+            $expt_tuple->e8r2 = 0;
+            $expt_tuple->e8r3 = 0;
+            $expt_tuple->e9r1 = 0;
+            $expt_tuple->e9r2 = 0;
+            $expt_tuple->e9r3 = 0;
+            $expt_tuple->e10r1 = 0;
+            $expt_tuple->e10r2 = 0;
+            $expt_tuple->e10r3 = 0;
+            $expt_tuple->e11r1 = 0;
+            $expt_tuple->e11r2 = 0;
+            $expt_tuple->e11r3 = 0;
+            $expt_tuple->e12r1 = 0;
+            $expt_tuple->e12r2 = 0;
+            $expt_tuple->e12r3 = 0;
+            $expt_tuple->id = $last_tuple['id'];
+            $expt_tuple->save();
+
             
             return redirect()->back();
         }
@@ -128,6 +171,7 @@ class studentController extends Controller
         $endsem_record = EndsemModel::where("id", "=", $id)->delete();
         $assign_record = AssignmentModel::where("id", "=", $id)->delete();
         $ia_record = IaModel::where("id", "=", $id)->delete();
+        $expt_record = ExperimentModel::where("id", "=", $id)->delete();
         
         $student = StudentDetails::onlyTrashed()->find($id);
         if (!is_null($student)) {

@@ -26,7 +26,7 @@
                 <th scope="col">Roll No.</th>
                 <th scope="col">Student ID</th>
                 <th scope="col">Name</th>
-                <th scope="col">Oral-Practical</th>
+                <th scope="col">End-Sem</th>
                 </tr>
             </thead>
             <tbody>
