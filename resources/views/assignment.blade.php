@@ -7,6 +7,11 @@
     .SwitchColumns{
         display: none;
     }
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
 </style>
 <div class="assignmentPage container">
     <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
@@ -29,7 +34,7 @@
                 <th scope="col">DIV</th>
                 <th scope="col">Roll No.</th>
                 <th scope="col">Student ID</th>
-                <th style="width: 200px;" scope="col">Name</th>
+                <th style="width: 300px;" scope="col">Name</th>
                 <th class="sideColumn1" scope="col">P1</th>
                 <th class="sideColumn1" scope="col">P2</th>
                 <th class="sideColumn1" scope="col">P3</th>
@@ -53,36 +58,36 @@
                             <td>{{$student->div}}</td>
                             <td>{{$student->roll_no}}</td>
                             <td>{{$student->student_id}}</td>
-                            <td style="width: 200px; text-align:left;">{{$student->name}}</td>
+                            <td style="width: 300px; text-align:left;">{{$student->name}}</td>
                             <td class="sideColumn1">
-                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:70px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a1p1"  id="{{$student->group_key}}+a1p1" value="{{$student->a1p1}}" style="height: 26px;">
+                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a1p1"  id="{{$student->group_key}}+a1p1" max="{{$assign_total_max[0]->assign_p1}}" min="0" value="{{$student->a1p1}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="sideColumn1">
-                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:70px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a1p2"  id="{{$student->group_key}}+a1p2" value="{{$student->a1p2}}" style="height: 26px;">
+                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a1p2"  id="{{$student->group_key}}+a1p2" max="{{$assign_total_max[0]->assign_p2}}" min="0" value="{{$student->a1p2}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="sideColumn1">
-                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:70px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a1p3"  id="{{$student->group_key}}+a1p3" value="{{$student->a1p3}}" style="height: 26px;">
+                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a1p3"  id="{{$student->group_key}}+a1p3" max="{{$assign_total_max[0]->assign_p3}}" min="0" value="{{$student->a1p3}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="mainColumn1" style="background-color: aliceblue; cursor: pointer;" id="{{$student->student_id}}+a1">{{$student->a1}}</td>
                             <td class="sideColumn2">
-                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:70px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a2p1"  id="{{$student->group_key}}+a2p1" value="{{$student->a2p1}}" style="height: 26px;">
+                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a2p1"  id="{{$student->group_key}}+a2p1" max="{{$assign_total_max[0]->assign_p1}}" min="0" value="{{$student->a2p1}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="sideColumn2">
-                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:70px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a2p2"  id="{{$student->group_key}}+a2p2" value="{{$student->a2p2}}" style="height: 26px;">
+                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a2p2"  id="{{$student->group_key}}+a2p2" max="{{$assign_total_max[0]->assign_p2}}" min="0" value="{{$student->a2p2}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="sideColumn2">
-                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:70px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a2p3"  id="{{$student->group_key}}+a2p3" value="{{$student->a2p3}}" style="height: 26px;">
+                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a2p3"  id="{{$student->group_key}}+a2p3" max="{{$assign_total_max[0]->assign_p3}}" min="0" value="{{$student->a2p3}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="mainColumn2" style="background-color: aliceblue; cursor: pointer;" id="{{$student->student_id}}+a2">{{$student->a2}}</td>
@@ -128,10 +133,12 @@
     }
 
     $(document).ready(function(){
-        $(document).on("change", ".marksInputField", function(e){
+        $(document).on("change", ".marksInputField", debounce(function(e){
+            var max_assign_limit = e.target.getAttribute("max");
             var stuId = e.target.getAttribute("name");
-            var stdVal = e.target.value;
+            var stdVal = e.target.value > max_assign_limit ? max_assign_limit : e.target.value;
             var stuGroupKey = e.target.getAttribute("id");
+            
             $.ajax({
                 url: "{{route('updateAssignmentMarks')}}",
                 type:"POST",
@@ -163,7 +170,7 @@
                     }
                 }
             });
-        });
+        }, 300));
     });
 </script>
 @endsection

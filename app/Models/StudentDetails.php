@@ -28,7 +28,6 @@ class StudentDetails extends Model
 
 
     //  Accessors  ****************************
-    // accessor to get 1st letter Capital (only on ui)
 
 
 }

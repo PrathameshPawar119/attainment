@@ -63,5 +63,6 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'loginRedirect' => \App\Http\Middleware\loginRedirect::class,
+        'RefineNullInputMware' => \App\Http\Middleware\RefineNullInputMware::class
     ];
 }

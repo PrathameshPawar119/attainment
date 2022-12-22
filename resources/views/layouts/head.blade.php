@@ -24,8 +24,17 @@
     </li>
     <li class="nav-item">
         <a class="nav-link {{url('/sheets/experiments')==$currentUrl?'active':''}}" href="{{url('/sheets/experiments')}}">Experiments</a>
-    </li>
+    </li>   
     <li class="nav-item">
         <a class="nav-link {{url('/sheets/cis')==$currentUrl?'active':''}}" href="{{url('/sheets/cis')}}"><b>CIS</b></a>
     </li>
+
+    <div class="leftTabs" style="position:absolute; right:20px;">
+        <li class="nav-item">
+            <a class="nav-link {{url('/user/criteriaInput')==$currentUrl?'active':''}}" href="{{url('/user/criteriaInput')}}"><b>Criteria</b></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{url('/user/Profile')==$currentUrl?'active':''}}" href="{{url('/user/profile')}}">Logo</a>
+        </li>
+    </div>
 </ul>

@@ -46,9 +46,14 @@ Route::group(["prefix"=>"/sheets", "middleware"=>"loginRedirect"], function (){
     Route::get("assignment", [SheetsController::class, "assignmentSheet"]);
     Route::get("ia", [SheetsController::class, "iaSheet"]);
     Route::get("experiments", [SheetsController::class, "experimentSheet"]);
-    Route::post("oral/update", [UpdateMarksController::class, "updateOralMarks"])->name("updateOralMarks");
-    Route::post("endsem/update", [UpdateMarksController::class, "updateEndsemMarks"])->name("updateEndsemMarks");
-    Route::post("assignment/update", [UpdateMarksController::class, "updateAssignmentMarks"])->name("updateAssignmentMarks");
-    Route::post("ia/update", [UpdateMarksController::class, "updateIaMarks"])->name("updateIaMarks");
-    Route::post("experiments/update", [UpdateMarksController::class, "updateExperimentMarks"])->name("updateExperimentMarks");
+    Route::post("oral/update", [UpdateMarksController::class, "updateOralMarks"])->middleware("RefineNullInputMware")->name("updateOralMarks");
+    Route::post("endsem/update", [UpdateMarksController::class, "updateEndsemMarks"])->middleware("RefineNullInputMware")->name("updateEndsemMarks");
+    Route::post("assignment/update", [UpdateMarksController::class, "updateAssignmentMarks"])->middleware("RefineNullInputMware")->name("updateAssignmentMarks");
+    Route::post("ia/update", [UpdateMarksController::class, "updateIaMarks"])->middleware("RefineNullInputMware")->name("updateIaMarks");
+    Route::post("experiments/update", [UpdateMarksController::class, "updateExperimentMarks"])->middleware("RefineNullInputMware")->name("updateExperimentMarks");
+});
+
+Route::group(["prefix"=>"/user"], function(){
+    Route::get("criteriaInput", [SheetsController::class, "criteriaInput"]);
+    Route::post("updateCriteriaMarks", [UpdateMarksController::class, "updateCriteriaMarks"])->middleware("RefineNullInputMware")->name("updateCriteriaMarks");
 });

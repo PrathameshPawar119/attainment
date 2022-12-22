@@ -43,7 +43,7 @@
                             <td>{{$student->name}}</td>
                             <td>
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:80px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}"  id="{{$student->group_key}}" value="{{$student->endsem_marks}}" style="height: 26px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}"  id="{{$student->group_key}}" max="{{$endsem_total_max[0]->endsem_total}}" min="0" value="{{$student->endsem_marks}}" style="height: 26px;">
                                 </div>
                             </td>
                         </tr>
@@ -58,9 +58,10 @@
 </div>
 <script>
     $(document).ready(function(){
-        $(document).on("change", ".marksInputField", function(e){
+        $(document).on("change", ".marksInputField", debounce(function(e){
+            var endsem_max_limit = "<?php echo $endsem_total_max[0]->endsem_total; ?>";
             var stuId = e.target.getAttribute("name");
-            var stdVal = e.target.value;
+            var stdVal = (e.target.value) > endsem_max_limit ? endsem_max_limit : e.target.value;
             var stuGroupKey = e.target.getAttribute("id");
             $.ajax({
                 url: "{{route('updateEndsemMarks')}}",
@@ -87,7 +88,7 @@
                         }
                 }
             });
-        });
+        }, 300));
     });
 </script>
 @endsection

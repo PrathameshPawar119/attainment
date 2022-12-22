@@ -8,6 +8,7 @@ use App\Models\EndsemModel;
 use App\Models\AssignmentModel;
 use App\Models\ExperimentModel;
 use App\Models\IaModel;
+use App\Models\CriteriaModel;
 
 class UpdateMarksController extends Controller
 {
@@ -98,6 +99,24 @@ class UpdateMarksController extends Controller
 
         if($student){
             echo $ex[0]->e1."+".$ex[0]->e2."+".$ex[0]->e3."+".$ex[0]->e4."+".$ex[0]->e5."+".$ex[0]->e6."+".$ex[0]->e7."+".$ex[0]->e8."+".$ex[0]->e9."+".$ex[0]->e10."+".$ex[0]->e11."+".$ex[0]->e12;
+        }
+        else{
+            echo "0";
+        }
+    }
+
+    public function updateCriteriaMarks(Request $req){
+        $student = CriteriaModel::join('signup_details', 'signup_details.user_id', 'criteria.user_id')
+                        ->select('criteria.user_id', $req['column'])
+                        ->where("criteria.user_id", "=", session()->get('user_id'))
+                        ->update([$req['column']=>$req['value']]);
+        $ex = CriteriaModel::join('signup_details', 'signup_details.user_id', 'criteria.user_id')
+                    ->select('criteria.user_id', 'criteria.oral_total', 'criteria.endsem_total', 'criteria.assign_total', 'criteria.ia1_total', 'criteria.ia2_total', 'criteria.exp_total')
+                    ->where("criteria.user_id", "=", session()->get('user_id'))
+                    ->get();
+
+        if($student){
+            echo $ex[0]->assign_total."+".$ex[0]->ia1_total."+".$ex[0]->ia2_total."+".$ex[0]->exp_total;
         }
         else{
             echo "0";

@@ -7,6 +7,11 @@
     .SwitchColumns{
         display: none;
     }
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
 </style>
 <div class="iaPage container">
     <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
@@ -29,7 +34,7 @@
                 <th scope="col">DIV</th>
                 <th scope="col">Roll No.</th>
                 <th scope="col">Student ID</th>
-                <th style="width: 200px;" scope="col">Full Name</th>
+                <th style="width: 300px;" scope="col">Full Name</th>
                 @for ($i=1; $i <= 12 ; $i++)
                         <th class='sideColumn{{$i}}' scope='col'>R1</th>
                         <th class='sideColumn{{$i}}' scope='col'>R2</th>
@@ -57,21 +62,21 @@
                             <td>{{$student->div}}</td>
                             <td>{{$student->roll_no}}</td>
                             <td>{{$student->student_id}}</td>
-                            <td style="width: 200px; text-align:left;">{{$student->name}}</td>
+                            <td style="width: 300px; text-align:left;">{{$student->name}}</td>
                             @for ($i=1; $i <= 12; $i++)
                                 <td class='sideColumn{{$i}} px-0'>
-                                    <div class='smallInputField center mx-0' style='border:2px solid rgb(86, 3, 114); border-radius:6px; width:70px;'>
-                                        <input type='number' class='form-control my-0 marksInputField' name='{{$student->student_id}}+e{{$i}}r1'  id='{{$student->group_key}}+e{{$i}}r1' value='{{$Exp_r1[$i-1]}}' style='height: 26px;'>
+                                    <div class='smallInputField center mx-0' style='border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;'>
+                                        <input type='number' class='form-control my-0 marksInputField' name='{{$student->student_id}}+e{{$i}}r1'  id='{{$student->group_key}}+e{{$i}}r1' max="{{$exp_total_max[0]->exp_r1}}" min="0" value='{{$Exp_r1[$i-1]}}' style='height: 26px;'>
                                     </div>
                                 </td>
                                 <td class='sideColumn{{$i}} px-0'>
-                                    <div class='smallInputField center mx-0' style='border:2px solid rgb(86, 3, 114); border-radius:6px; width:70px;'>
-                                        <input type='number' class='form-control my-0 marksInputField' name='{{$student->student_id}}+e{{$i}}r2'  id='{{$student->group_key}}+e{{$i}}r2' value='{{$Exp_r2[$i-1]}}' style='height: 26px;'>
+                                    <div class='smallInputField center mx-0' style='border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;'>
+                                        <input type='number' class='form-control my-0 marksInputField' name='{{$student->student_id}}+e{{$i}}r2'  id='{{$student->group_key}}+e{{$i}}r2' max="{{$exp_total_max[0]->exp_r2}}" min="0" value='{{$Exp_r2[$i-1]}}' style='height: 26px;'>
                                     </div>
                                 </td>
                                 <td class='sideColumn{{$i}} px-0'>
-                                    <div class='smallInputField center mx-0' style='border:2px solid rgb(86, 3, 114); border-radius:6px; width:70px;'>
-                                        <input type='number' class='form-control my-0 marksInputField' name='{{$student->student_id}}+e{{$i}}r3'  id='{{$student->group_key}}+e{{$i}}r3' value='{{$Exp_r3[$i-1]}}' style='height: 26px;'>
+                                    <div class='smallInputField center mx-0' style='border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;'>
+                                        <input type='number' class='form-control my-0 marksInputField' name='{{$student->student_id}}+e{{$i}}r3'  id='{{$student->group_key}}+e{{$i}}r3' max="{{$exp_total_max[0]->exp_r3}}" min="0" value='{{$Exp_r3[$i-1]}}' style='height: 26px;'>
                                     </div>
                                 </td>
                                 <td class='mainColumn{{$i}}' style='background-color: aliceblue; cursor: pointer;' id='{{$student->student_id}}+e{{$i}}'>{{$Exp_Totals[$i-1]}}</td>
@@ -118,9 +123,10 @@
     }
 
     $(document).ready(function(){
-        $(document).on("change", ".marksInputField", function(e){
+        $(document).on("change", ".marksInputField", debounce(function(e){
+            var expMarR = e.target.getAttribute("max");
             var stuId = e.target.getAttribute("name");
-            var stdVal = e.target.value;
+            var stdVal = e.target.value > expMarR ? expMarR : e.target.value;
             var stuGroupKey = e.target.getAttribute("id");
             $.ajax({
                 url: "{{route('updateExperimentMarks')}}",
@@ -154,7 +160,7 @@
                     }
                 }
             });
-        });
+        }, 300));
     });
 </script>
 @endsection
