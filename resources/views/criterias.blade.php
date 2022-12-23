@@ -15,7 +15,7 @@
             width: 70%;
             margin: 10px 0px;
             padding: 4px;
-            background-color: rgb(205, 228, 248);
+            background-color: rgb(239, 205, 248);
             border:2px transparent;
             border-radius: 8px;
             transition: all 0.4s ease;
@@ -25,7 +25,7 @@
         }
         .tabs:hover{
             padding: 8px;
-            background-color: rgb(193, 224, 251);
+            background-color: rgb(232, 176, 251);
             border: 3px transparent;
             border-radius: 10px;
             cursor: pointer;

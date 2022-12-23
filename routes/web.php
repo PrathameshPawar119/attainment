@@ -53,7 +53,8 @@ Route::group(["prefix"=>"/sheets", "middleware"=>"loginRedirect"], function (){
     Route::post("experiments/update", [UpdateMarksController::class, "updateExperimentMarks"])->middleware("RefineNullInputMware")->name("updateExperimentMarks");
 });
 
-Route::group(["prefix"=>"/user"], function(){
+Route::group(["prefix"=>"/user", "middleware"=>"loginRedirect"], function(){
     Route::get("criteriaInput", [SheetsController::class, "criteriaInput"]);
     Route::post("updateCriteriaMarks", [UpdateMarksController::class, "updateCriteriaMarks"])->middleware("RefineNullInputMware")->name("updateCriteriaMarks");
+    Route::get("coinput", [SheetsController::class, "coInput"]);
 });

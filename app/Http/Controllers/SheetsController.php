@@ -147,4 +147,8 @@ class SheetsController extends Controller
         $current_criteria = CriteriaModel::where("user_id", "=", session()->get("user_id"))->first();
         return view("criterias", compact('current_criteria'));
     }
+
+    public function coInput(){
+        return view("coinput");
+    }
 }
