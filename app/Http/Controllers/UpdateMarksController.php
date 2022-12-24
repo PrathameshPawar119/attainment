@@ -12,6 +12,13 @@ use App\Models\CriteriaModel;
 
 class UpdateMarksController extends Controller
 {
+    // public function __construct()
+    // {
+    //     parent::$criteiaTotalMarks;
+    //     $this->criteiaTotalMarks = parent::$criteiaTotalMarks;
+        
+    // }
+
     public function updateOralMarks(Request $req){   
 
         $student = OralModel::join('student_details', 'student_details.id', 'oral.id')
@@ -55,8 +62,10 @@ class UpdateMarksController extends Controller
 
         $a1_total = $assign_record[0]->a1;
         $a2_total = $assign_record[0]->a2;
+        // $temp = $this->getCriteiaTotalMarks();
+        $temp = getCriteiaTotalMarks();
         if($student){
-            echo $a1_total."+".$a2_total;
+            echo $a1_total."+".$a2_total."+".$temp->assign_total;
         }
         else{
             echo "0";
@@ -77,8 +86,10 @@ class UpdateMarksController extends Controller
         
         $ia1_total = $ia_record[0]->ia1;
         $ia2_total = $ia_record[0]->ia2;
+        $temp = getCriteiaTotalMarks();
+
         if($student){
-            echo $ia1_total."+".$ia2_total;
+            echo $ia1_total."+".$ia2_total."+".$temp->ia1_total."+".$temp->ia2_total;
         }
         else{
             echo "0";
@@ -96,9 +107,10 @@ class UpdateMarksController extends Controller
                 ->where("student_id", "=", $req['id'])
                 ->where("user_key", "=", session()->get('user_id'))
                 ->get();
+        $temp = getCriteiaTotalMarks();
 
         if($student){
-            echo $ex[0]->e1."+".$ex[0]->e2."+".$ex[0]->e3."+".$ex[0]->e4."+".$ex[0]->e5."+".$ex[0]->e6."+".$ex[0]->e7."+".$ex[0]->e8."+".$ex[0]->e9."+".$ex[0]->e10."+".$ex[0]->e11."+".$ex[0]->e12;
+            echo $ex[0]->e1."+".$ex[0]->e2."+".$ex[0]->e3."+".$ex[0]->e4."+".$ex[0]->e5."+".$ex[0]->e6."+".$ex[0]->e7."+".$ex[0]->e8."+".$ex[0]->e9."+".$ex[0]->e10."+".$ex[0]->e11."+".$ex[0]->e12."+".$temp->exp_total;
         }
         else{
             echo "0";

@@ -102,7 +102,7 @@
                                 </div>
                             </td>
                             <td class="mainColumn2" style="background-color: aliceblue; cursor: pointer;" id="{{$student->student_id}}+ia2">{{$student->ia2}}</td>
-                            <td id="{{$student->student_id}}+avg+ia1ia2">{{round(($student->ia1+$student->ia2)/2)}}</td>
+                            <td id="{{$student->student_id}}+avg+ia1ia2">{{round(($student->ia1+$student->ia2)*20/($ia_total_max[0]->ia1_total+$ia_total_max[0]->ia2_total))}}</td>
                         </tr>
                     @endforeach
                 </form>
@@ -170,11 +170,14 @@
                             document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
                         }, 2000); 
                         console.log(res);
-                        var ia1_total = parseInt(res.split("+")[0]);
-                        var ia2_total = parseInt(res.split("+")[1]);
+                        var parsedRes = res.split("+");
+                        var ia1_total = parseInt(parsedRes[0]);
+                        var ia2_total = parseInt(parsedRes[1]);
+                        var ia1_limit = parseInt(parsedRes[2]);
+                        var ia2_limit = parseInt(parsedRes[3]);
                         document.getElementById(`${stuId.split("+")[0]}+ia1`).innerHTML = ia1_total;
                         document.getElementById(`${stuId.split("+")[0]}+ia2`).innerHTML= ia2_total;
-                        document.getElementById(`${stuId.split("+")[0]}+avg+ia1ia2`).innerHTML = ((ia1_total+ia2_total)/2).toFixed();
+                        document.getElementById(`${stuId.split("+")[0]}+avg+ia1ia2`).innerHTML = ((ia1_total+ia2_total)*20/(ia1_limit+ia2_limit)).toFixed();
                     }
                 }
             });

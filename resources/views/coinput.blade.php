@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @push('title')
-    <title>Criteria Input</title>
+    <title>COs Input</title>
 @endpush
 @push('head')
 
@@ -157,8 +157,8 @@
                             <div class="SelectBox" style="width:110px; max-height:90px; overflow-y:scroll; padding:4px;">
                                 @for($i = 0; $i < 6; $i++)
                                     <div class="checkBoxRow form-check">
-                                        <input type="checkbox" name="{{$parameters[$i]}}_oral" id="{{$parameters[$i]}}_oral" class="form-check-input">
-                                        <label for="{{$parameters[$i]}}_oral" class="form-check-label">{{$parameters[$i]}}</label>
+                                        <input type="checkbox" name="oral_checkbox" sheet="oral" column="oral" co="CO{{$i}}" id="{{$parameters[$i]}}-oral" class="form-check-input">
+                                        <label for="{{$parameters[$i]}}-oral" class="form-check-label">{{$parameters[$i]}}</label>
                                     </div>
                                 @endfor
                             </div>                        
@@ -168,8 +168,8 @@
                             <div class="SelectBox" style="width:110px; max-height:90px; overflow-y:scroll; padding:4px;">
                                 @for($i = 0; $i < 6; $i++)
                                     <div class="checkBoxRow form-check">
-                                        <input type="checkbox" name="{{$parameters[$i]}}_endsem" id="{{$parameters[$i]}}_endsem" class="form-check-input">
-                                        <label for="{{$parameters[$i]}}_endsem" class="form-check-label">{{$parameters[$i]}}</label>
+                                        <input type="checkbox" name="endsem_checkbox" sheet="endsem" column="endsem" co="{{$parameters[$i]}}" id="{{$parameters[$i]}}-endsem" class="form-check-input">
+                                        <label for="{{$parameters[$i]}}-endsem" class="form-check-label">{{$parameters[$i]}}</label>
                                     </div>
                                 @endfor
                             </div>                        
@@ -182,8 +182,8 @@
                             <div class="SelectBox" style="width:110px; max-height:90px; overflow-y:scroll; padding:4px;">
                                 @for($i = 0; $i < 6; $i++)
                                     <div class="checkBoxRow form-check">
-                                        <input type="checkbox" name="{{$parameters[$i]}}_assign1" id="{{$parameters[$i]}}_assign1" class="form-check-input">
-                                        <label for="{{$parameters[$i]}}_assign1" class="form-check-label">{{$parameters[$i]}}</label>
+                                        <input type="checkbox" name="assign1_checkbox" sheet="assign" column="a1" co="{{$parameters[$i]}}" id="{{$parameters[$i]}}-assign1" class="form-check-input">
+                                        <label for="{{$parameters[$i]}}-assign1" class="form-check-label">{{$parameters[$i]}}</label>
                                     </div>
                                 @endfor
                             </div>                          
@@ -193,16 +193,16 @@
                             <div class="SelectBox" style="width:110px; max-height:90px; overflow-y:scroll; padding:4px;">
                                 @for($i = 0; $i < 6; $i++)
                                     <div class="checkBoxRow form-check">
-                                        <input type="checkbox" name="{{$parameters[$i]}}_assign2" id="{{$parameters[$i]}}_assign2" class="form-check-input">
-                                        <label for="{{$parameters[$i]}}_assign2" class="form-check-label">{{$parameters[$i]}}</label>
+                                        <input type="checkbox" name="assign2_checkbox" sheet="assign" column="a2" co="{{$parameters[$i]}}" id="{{$parameters[$i]}}-assign2" class="form-check-input">
+                                        <label for="{{$parameters[$i]}}-assign2" class="form-check-label">{{$parameters[$i]}}</label>
                                     </div>
                                 @endfor
                             </div>  
                         </div>
                     </div>
                 </div>
-                <div class="inputSectionRight">
-                    <div class="iaCoInputSection" style="background-color: rgb(243, 235, 251); border-radius:10px;">
+                <div class="inputSectionRight my-4">
+                    <div class="iaCoInputSection" style="background-color: rgb(243, 235, 251); border-radius:10px; margin-top:20px;">
                         <h4><center> IA Questions Per CO</center></h4>
                         <div class="iaCoInputSectionBlock">
                             @for($i = 1; $i <= 6; $i++)
@@ -211,8 +211,8 @@
                                     <div class="SelectBox" style="width:110px; max-height:90px; overflow-y:scroll; padding:4px;">
                                         @for($j = 0; $j < 8; $j++)
                                             <div class="checkBoxRow form-check">
-                                                <input type="checkbox" name="{{$IaParameters[$j]}}_ia-{{$i}}-{{$j+1}}" id="{{$IaParameters[$j]}}_ia-{{$i}}-{{$j+1}}" class="form-check-input">
-                                                <label for="{{$IaParameters[$j]}}_ia-{{$i}}-{{$j+1}}" class="form-check-label">{{$IaParameters[$j]}}</label>
+                                                <input type="checkbox" name="IA_CO{{$i}}_checkbox" sheet="IA" column="{{strtolower($IaParameters[$j])}}" co="CO{{$i}}" id="{{$IaParameters[$j]}}-ia-{{$i}}-{{$j+1}}" class="form-check-input">
+                                                <label for="{{$IaParameters[$j]}}-ia-{{$i}}-{{$j+1}}" class="form-check-label">{{$IaParameters[$j]}}</label>
                                             </div>
                                         @endfor
                                     </div>                                  
@@ -229,8 +229,8 @@
                                     <div class="SelectBox" style="width:110px; max-height:90px; overflow-y:scroll; padding:4px;">
                                         @for($j = 0; $j < 12; $j++)
                                             <div class="checkBoxRow form-check">
-                                                <input type="checkbox" name="{{$ExpParameters[$j]}}_expt-{{$i}}-{{$j+1}}" id="{{$ExpParameters[$j]}}_expt-{{$i}}-{{$j+1}}" class="form-check-input">
-                                                <label for="{{$ExpParameters[$j]}}_expt-{{$i}}-{{$j+1}}" class="form-check-label">{{$ExpParameters[$j]}}</label>
+                                                <input type="checkbox" name="Expt_CO{{$i}}_checkbox" sheet="Expt" column="e{{$j+1}}" co="CO{{$i}}" id="{{$ExpParameters[$j]}}-expt-{{$i}}-{{$j+1}}" class="form-check-input">
+                                                <label for="{{$ExpParameters[$j]}}-expt-{{$i}}-{{$j+1}}" class="form-check-label">{{$ExpParameters[$j]}}</label>
                                             </div>
                                         @endfor
                                     </div>                                  
@@ -242,7 +242,18 @@
         </div>
     </div>
     <script>
+        var group = document.getElementsByClassName("form-check-input");
+        Array.from(group).forEach(element => {
+            (element).addEventListener("change", ()=>{
+                if (element.checked) {
+                    var sheet = element.getAttribute("sheet");
+                    var column = element.getAttribute("column").replace("-", "");
+                    var coInput= element.getAttribute("co").replace("CO", "");
+                    console.log(sheet,column,  coInput);
 
+                }
+            });
+        });
         $(document).ready(function(){
   
         });

@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\signup_details;
 use Illuminate\Support\Facades\Hash;
 use App\Models\CriteriaModel;
+use App\Models\CO_Oral_Endsem_Assign;
+use App\Models\CO_IA;
+use App\Models\CO_Expt;
 
 class AuthController extends Controller
 {
@@ -49,6 +52,38 @@ class AuthController extends Controller
         $crt_tuple->exp_r3 = 0;
         $crt_tuple->user_id = $last_tuple['user_id'];
         $crt_tuple->save();
+
+    // init Co tables entry
+        // table common for oral, endsem, assigns
+        $co_group3s = new CO_Oral_Endsem_Assign();
+        $co_group3s->oral_co = "[1,2,3,4,5,6]";
+        $co_group3s->endsem_co = "[1,2,3,4,5,6]";
+        $co_group3s->assign1_co = "[1]";
+        $co_group3s->assign2_co = "[1]";
+        $co_group3s->user_id = $last_tuple['user_id'];
+        $co_group3s->save();
+
+        //table for ias
+        $co_ia_tuple = new CO_IA();
+        $co_ia_tuple->CO1 = "[1]";
+        $co_ia_tuple->CO2 = "[1]";
+        $co_ia_tuple->CO3 = "[1]";
+        $co_ia_tuple->CO4 = "[1]";
+        $co_ia_tuple->CO5 = "[1]";
+        $co_ia_tuple->CO6 = "[1]";
+        $co_ia_tuple->user_id = $last_tuple['user_id'];
+        $co_ia_tuple->save();
+
+        //table for experiments
+        $co_expt_tuple = new CO_Expt();
+        $co_expt_tuple->CO1 = "[1]";
+        $co_expt_tuple->CO2 = "[1]";
+        $co_expt_tuple->CO3 = "[1]";
+        $co_expt_tuple->CO4 = "[1]";
+        $co_expt_tuple->CO5 = "[1]";
+        $co_expt_tuple->CO6 = "[1]";
+        $co_expt_tuple->user_id = $last_tuple['user_id'];
+        $co_expt_tuple->save();
 
         return redirect("/students/view");
     }

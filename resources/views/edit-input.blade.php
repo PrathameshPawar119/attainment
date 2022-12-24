@@ -11,7 +11,7 @@
 @endphp
 
 <div class="container my-4">
-    <x-alert-component mainclass="col-12" color="primary" message="Successful hua ree brio!" />
+    <x-alert-component mainclass="col-12" color="primary" message="Alert component needed to be done!" />
     <h2>{{session()->get('username')}}</h2>
     <span class="text-danger">
         @if (session()->has('duplicateRecordError'))

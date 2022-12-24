@@ -81,7 +81,7 @@
                                 </td>
                                 <td class='mainColumn{{$i}}' style='background-color: aliceblue; cursor: pointer;' id='{{$student->student_id}}+e{{$i}}'>{{$Exp_Totals[$i-1]}}</td>
                             @endfor
-                            <td id="{{$student->student_id}}+avg">{{round((($student->e1+$student->e2+$student->e3+$student->e4+$student->e5+$student->e6+$student->e7+$student->e8+$student->e9+$student->e10+$student->e11+$student->e12)*15)/108)}}</td>
+                            <td id="{{$student->student_id}}+avg">{{round((($student->e1+$student->e2+$student->e3+$student->e4+$student->e5+$student->e6+$student->e7+$student->e8+$student->e9+$student->e10+$student->e11+$student->e12)*15)/($exp_total_max[0]->exp_total*12))}}</td>
                         </tr>
                     @endforeach
                 </form>
@@ -151,12 +151,14 @@
                         }, 2000); 
                         var exp_total = 0;
                         var all_exp_total = 0;
+                        var parsedRes = res.split("+");
+                        var exp_limit = parseInt(parsedRes[12]);
                         for (let i = 0; i < 12; i++) {
-                            exp_total = parseInt(res.split("+")[i]);
+                            exp_total = parseInt(parsedRes[i]);
                             document.getElementById(`${stuId.split("+")[0]}+e${i+1}`).innerHTML = exp_total;
                             all_exp_total += exp_total;
                         }
-                        document.getElementById(`${stuId.split("+")[0]}+avg`).innerHTML = (((all_exp_total)*15)/108).toFixed();
+                        document.getElementById(`${stuId.split("+")[0]}+avg`).innerHTML = (((all_exp_total)*15)/(exp_limit*12)).toFixed();
                     }
                 }
             });

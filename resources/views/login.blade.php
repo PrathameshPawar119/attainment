@@ -6,7 +6,7 @@
 
     <div class="container">
         <div class="container loginpage">
-        <x-alert-component mainclass="col-12" color="primary" message="Successful hua ree brio!" />
+        <x-alert-component mainclass="col-12" color="primary" message="Alert component needed to be done" />
             <form action="{{url('/auth/login_user')}}" method="POST" class="my-3">
                 @csrf
                 <x-input-component type="text" id="login_varify" name="user_credential" label="Email or Username " mainclass="mb-3" />
