@@ -13,6 +13,10 @@
         margin: 0; 
     }
 </style>
+@php
+    $ia_total_max[0]->ia1_total = ($ia_total_max[0]->ia1_total == 0 ? 1 : $ia_total_max[0]->ia1_total);
+    $ia_total_max[0]->ia2_total = ($ia_total_max[0]->ia2_total == 0 ? 1 : $ia_total_max[0]->ia2_total);
+@endphp
 <div class="iaPage container">
     <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
         <form action="{{('/sheets/ia')}}" method="get" style="display: inline-block;">
@@ -67,7 +71,7 @@
                             </td>
                             <td class="sideColumn1">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+ia1q2"  id="{{$student->group_key}}+ia2q2" max="{{$ia_total_max[0]->ia1_q2}}" min="0" value="{{$student->ia2q2}}" style="height: 26px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+ia1q2"  id="{{$student->group_key}}+ia2q2" max="{{$ia_total_max[0]->ia1_q2}}" min="0" value="{{$student->ia1q2}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="sideColumn1">
@@ -102,7 +106,7 @@
                                 </div>
                             </td>
                             <td class="mainColumn2" style="background-color: aliceblue; cursor: pointer;" id="{{$student->student_id}}+ia2">{{$student->ia2}}</td>
-                            <td id="{{$student->student_id}}+avg+ia1ia2">{{round(($student->ia1+$student->ia2)*20/($ia_total_max[0]->ia1_total+$ia_total_max[0]->ia2_total))}}</td>
+                            <td id="{{$student->student_id}}+avg+ia1ia2">{{round((($student->ia1+$student->ia2)*20)/($ia_total_max[0]->ia1_total+$ia_total_max[0]->ia2_total))}}</td>
                         </tr>
                     @endforeach
                 </form>
@@ -144,9 +148,9 @@
 
     $(document).ready(function(){
         $(document).on("change", ".marksInputField", debounce(function(e){
-            var iaQMax = e.target.getAttribute("max");
+            var iaQMax = parseInt(e.target.getAttribute("max"));
             var stuId = e.target.getAttribute("name");
-            var stdVal = e.target.value > iaQMax ? iaQMax : e.target.value;
+            var stdVal = (e.target.value > iaQMax ? iaQMax : e.target.value);
             var stuGroupKey = e.target.getAttribute("id");
             $.ajax({
                 url: "{{route('updateIaMarks')}}",
@@ -169,7 +173,6 @@
                         setTimeout(() => {
                             document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
                         }, 2000); 
-                        console.log(res);
                         var parsedRes = res.split("+");
                         var ia1_total = parseInt(parsedRes[0]);
                         var ia2_total = parseInt(parsedRes[1]);
@@ -181,7 +184,7 @@
                     }
                 }
             });
-        }, 300));
+        }, 200));
     });
 </script>
 @endsection

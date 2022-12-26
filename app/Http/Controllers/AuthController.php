@@ -55,33 +55,35 @@ class AuthController extends Controller
 
     // init Co tables entry
         // table common for oral, endsem, assigns
+        $all_co_arr = json_encode(array(1,2,3,4,5,6));
+        $first_co_arr = json_encode(array());
         $co_group3s = new CO_Oral_Endsem_Assign();
-        $co_group3s->oral_co = "[1,2,3,4,5,6]";
-        $co_group3s->endsem_co = "[1,2,3,4,5,6]";
-        $co_group3s->assign1_co = "[1]";
-        $co_group3s->assign2_co = "[1]";
+        $co_group3s->oral_co = $all_co_arr;
+        $co_group3s->endsem_co = $all_co_arr;
+        $co_group3s->assign1_co = $all_co_arr;
+        $co_group3s->assign2_co = $all_co_arr;
         $co_group3s->user_id = $last_tuple['user_id'];
         $co_group3s->save();
 
         //table for ias
         $co_ia_tuple = new CO_IA();
-        $co_ia_tuple->CO1 = "[1]";
-        $co_ia_tuple->CO2 = "[1]";
-        $co_ia_tuple->CO3 = "[1]";
-        $co_ia_tuple->CO4 = "[1]";
-        $co_ia_tuple->CO5 = "[1]";
-        $co_ia_tuple->CO6 = "[1]";
+        $co_ia_tuple->CO1 = $first_co_arr;
+        $co_ia_tuple->CO2 = $first_co_arr;
+        $co_ia_tuple->CO3 = $first_co_arr;
+        $co_ia_tuple->CO4 = $first_co_arr;
+        $co_ia_tuple->CO5 = $first_co_arr;
+        $co_ia_tuple->CO6 = $first_co_arr;
         $co_ia_tuple->user_id = $last_tuple['user_id'];
         $co_ia_tuple->save();
 
         //table for experiments
         $co_expt_tuple = new CO_Expt();
-        $co_expt_tuple->CO1 = "[1]";
-        $co_expt_tuple->CO2 = "[1]";
-        $co_expt_tuple->CO3 = "[1]";
-        $co_expt_tuple->CO4 = "[1]";
-        $co_expt_tuple->CO5 = "[1]";
-        $co_expt_tuple->CO6 = "[1]";
+        $co_expt_tuple->CO1 = $first_co_arr;
+        $co_expt_tuple->CO2 = $first_co_arr;
+        $co_expt_tuple->CO3 = $first_co_arr;
+        $co_expt_tuple->CO4 = $first_co_arr;
+        $co_expt_tuple->CO5 = $first_co_arr;
+        $co_expt_tuple->CO6 = $first_co_arr;
         $co_expt_tuple->user_id = $last_tuple['user_id'];
         $co_expt_tuple->save();
 

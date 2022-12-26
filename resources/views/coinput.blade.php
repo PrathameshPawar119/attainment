@@ -121,8 +121,11 @@
     </style>
     @php
         $parameters = array("CO1", "CO2", "CO3", "CO4", "CO5", "CO6");
-        $IaParameters = array("IA1-Q1", "IA1-Q2", "IA1-Q3", "IA1-Q4", "IA2-Q1", "IA2-Q2", "IA2-Q3", "IA2-Q4");
+        $IaParameters = array("IA1Q1", "IA1Q2", "IA1Q3", "IA1Q4", "IA2Q1", "IA2Q2", "IA2Q3", "IA2Q4");
         $ExpParameters = array("EXP-1", "EXP-2", "EXP-3", "EXP-4", "EXP-5", "EXP-6", "EXP-7", "EXP-8", "EXP-9", "EXP-10", "EXP-11", "EXP-12");
+        for ($i=1; $i <=6 ; $i++) { 
+            echo `<script>console.log($selected_checks_ia[]);</script>`;
+        }
     @endphp
     <div class="container">
         <div class="tabLine">
@@ -157,7 +160,7 @@
                             <div class="SelectBox" style="width:110px; max-height:90px; overflow-y:scroll; padding:4px;">
                                 @for($i = 0; $i < 6; $i++)
                                     <div class="checkBoxRow form-check">
-                                        <input type="checkbox" name="oral_checkbox" sheet="oral" column="oral" co="CO{{$i}}" id="{{$parameters[$i]}}-oral" class="form-check-input">
+                                        <input type="checkbox" name="oral_checkbox" sheet="oral" column="oral_co" co="{{$i+1}}" id="{{$parameters[$i]}}-oral" class="form-check-input">
                                         <label for="{{$parameters[$i]}}-oral" class="form-check-label">{{$parameters[$i]}}</label>
                                     </div>
                                 @endfor
@@ -168,7 +171,7 @@
                             <div class="SelectBox" style="width:110px; max-height:90px; overflow-y:scroll; padding:4px;">
                                 @for($i = 0; $i < 6; $i++)
                                     <div class="checkBoxRow form-check">
-                                        <input type="checkbox" name="endsem_checkbox" sheet="endsem" column="endsem" co="{{$parameters[$i]}}" id="{{$parameters[$i]}}-endsem" class="form-check-input">
+                                        <input type="checkbox" name="endsem_checkbox" sheet="endsem" column="endsem_co" co="{{$i+1}}" id="{{$parameters[$i]}}-endsem" class="form-check-input">
                                         <label for="{{$parameters[$i]}}-endsem" class="form-check-label">{{$parameters[$i]}}</label>
                                     </div>
                                 @endfor
@@ -182,7 +185,7 @@
                             <div class="SelectBox" style="width:110px; max-height:90px; overflow-y:scroll; padding:4px;">
                                 @for($i = 0; $i < 6; $i++)
                                     <div class="checkBoxRow form-check">
-                                        <input type="checkbox" name="assign1_checkbox" sheet="assign" column="a1" co="{{$parameters[$i]}}" id="{{$parameters[$i]}}-assign1" class="form-check-input">
+                                        <input type="checkbox" name="assign1_checkbox" sheet="assign" column="assign1_co" co="{{$i+1}}" id="{{$parameters[$i]}}-assign1" class="form-check-input">
                                         <label for="{{$parameters[$i]}}-assign1" class="form-check-label">{{$parameters[$i]}}</label>
                                     </div>
                                 @endfor
@@ -193,7 +196,7 @@
                             <div class="SelectBox" style="width:110px; max-height:90px; overflow-y:scroll; padding:4px;">
                                 @for($i = 0; $i < 6; $i++)
                                     <div class="checkBoxRow form-check">
-                                        <input type="checkbox" name="assign2_checkbox" sheet="assign" column="a2" co="{{$parameters[$i]}}" id="{{$parameters[$i]}}-assign2" class="form-check-input">
+                                        <input type="checkbox" name="assign2_checkbox" sheet="assign" column="assign2_co" co="{{$i+1}}" id="{{$parameters[$i]}}-assign2" class="form-check-input">
                                         <label for="{{$parameters[$i]}}-assign2" class="form-check-label">{{$parameters[$i]}}</label>
                                     </div>
                                 @endfor
@@ -211,8 +214,8 @@
                                     <div class="SelectBox" style="width:110px; max-height:90px; overflow-y:scroll; padding:4px;">
                                         @for($j = 0; $j < 8; $j++)
                                             <div class="checkBoxRow form-check">
-                                                <input type="checkbox" name="IA_CO{{$i}}_checkbox" sheet="IA" column="{{strtolower($IaParameters[$j])}}" co="CO{{$i}}" id="{{$IaParameters[$j]}}-ia-{{$i}}-{{$j+1}}" class="form-check-input">
-                                                <label for="{{$IaParameters[$j]}}-ia-{{$i}}-{{$j+1}}" class="form-check-label">{{$IaParameters[$j]}}</label>
+                                                <input type="checkbox" name="IA_CO{{$i}}_checkbox" sheet="co_ia" column="{{strtolower($IaParameters[$j])}}" co="CO{{$i}}" id="{{$IaParameters[$j]}}-ia-{{$i}}" class="form-check-input">
+                                                <label for="{{$IaParameters[$j]}}-ia-{{$i}}" class="form-check-label">{{$IaParameters[$j]}}</label>
                                             </div>
                                         @endfor
                                     </div>                                  
@@ -229,8 +232,8 @@
                                     <div class="SelectBox" style="width:110px; max-height:90px; overflow-y:scroll; padding:4px;">
                                         @for($j = 0; $j < 12; $j++)
                                             <div class="checkBoxRow form-check">
-                                                <input type="checkbox" name="Expt_CO{{$i}}_checkbox" sheet="Expt" column="e{{$j+1}}" co="CO{{$i}}" id="{{$ExpParameters[$j]}}-expt-{{$i}}-{{$j+1}}" class="form-check-input">
-                                                <label for="{{$ExpParameters[$j]}}-expt-{{$i}}-{{$j+1}}" class="form-check-label">{{$ExpParameters[$j]}}</label>
+                                                <input type="checkbox" name="Expt_CO{{$i}}_checkbox" sheet="co_expt" column="e{{$j+1}}" co="CO{{$i}}" id="{{$ExpParameters[$j]}}-expt-{{$i}}" class="form-check-input">
+                                                <label for="{{$ExpParameters[$j]}}-expt-{{$i}}" class="form-check-label">{{$ExpParameters[$j]}}</label>
                                             </div>
                                         @endfor
                                     </div>                                  
@@ -245,17 +248,63 @@
         var group = document.getElementsByClassName("form-check-input");
         Array.from(group).forEach(element => {
             (element).addEventListener("change", ()=>{
-                if (element.checked) {
-                    var sheet = element.getAttribute("sheet");
-                    var column = element.getAttribute("column").replace("-", "");
-                    var coInput= element.getAttribute("co").replace("CO", "");
-                    console.log(sheet,column,  coInput);
+                var status = element.checked;
+                var sheet = element.getAttribute("sheet");
+                var column = element.getAttribute("column");
+                var coInput= element.getAttribute("co");
 
+                if (sheet == "oral" || sheet == "endsem" || sheet == "assign") {
+                    $.ajax({
+                        url: "{{route('updateCoInputCheck1')}}",
+                        type: "POST",
+                        data:{
+                            '_token':"{{csrf_token()}}",
+                            'column' : column,
+                            'coInput':coInput,
+                            'status':status
+                        },
+                        success: (res)=>{
+                            // res = JSON.parse(res);
+                            // for (let i = 0; i < res.length; i++) {
+                            //     const element = res[i];
+                            // } 
+                            var current_element = document.getElementById(`CO${coInput}-${column.split("_")[0]}`);
+                            if(res == true){
+                                current_element.style.backgroundColor = "violet";
+                                current_element.checked = true;
+                            }
+                            else{
+                                current_element.style.backgroundColor = "red";
+                                current_element.checked = false;
+                            }
+                        }
+                    })                                                                                                                                                                                   
+                }
+                else if (sheet == 'co_ia' || sheet == 'co_expt'){
+                    $.ajax({
+                        url : "{{route('updateCoInputCheck2')}}",
+                        type:"POST",
+                        data:{
+                            '_token':"{{csrf_token()}}",
+                            'sheet' : sheet,
+                            'column' : column,
+                            'coInput':coInput,
+                            'status':status
+                        },
+                        success: (res)=>{
+                            if(res != 0){
+                                element.style.backgroundColor = "violet";
+                                element.checked = true;
+                            }
+                            else{
+                                element.style.backgroundColor = "red";
+                                element.checked = false;
+                            }
+                        }
+                    })
+              
                 }
             });
-        });
-        $(document).ready(function(){
-  
         });
     </script>
 @endsection

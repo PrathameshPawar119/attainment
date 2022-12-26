@@ -13,6 +13,9 @@
         margin: 0; 
     }
 </style>
+@php
+    $exp_total_max[0]->exp_total = ($exp_total_max[0]->exp_total == 0 ? 1:$exp_total_max[0]->exp_total);
+@endphp
 <div class="iaPage container">
     <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
         <form action="{{('/sheets/ia')}}" method="get" style="display: inline-block;">

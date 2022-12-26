@@ -9,6 +9,9 @@ use App\Models\AssignmentModel;
 use App\Models\ExperimentModel;
 use App\Models\IaModel;
 use App\Models\CriteriaModel;
+use App\Models\CO_Oral_Endsem_Assign;
+use App\Models\CO_IA;
+use App\Models\CO_Expt;
 
 class UpdateMarksController extends Controller
 {
@@ -22,7 +25,6 @@ class UpdateMarksController extends Controller
     public function updateOralMarks(Request $req){   
 
         $student = OralModel::join('student_details', 'student_details.id', 'oral.id')
-                        ->select('student_id', 'oral_marks')
                         ->where('student_id', '=', $req['id'])
                         ->where('user_key', '=', session()->get('user_id'))
                         ->update(['oral_marks'=>$req['value']]);
@@ -36,7 +38,6 @@ class UpdateMarksController extends Controller
 
     public function updateEndsemMarks(Request $req){
         $student = EndsemModel::join('student_details', 'student_details.id', 'endsem.id')
-                        ->select('student_id', 'endsem_marks')
                         ->where("student_id", "=", $req['id'])
                         ->where("user_key", "=", session()->get('user_id'))
                         ->update(['endsem_marks'=>$req['value']]);
@@ -50,7 +51,6 @@ class UpdateMarksController extends Controller
 
     public function updateAssignmentMarks(Request $req){
         $student = AssignmentModel::join('student_details', 'student_details.id', 'assignments.id')
-                        ->select('student_id', $req['column_name'])
                         ->where("student_id", "=", $req['id'])
                         ->where("user_key", "=", session()->get('user_id'))
                         ->update([$req['column_name']=>$req['value']]);
@@ -74,7 +74,6 @@ class UpdateMarksController extends Controller
     
     public function updateIaMarks(Request $req){
         $student = IaModel::join('student_details', 'student_details.id', 'ia.id')
-                        ->select('student_id', $req['column_name'])
                         ->where("student_id", "=", $req['id'])
                         ->where("user_key", "=", session()->get('user_id'))
                         ->update([$req['column_name']=>$req['value']]);
@@ -98,7 +97,6 @@ class UpdateMarksController extends Controller
     
     public function updateExperimentMarks(Request $req){
         $student = ExperimentModel::join('student_details', 'student_details.id', 'experiments.id')
-                        ->select('student_id', $req['column_name'])
                         ->where("student_id", "=", $req['id'])
                         ->where("user_key", "=", session()->get('user_id'))
                         ->update([$req['column_name']=>$req['value']]);
@@ -119,7 +117,6 @@ class UpdateMarksController extends Controller
 
     public function updateCriteriaMarks(Request $req){
         $student = CriteriaModel::join('signup_details', 'signup_details.user_id', 'criteria.user_id')
-                        ->select('criteria.user_id', $req['column'])
                         ->where("criteria.user_id", "=", session()->get('user_id'))
                         ->update([$req['column']=>$req['value']]);
         $ex = CriteriaModel::join('signup_details', 'signup_details.user_id', 'criteria.user_id')
@@ -133,5 +130,92 @@ class UpdateMarksController extends Controller
         else{
             echo "0";
         }
+    }
+
+    // function to update Cos for oral, endsem and assignments (as they have same input style)
+    public function updateCoInputCheck1(Request $req){
+        $co_tuple = CO_Oral_Endsem_Assign::join("signup_details", "signup_details.user_id", "co_oral_endsem_assign.user_id")
+                        ->select($req['column'])
+                        ->where("co_oral_endsem_assign.user_id", "=", session()->get('user_id'))
+                        ->first();
+
+        $previous_co_arr = json_decode($co_tuple[$req['column']]);
+        $current_co = (int)$req['coInput'];
+        
+        // decide remove or add according to checked status
+        if($req['status'] == "true"){
+            array_unshift($previous_co_arr, $current_co);
+        }
+        else{
+            foreach(array_keys($previous_co_arr, $current_co) as $key){
+                unset($previous_co_arr[$key]);
+            }
+        }
+        //  removing duplicates and sorting
+        $tempArr = array_unique($previous_co_arr);
+        sort($tempArr);
+        $tempArr = json_encode($tempArr);
+
+        $co_tuple_update = CO_Oral_Endsem_Assign::join("signup_details", "signup_details.user_id", "co_oral_endsem_assign.user_id")
+                ->where("co_oral_endsem_assign.user_id", "=", session()->get('user_id'))
+                ->update([$req['column']=>$tempArr]);
+        if ($co_tuple_update) {
+            echo true;
+        }
+        else{
+            echo 0;
+        }
+    }
+
+    // update cos for sheets - ia and expt
+    public function updateCoInputCheck2(Request $req){
+        if ($req['sheet'] == 'co_ia') {
+        $co_tuple = CO_IA::join("signup_details", "signup_details.user_id", "co_ia.user_id")
+                        ->select($req['coInput'])
+                        ->where("co_ia.user_id", "=", session()->get('user_id'))
+                        ->first();        }
+        else if($req['sheet'] == 'co_expt'){
+            $co_tuple = CO_Expt::join("signup_details", "signup_details.user_id", "co_expt.user_id")
+                    ->select($req['coInput'])
+                    ->where("co_expt.user_id", "=", session()->get('user_id'))
+                    ->first();
+        }
+
+        $previous_co_arr = json_decode($co_tuple[$req['coInput']]);
+        $current_co = $req['column'];
+
+        // decide remove or add according to checked status
+        if($req['status'] == "true"){
+            array_unshift($previous_co_arr, $current_co);
+        }
+        else{
+            foreach(array_keys($previous_co_arr, $current_co) as $key){
+                unset($previous_co_arr[$key]);
+            }
+        }
+        //  removing duplicates and sorting
+        $tempArr = array_unique($previous_co_arr);
+        sort($tempArr);
+        $tempArr = json_encode($tempArr);
+        if($req['sheet'] == 'co_ia'){
+            $co_tuple_update = CO_IA::join("signup_details", "signup_details.user_id", "co_ia.user_id")
+            ->where("co_ia.user_id", "=", session()->get('user_id'))
+            ->update([$req['coInput']=>$tempArr]);
+        }
+        else if($req['sheet'] == 'co_expt'){
+            $co_tuple_update = CO_Expt::join("signup_details", "signup_details.user_id", "co_expt.user_id")
+            ->where("co_expt.user_id", "=", session()->get('user_id'))
+            ->update([$req['coInput']=>$tempArr]);
+        }
+        if($co_tuple_update){
+            echo $tempArr;
+        }
+        else{
+            echo 0;
+        }
+
+
+
+
     }
 }

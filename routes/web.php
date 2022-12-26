@@ -57,4 +57,6 @@ Route::group(["prefix"=>"/user", "middleware"=>"loginRedirect"], function(){
     Route::get("criteriaInput", [SheetsController::class, "criteriaInput"]);
     Route::post("updateCriteriaMarks", [UpdateMarksController::class, "updateCriteriaMarks"])->middleware("RefineNullInputMware")->name("updateCriteriaMarks");
     Route::get("coinput", [SheetsController::class, "coInput"]);
+    Route::post("updateCoInputCheck1", [updateMarksController::class, "updateCoInputCheck1"])->name("updateCoInputCheck1");
+    Route::post("updateCoInputCheck2", [UpdateMarksController::class, "updateCoInputCheck2"])->name("updateCoInputCheck2");
 });

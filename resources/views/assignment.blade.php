@@ -13,6 +13,9 @@
         margin: 0; 
     }
 </style>
+@php
+  $assign_total_max[0]->assign_total =   ($assign_total_max[0]->assign_total == 0 ? 1: $assign_total_max[0]->assign_total);
+@endphp
 <div class="assignmentPage container">
     <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
         <form action="{{('/sheets/assignment')}}" method="get" style="display: inline-block;">
@@ -92,7 +95,7 @@
                             </td>
                             <td class="mainColumn2" style="background-color: aliceblue; cursor: pointer;" id="{{$student->student_id}}+a2">{{$student->a2}}</td>
                             <td id="{{$student->student_id}}+a1a2">{{$student->a1+$student->a2}}</td>
-                            <td id="{{$student->student_id}}+avg+a1a2">{{round((($student->a1+$student->a2)*5)/($assign_total_max[0]->assign_total*2))}}</td>
+                            <td id="{{$student->student_id}}+avg+a1a2">{{round((($student->a1+$student->a2)*5)/(($assign_total_max[0]->assign_total*2)))}}</td>
                         </tr>
                     @endforeach
                 </form>
@@ -166,7 +169,7 @@
                         document.getElementById(`${stuId.split("+")[0]}+a1`).innerHTML = a1_total;
                         document.getElementById(`${stuId.split("+")[0]}+a2`).innerHTML= a2_total;
                         document.getElementById(`${stuId.split("+")[0]}+a1a2`).innerHTML = a1_total+a2_total;
-                        document.getElementById(`${stuId.split("+")[0]}+avg+a1a2`).innerHTML = (((a1_total+a2_total)*5)/assign_total).toFixed();
+                        document.getElementById(`${stuId.split("+")[0]}+avg+a1a2`).innerHTML = (((a1_total+a2_total)*5)/(assign_total*2)).toFixed();
                     }
                 }
             });
