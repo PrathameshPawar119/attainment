@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('co_expt', function (Blueprint $table) {
             $table->id('co_expt_id');
-            $table->string("CO1", 50)->nullable();
-            $table->string("CO2", 50)->nullable();
-            $table->string("CO3", 50)->nullable();
-            $table->string("CO4", 50)->nullable();
-            $table->string("CO5", 50)->nullable();
-            $table->string("CO6", 50)->nullable();
+            $table->string("CO1", 100)->nullable();
+            $table->string("CO2", 100)->nullable();
+            $table->string("CO3", 100)->nullable();
+            $table->string("CO4", 100)->nullable();
+            $table->string("CO5", 100)->nullable();
+            $table->string("CO6", 100)->nullable();
             $table->bigInteger("user_id")->unsigned();
             $table->foreign("user_id")->references("user_id")->on("signup_details");
             $table->timestamps();

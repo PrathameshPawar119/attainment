@@ -152,10 +152,16 @@ class SheetsController extends Controller
     }
 
     public function coInput(){
+        return view("coinput");
+    }
+
+    public function sendPreviousChecksRecords(){
         $selected_checks_ia = CO_IA::select("CO1", "CO2", "CO3", "CO4", "CO5", "CO6")->where("user_id", "=", session()->get("user_id"))->first();
         $selected_checks_expt = CO_Expt::select("CO1", "CO2", "CO3", "CO4", "CO5", "CO6")->where("user_id", "=", session()->get("user_id"))->first();
         $selected_checks_others = CO_Oral_Endsem_Assign::select("oral_co", "endsem_co", "assign1_co", "assign2_co")->where("user_id", "=", session()->get("user_id"))->first();
 
-        return view("coinput", compact('selected_checks_ia', 'selected_checks_expt', 'selected_checks_others'));
+        $final_cos = array("selected_checks_ia"=>$selected_checks_ia, "selected_checks_expt"=> $selected_checks_expt,"selected_checks_others"=> $selected_checks_others);
+        $final_cos = json_encode($final_cos);
+        echo ($final_cos);
     }
 }

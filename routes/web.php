@@ -59,4 +59,5 @@ Route::group(["prefix"=>"/user", "middleware"=>"loginRedirect"], function(){
     Route::get("coinput", [SheetsController::class, "coInput"]);
     Route::post("updateCoInputCheck1", [updateMarksController::class, "updateCoInputCheck1"])->name("updateCoInputCheck1");
     Route::post("updateCoInputCheck2", [UpdateMarksController::class, "updateCoInputCheck2"])->name("updateCoInputCheck2");
+    Route::get("sendPreviousChecksRecords", [SheetsController::class, "sendPreviousChecksRecords"])->name("sendPreviousChecksRecords");
 });
