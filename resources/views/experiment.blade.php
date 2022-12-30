@@ -18,7 +18,7 @@
 @endphp
 <div class="iaPage container">
     <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
-        <form action="{{('/sheets/ia')}}" method="get" style="display: inline-block;">
+        <form action="{{('/sheets/experiments')}}" method="get" style="display: inline-block;">
             <div class="input-group mx-1">
                 <input type="text" class="form-control" placeholder="Search name here" value="{{"$searchText"}}" name="searchForm" aria-describedby="button-addon2">
                 <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>

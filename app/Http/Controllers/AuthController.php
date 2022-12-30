@@ -9,6 +9,7 @@ use App\Models\CriteriaModel;
 use App\Models\CO_Oral_Endsem_Assign;
 use App\Models\CO_IA;
 use App\Models\CO_Expt;
+use App\Models\ThresholdModel;
 
 class AuthController extends Controller
 {
@@ -81,11 +82,22 @@ class AuthController extends Controller
         $co_expt_tuple->CO1 = $first_co_arr;
         $co_expt_tuple->CO2 = $first_co_arr;
         $co_expt_tuple->CO3 = $first_co_arr;
-        $co_expt_tuple->CO4 = $first_co_arr;
+        $co_expt_tuple->CO4 = $first_co_arr; 
         $co_expt_tuple->CO5 = $first_co_arr;
         $co_expt_tuple->CO6 = $first_co_arr;
         $co_expt_tuple->user_id = $last_tuple['user_id'];
         $co_expt_tuple->save();
+
+        //table for threshold marks
+        $th_table = new ThresholdModel();
+        $th_table->oral = 55;
+        $th_table->endsem = 42;
+        $th_table->assigns = 65;
+        $th_table->ia = 55;
+        $th_table->expt = 65;
+        $th_table->user_id = $last_tuple['user_id'];
+        $th_table->save();
+
 
         return redirect("/students/view");
     }

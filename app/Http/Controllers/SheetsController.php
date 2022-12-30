@@ -12,6 +12,7 @@ use App\Models\ExperimentModel;
 use App\Models\CO_Oral_Endsem_Assign;
 use App\Models\CO_IA;
 use App\Models\CO_Expt;
+use App\Models\ThresholdModel;
 
 class SheetsController extends Controller
 {
@@ -163,5 +164,12 @@ class SheetsController extends Controller
         $final_cos = array("selected_checks_ia"=>$selected_checks_ia, "selected_checks_expt"=> $selected_checks_expt,"selected_checks_others"=> $selected_checks_others);
         $final_cos = json_encode($final_cos);
         echo ($final_cos);
+    }
+
+    public function thresholdMarksInput(){
+        $condition_marks = ThresholdModel::select('oral', 'endsem', 'assigns', 'ia', 'expt')
+                                ->where("user_id", "=", session()->get("user_id"))
+                                ->first();
+        return view("threshold", compact('condition_marks'));
     }
 }

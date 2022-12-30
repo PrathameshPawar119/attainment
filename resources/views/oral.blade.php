@@ -80,7 +80,7 @@
                             document.getElementById(stuGroupKey).parentNode.style.borderColor = "cyan";
                             setTimeout(() => {
                                 document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
-                            }, 2000);
+                            }, 1500);
                         }
                         else{
                             console.log(res);

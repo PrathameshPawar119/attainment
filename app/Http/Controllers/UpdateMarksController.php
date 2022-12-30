@@ -12,6 +12,7 @@ use App\Models\CriteriaModel;
 use App\Models\CO_Oral_Endsem_Assign;
 use App\Models\CO_IA;
 use App\Models\CO_Expt;
+use App\Models\ThresholdModel;
 
 class UpdateMarksController extends Controller
 {
@@ -55,7 +56,7 @@ class UpdateMarksController extends Controller
                         ->where("user_key", "=", session()->get('user_id'))
                         ->update([$req['column_name']=>$req['value']]);
         $assign_record = AssignmentModel::join('student_details', 'student_details.id', 'assignments.id')
-                ->select('student_details.student_id','assignments.a1', 'assignments.a2')
+                ->select('assignments.a1', 'assignments.a2')
                 ->where("student_id", "=", $req['id'])
                 ->where("user_key", "=", session()->get('user_id'))
                 ->get();
@@ -101,7 +102,7 @@ class UpdateMarksController extends Controller
                         ->where("user_key", "=", session()->get('user_id'))
                         ->update([$req['column_name']=>$req['value']]);
         $ex = ExperimentModel::join('student_details', 'student_details.id', 'experiments.id')
-                ->select('student_details.student_id','experiments.e1', 'experiments.e2', 'experiments.e3', 'experiments.e4', 'experiments.e5', 'experiments.e6', 'experiments.e7', 'experiments.e8', 'experiments.e9', 'experiments.e10', 'experiments.e11', 'experiments.e12')
+                ->select('experiments.e1', 'experiments.e2', 'experiments.e3', 'experiments.e4', 'experiments.e5', 'experiments.e6', 'experiments.e7', 'experiments.e8', 'experiments.e9', 'experiments.e10', 'experiments.e11', 'experiments.e12')
                 ->where("student_id", "=", $req['id'])
                 ->where("user_key", "=", session()->get('user_id'))
                 ->get();
@@ -120,7 +121,7 @@ class UpdateMarksController extends Controller
                         ->where("criteria.user_id", "=", session()->get('user_id'))
                         ->update([$req['column']=>$req['value']]);
         $ex = CriteriaModel::join('signup_details', 'signup_details.user_id', 'criteria.user_id')
-                    ->select('criteria.user_id', 'criteria.oral_total', 'criteria.endsem_total', 'criteria.assign_total', 'criteria.ia1_total', 'criteria.ia2_total', 'criteria.exp_total')
+                    ->select('criteria.assign_total', 'criteria.ia1_total', 'criteria.ia2_total', 'criteria.exp_total')
                     ->where("criteria.user_id", "=", session()->get('user_id'))
                     ->get();
 
@@ -213,9 +214,19 @@ class UpdateMarksController extends Controller
         else{
             echo 0;
         }
-
-
-
-
     }
+
+    public function updateThresholdCriteria(Request $req){
+        $updateThMarks = ThresholdModel::where("user_id", "=", session()->get("user_id"))
+                            ->update([$req['column']=>$req['value']]);
+        if($updateThMarks){
+            echo 1;
+        }
+        else{
+            echo 0;
+        }
+        
+    }
+
+
 }

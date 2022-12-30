@@ -22,6 +22,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            color: black;
+            text-align: center;
+            text-decoration: none;
         }
         .tabs:hover{
             padding: 8px;
@@ -85,27 +88,33 @@
     </style>
     <div class="container">
         <div class="tabLine">
-            <div class="tabs">
-                <img src="{{URL::to('/')}}/images/testing.png" alt="">
-                <h5>Total Marks</h5>
-                <p>Mandantory Before filling Sheets*</p>
-            </div>
+            <a href="#" class="tabs">
+                <div  id="criteriaInputBox">
+                    <img src="{{URL::to('/')}}/images/testing.png" alt="">
+                    <h5>Total Marks</h5>
+                    <p>Mandantory Before filling Sheets*</p>
+                </div>
+            </a>
             <div class="lineBox">
                 <div class="lineHere1"></div>
                 <div class="lineHere2"></div>
             </div>
-            <div class="tabs">
-                <img src="{{URL::to('/')}}/images/sharing.png" alt="">
-                <h4>Select CO's</h4>
-            </div>
+            <a href="{{url('/user/coinput')}}" class="tabs">
+                <div  id="coInputBox">
+                    <img src="{{URL::to('/')}}/images/sharing.png" alt="">
+                    <h4>Select CO's</h4>
+                </div>
+            </a>
             <div class="lineBox">
                 <div class="lineHere1"></div>
                 <div class="lineHere2"></div>
             </div>
-            <div class="tabs">
-                <img src="{{URL::to('/')}}/images/testing.png" alt="">
-                <h4>Mark Criteria</h4>
-            </div>
+            <a href="{{url('/user/thresholdMarksInput')}}" class="tabs">
+                <div  id="thresholdInputBox">
+                    <img src="{{URL::to('/')}}/images/testing.png" alt="">
+                    <h4>Mark Criteria</h4>
+                </div>
+            </a>
         </div>
         <div class="inputSection" id="inputSection">
             <div class="LeftCriteriaSection">
