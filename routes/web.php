@@ -1,12 +1,11 @@
 <?php
 
+use App\Http\Controllers\AttainmentControl;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\studentController;
 use App\Http\Controllers\SheetsController;
 use App\Http\Controllers\UpdateMarksController;
-use App\Models\IaModel;
-use Spatie\LaravelIgnition\Http\Controllers\UpdateConfigController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,4 +61,9 @@ Route::group(["prefix"=>"/user", "middleware"=>"loginRedirect"], function(){
     Route::post("updateCoInputCheck2", [UpdateMarksController::class, "updateCoInputCheck2"])->name("updateCoInputCheck2");
     Route::get("sendPreviousChecksRecords", [SheetsController::class, "sendPreviousChecksRecords"])->name("sendPreviousChecksRecords");
     Route::post("updateThresholdCriteria", [UpdateMarksController::class, "updateThresholdCriteria"])->name("updateThresholdCriteria");
+});
+
+Route::group(["prefix"=>"/attainment", "middleware"=>"loginRedirect"], function(){
+    Route::get("oral", [AttainmentControl::class, "OralAttainment"]);
+    Route::get("endsem", [AttainmentControl::class, "EndsemAttainment"]);
 });
