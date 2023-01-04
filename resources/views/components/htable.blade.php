@@ -4,6 +4,7 @@
             border: 9px transparent;
             background:linear-gradient(to right, rgb(248, 234, 248), rgb(226, 233, 247));
             text-align: center;
+            border-radius: 8px;
         }
         table tbody tr{
             border-bottom: 1px;
@@ -12,6 +13,7 @@
         }
         table tbody tr td{
             background:linear-gradient(to right, rgb(244, 217, 244), rgb(207, 218, 241));
+            border-radius: 8px;
         }
     </style>
     @php
