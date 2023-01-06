@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AssignmentModel;
 use App\Models\CO_IA;
 use App\Models\CO_Oral_Endsem_Assign;
+use App\Models\Co_Total_Ia;
 use Illuminate\Http\Request;
 use App\Models\ThresholdModel;
 use App\Models\CriteriaModel;
@@ -36,13 +37,25 @@ class AttainmentControl extends Controller
         }
         return $output_arr;
     }
+
+    function arrayBank($arr){
+
+    }
+
     public function IaTotalPerCO($arr){
-        for($i=1; $i<=6; $i++){
-            $co_arr = json_decode($arr[$i]["CO$i"]);
-            // foreach ($co_arr as $key => $Ques) {
-                
-            // }
+        $output_arr = array();
+        for($i=0; $i<6; $i++){
+            $j = $i+1;
+            $co_arr = json_decode($arr[$i]["CO$j"]);
+            $update_co_column = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
+                                    ->join("ia", "ia.id", "co_total_ia.id")
+                                    ->select("co_total_ia_id", (current($co_arr) ?current($co_arr) :'ia1') , (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'))
+                                    ->where("user_key", "=", session()->get("user_id"))
+                                    ->where("student_details.deleted_at", "=", null)->get();
+            array_push($output_arr, $update_co_column);
         }
+        return $output_arr;
+
     }
 
     public function OralAttainment(Request $req){
@@ -116,9 +129,10 @@ class AttainmentControl extends Controller
         // I got CriteriaMarks, IA1TotalMarks, Ia2TotalMarks, totalStudents & criteriaFromTotalMarks fro both IAs
 
         $cos = $this->IaQuestionsPerCo();
+        $updateCOs = $this->IaTotalPerCO($cos);
 
 
-        return view('attainment.ia', compact('cos'));
+        return view('attainment.ia', compact('updateCOs'));
 
     }
 }

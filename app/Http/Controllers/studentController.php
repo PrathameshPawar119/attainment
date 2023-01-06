@@ -7,6 +7,8 @@ use App\Models\StudentDetails;
 use App\Models\OralModel;
 use App\Models\EndsemModel;
 use App\Models\AssignmentModel;
+use App\Models\Co_Total_Expt;
+use App\Models\Co_Total_Ia;
 use App\Models\IaModel;
 use App\Models\ExperimentModel;
 
@@ -88,47 +90,20 @@ class studentController extends Controller
 
         // init experiments entry
             $expt_tuple = new ExperimentModel();
-            $expt_tuple->e1r1 = 0;
-            $expt_tuple->e1r2 = 0;
-            $expt_tuple->e1r3 = 0;
-            $expt_tuple->e2r1 = 0;
-            $expt_tuple->e2r2 = 0;
-            $expt_tuple->e2r3 = 0;
-            $expt_tuple->e3r1 = 0;
-            $expt_tuple->e3r2 = 0;
-            $expt_tuple->e3r3 = 0;
-            $expt_tuple->e4r1 = 0;
-            $expt_tuple->e4r2 = 0;
-            $expt_tuple->e4r3 = 0;
-            $expt_tuple->e5r1 = 0;
-            $expt_tuple->e5r2 = 0;
-            $expt_tuple->e5r3 = 0;
-            $expt_tuple->e6r1 = 0;
-            $expt_tuple->e6r2 = 0;
-            $expt_tuple->e6r3 = 0;
-            $expt_tuple->e7r1 = 0;
-            $expt_tuple->e7r2 = 0;
-            $expt_tuple->e7r3 = 0;
-            $expt_tuple->e8r1 = 0;
-            $expt_tuple->e8r2 = 0;
-            $expt_tuple->e8r3 = 0;
-            $expt_tuple->e9r1 = 0;
-            $expt_tuple->e9r2 = 0;
-            $expt_tuple->e9r3 = 0;
-            $expt_tuple->e10r1 = 0;
-            $expt_tuple->e10r2 = 0;
-            $expt_tuple->e10r3 = 0;
-            $expt_tuple->e11r1 = 0;
-            $expt_tuple->e11r2 = 0;
-            $expt_tuple->e11r3 = 0;
-            $expt_tuple->e12r1 = 0;
-            $expt_tuple->e12r2 = 0;
-            $expt_tuple->e12r3 = 0;
             $expt_tuple->id = $last_tuple['id'];
             $expt_tuple->save();
 
-            
+        // init co_total_ia table
+            $co_ia_tuple = new Co_Total_Ia();
+            $co_ia_tuple->id = $last_tuple['id'];
+            $co_ia_tuple->save();
+        // init co_total_expt_ table
+            $co_expt_table = new Co_Total_Expt();
+            $co_expt_table->id =  $last_tuple['id'];
+            $co_expt_table->save();
+
             return redirect()->back();
+            
         }
         else{
             //flashing duplicate error to students view 
@@ -172,6 +147,8 @@ class studentController extends Controller
         $assign_record = AssignmentModel::where("id", "=", $id)->delete();
         $ia_record = IaModel::where("id", "=", $id)->delete();
         $expt_record = ExperimentModel::where("id", "=", $id)->delete();
+        $co_ia_record = Co_Total_Ia::where("id", "=", $id)->delete();
+        $co_expt_record = Co_Total_Expt::where("id", "=", $id)->delete();
         
         $student = StudentDetails::onlyTrashed()->find($id);
         if (!is_null($student)) {

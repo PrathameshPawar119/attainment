@@ -30,4 +30,3 @@ if (!function_exists('getCriteiaTotalMarks')) {
         return $ex;
     }
 }
-

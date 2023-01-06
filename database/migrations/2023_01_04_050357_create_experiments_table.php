@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('experiments', function (Blueprint $table) {
             $table->id('experiments_id');
             for ($i=1; $i <= 12; $i++) { 
-                $table->integer('e'.$i.'r1');
-                $table->integer('e'.$i.'r2');
-                $table->integer('e'.$i.'r3');
+                $table->integer('e'.$i.'r1')->default(0);
+                $table->integer('e'.$i.'r2')->default(0);
+                $table->integer('e'.$i.'r3')->default(0);
                 $table->integer('e'.$i)->virtualAs('e'.$i.'r1 + e'.$i.'r2 + e'.$i.'r3')->nullable();
             }
             $table->bigInteger('id')->unsigned();

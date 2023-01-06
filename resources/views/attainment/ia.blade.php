@@ -37,10 +37,14 @@
         <h4><center>IA Attainment</center></h4>
         @php
             echo "<pre>";
-            print_r($cos[0]["CO1"]);
-            // foreach ($cos[0]->CO1 as $key => $value) {
-            //     echo $value;
-            // }
+            // print_r(count($updateCOs));
+            // print_r(count($updateCOs[1]));
+            foreach ($updateCOs as $key => $QuestionsPerCo) {
+                // 6 COS Questions
+                foreach ($QuestionsPerCo as $key => $value) {
+                    array($value);
+                }
+            }
         @endphp
         {{-- <table class="table table-hover my-4 mx-4">
             <tbody>
