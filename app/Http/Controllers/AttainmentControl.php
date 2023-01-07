@@ -11,7 +11,6 @@ use App\Models\ThresholdModel;
 use App\Models\CriteriaModel;
 use App\Models\EndsemModel;
 use App\Models\OralModel;
-use App\Models\StudentDetails;
 
 class AttainmentControl extends Controller
 {
@@ -38,10 +37,7 @@ class AttainmentControl extends Controller
         return $output_arr;
     }
 
-    function arrayBank($arr){
-
-    }
-
+// 2 functions for IA total attainment
     public function IaTotalPerCO($arr){
         $output_arr = array();
         for($i=0; $i<6; $i++){
@@ -49,13 +45,31 @@ class AttainmentControl extends Controller
             $co_arr = json_decode($arr[$i]["CO$j"]);
             $update_co_column = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
                                     ->join("ia", "ia.id", "co_total_ia.id")
-                                    ->select("co_total_ia_id", (current($co_arr) ?current($co_arr) :'ia1') , (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'))
+                                    ->select("co_total_ia_id", (current($co_arr) ?current($co_arr) :'ia1') , (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'))
                                     ->where("user_key", "=", session()->get("user_id"))
                                     ->where("student_details.deleted_at", "=", null)->get();
             array_push($output_arr, $update_co_column);
         }
         return $output_arr;
 
+    }
+
+    public function UpdateIaCoTotalTable($updateCOs, $cos){
+        foreach ($updateCOs as $key=>$QuestionsPerCo) {
+            // 6 COS Questions
+            $current_co = "CO".$key+1;
+            // current questions in that co to traverse object directly
+            $current_qs_arr = json_decode($cos[$key][$current_co]);
+            foreach ($QuestionsPerCo as $value1) {
+                $a = (json_decode($value1)); // set of marks for each student
+                $ia_mark_sum = 0;
+                foreach ($current_qs_arr as $key => $value) {
+                    $ia_mark_sum = $ia_mark_sum + $a->$value;
+                }
+                $update_co_column_query = Co_Total_Ia::where("co_total_ia_id", "=", $a->co_total_ia_id)
+                                            ->update([$current_co=>$ia_mark_sum]);
+            }
+        }
     }
 
     public function OralAttainment(Request $req){
@@ -123,16 +137,34 @@ class AttainmentControl extends Controller
         return view("attainment.assignment", compact('params', 'assign1_arr', 'assign2_arr'));
     }
 
+    public function GetCoTotalIaTable(){
+        // Made this saperate function, so that it can be called by ajax 
+        // so for paginate, no need to calculate and update co_total_ia again and again
+        // https://stackoverflow.com/questions/36279716/how-to-set-pagination-in-laravel-without-refreshing-the-whole-page
+        $co_total_table_details = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
+                            ->select("student_details.roll_no","student_details.student_id","student_details.name", "student_details.div", "co_total_ia.CO1", "co_total_ia.CO2", "co_total_ia.CO3", "co_total_ia.CO4", "co_total_ia.CO5", "co_total_ia.CO6" )
+                            ->where("user_key", "=", session()->get('user_id'))
+                            ->where("deleted_at", "=", null)
+                            ->orderBy('roll_no', 'ASC')->paginate(10);
+        return $co_total_table_details;
+    }
+
     public function IaAttainment(){
         $params_Ia1 = $this->getAttainmentArrPartA('ia', 'ia1_total');
         $params_Ia2 = $this->getAttainmentArrPartA('ia', 'ia2_total');
         // I got CriteriaMarks, IA1TotalMarks, Ia2TotalMarks, totalStudents & criteriaFromTotalMarks fro both IAs
 
+        //get cos --> returns array of questions ask in each co, varies per user
         $cos = $this->IaQuestionsPerCo();
+        // get iaQs marks for particular student --> returns nested array-object ending with onject cntaining, co_total_ia_id, and marks
         $updateCOs = $this->IaTotalPerCO($cos);
+        // update co_table_isa according to cos and updateCOs data of students marks
+        $finallyUpdateCOTableIA = $this->UpdateIaCoTotalTable($updateCOs, $cos);
 
+        // Function to get co_total_ia table
+        $co_total_table_details = $this->GetCoTotalIaTable();
 
-        return view('attainment.ia', compact('updateCOs'));
+        return view('attainment.ia', compact('co_total_table_details'));
 
     }
 }
