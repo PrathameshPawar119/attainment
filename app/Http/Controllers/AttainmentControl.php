@@ -20,9 +20,10 @@ class AttainmentControl extends Controller
         $totalMarks = CriteriaModel::select($criteriaColumn)->where("user_id", "=", session()->get("user_id"))->first();
         $totalStudents = $this->totalNumStd();
 
-        $criteriaFromTotalMarks = round((($totalMarks->$criteriaColumn)/100)*($markCriteria->$thresholdColumn));
+        $criteriaFromTotalMarks = round((($totalMarks->$criteriaColumn)/100)*($markCriteria->$thresholdColumn), 2);
         return array("markCriteria"=>$markCriteria, "totalMarks"=>$totalMarks,"totalStudents"=> $totalStudents,"criteriaFromTotalMarks"=> $criteriaFromTotalMarks);
     }
+
 
     public function getGroup3Cos($co_column_name){
         return CO_Oral_Endsem_Assign::select($co_column_name)->where("user_id", "=", session()->get("user_id"))->first();
@@ -72,12 +73,26 @@ class AttainmentControl extends Controller
         }
     }
 
+    public function GetAttainLevelsForIaCo($column, $params){
+        $numStdMoreThanCriteria = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
+                                    ->where("user_key", "=", session()->get("user_id"))
+                                    ->where("deleted_at", "=", null)
+                                    ->where("$column", ">=", $params['criteriaFromTotalMarks'])
+                                    ->select("student_id")
+                                    ->distinct()->count();
+        $perStdMoreThanCriteria = round(($numStdMoreThanCriteria/$params['totalStudents'])*100);
+        $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria);
+
+        return array("numStdMoreThanCriteria"=>$numStdMoreThanCriteria, "perStdMoreThanCriteria"=>$perStdMoreThanCriteria, "attain_level"=>$attain_level);
+    }
+
+
     public function OralAttainment(Request $req){
         $params = $this->getAttainmentArrPartA('oral', 'oral_total');
         $numStdMoreThanCriteria = OralModel::join("student_details", "student_details.id", "oral.id")
                                     ->where("user_key", "=", session()->get("user_id"))
                                     ->where("deleted_at", "=", null)
-                                    ->where("oral_marks", ">", $params["criteriaFromTotalMarks"])
+                                    ->where("oral_marks", ">=", $params["criteriaFromTotalMarks"])
                                     ->select("student_id")
                                     ->distinct()->count();
         
@@ -95,7 +110,7 @@ class AttainmentControl extends Controller
         $numStdMoreThanCriteria = EndsemModel::join("student_details", "student_details.id", "endsem.id")
                                     ->where("user_key", "=", session()->get("user_id"))
                                     ->where("deleted_at", "=", null)
-                                    ->where("endsem_marks", ">", $params["criteriaFromTotalMarks"])
+                                    ->where("endsem_marks", ">=", $params["criteriaFromTotalMarks"])
                                     ->select("student_id")
                                     ->distinct()->count();
         
@@ -113,13 +128,13 @@ class AttainmentControl extends Controller
         $numStdMoreThanCriteriaA1 = AssignmentModel::join("student_details", "student_details.id", "assignments.id")
                                                 ->where("user_key", "=", session()->get("user_id"))
                                                 ->where("deleted_at", "=", null)
-                                                ->where("a1", ">", $params["criteriaFromTotalMarks"])
+                                                ->where("a1", ">=", $params["criteriaFromTotalMarks"])
                                                 ->select("student_id")
                                                 ->distinct()->count(); 
         $numStdMoreThanCriteriaA2 = AssignmentModel::join("student_details", "student_details.id", "assignments.id")
                                                 ->where("user_key", "=", session()->get("user_id"))
                                                 ->where("deleted_at", "=", null)
-                                                ->where("a2", ">", $params["criteriaFromTotalMarks"])
+                                                ->where("a2", ">=", $params["criteriaFromTotalMarks"])
                                                 ->select("student_id")
                                                 ->distinct()->count(); 
         $perStdMoreThanCriteriaA1 = round(($numStdMoreThanCriteriaA1/$params["totalStudents"])*100);
@@ -150,10 +165,6 @@ class AttainmentControl extends Controller
     }
 
     public function IaAttainment(){
-        $params_Ia1 = $this->getAttainmentArrPartA('ia', 'ia1_total');
-        $params_Ia2 = $this->getAttainmentArrPartA('ia', 'ia2_total');
-        // I got CriteriaMarks, IA1TotalMarks, Ia2TotalMarks, totalStudents & criteriaFromTotalMarks fro both IAs
-
         //get cos --> returns array of questions ask in each co, varies per user
         $cos = $this->IaQuestionsPerCo();
         // get iaQs marks for particular student --> returns nested array-object ending with onject cntaining, co_total_ia_id, and marks
@@ -163,6 +174,17 @@ class AttainmentControl extends Controller
 
         // Function to get co_total_ia table
         $co_total_table_details = $this->GetCoTotalIaTable();
+
+
+        // normal getparams function will not work for this cos
+        // weh have to calculate total marks for each 6 cos
+        // access criteria table to get total marks for each question
+        //add this according to questions present in each co in table co_ia
+        // so you will get array of total marks for each co
+        // then calculate attainment params for each co and level for reach co
+
+
+        
 
         return view('attainment.ia', compact('co_total_table_details'));
 
