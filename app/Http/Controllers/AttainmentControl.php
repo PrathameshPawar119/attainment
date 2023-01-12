@@ -29,6 +29,7 @@ class AttainmentControl extends Controller
         return CO_Oral_Endsem_Assign::select($co_column_name)->where("user_id", "=", session()->get("user_id"))->first();
     }
 
+// IA questions in each co
     public function IaQuestionsPerCo(){
         $output_arr = array();
         for ($i=1; $i <= 6; $i++) { 
@@ -73,6 +74,7 @@ class AttainmentControl extends Controller
         }
     }
 
+    // Attainment Level for each co here
     public function GetAttainLevelsForIaCo($column, $params){
         $numStdMoreThanCriteria = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
                                     ->where("user_key", "=", session()->get("user_id"))
@@ -179,14 +181,21 @@ class AttainmentControl extends Controller
         // normal getparams function will not work for this cos
         // weh have to calculate total marks for each 6 cos
         // access criteria table to get total marks for each question
-        //add this according to questions present in each co in table co_ia
+        // add this according to questions present in each co in table co_ia
         // so you will get array of total marks for each co
         // then calculate attainment params for each co and level for reach co
 
+        // $all_co_params = array();
+        // for ($i=0; $i < 6; $i++) { 
+        //     $j = $i+1;
+        //     $co_params = $cos[$i]["CO$j"];
+        // }
 
-        
-
-        return view('attainment.ia', compact('co_total_table_details'));
+        // $FinalIaCoAttainments = array();
+        // foreach ($all_co_params as $key => $co_param) {
+        //     $co_attainment = $this->GetAttainLevelsForIaCo('', $co_param);
+        // }
+        // return view('attainment.ia', compact('co_total_table_details'));
 
     }
 }

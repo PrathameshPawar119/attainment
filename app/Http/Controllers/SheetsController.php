@@ -21,11 +21,21 @@ class SheetsController extends Controller
 
     }
 
+    public function getOralSheetData(){
+        $students = OralModel::join('student_details', 'student_details.id', 'oral.id')
+                                    ->select('oral_id','oral_marks', 'student_details.id', 'roll_no', 'student_id', 'name', 'div', 'gender')
+                                    ->where('user_key', '=', session()->get('user_id'))
+                                    ->where("deleted_at", "=", null)
+                                    ->orderBy('roll_no', 'ASC')
+                                    ->paginate(10);
+        return $students;
+    }
+
     public function oralSheet(Request $req){
         $searchText = $req['searchForm'] ?? ""; // can be or cannot
         if ($searchText != "") {
             $students = OralModel::join('student_details', 'student_details.id', 'oral.id')
-                                    ->select('oral.*', 'student_details.*')
+                                    ->select('oral_id','oral_marks', 'student_details.id', 'roll_no', 'student_id', 'name', 'div', 'gender')
                                     ->where('user_key', '=', session()->get('user_id'))
                                     ->where('name', 'LIKE', "%$searchText%")
                                     ->where("deleted_at", "=", null)
@@ -33,13 +43,8 @@ class SheetsController extends Controller
                                     ->paginate(10);
                                 }
         else{
-            $students = OralModel::join('student_details', 'student_details.id', 'oral.id')
-                                    ->select('oral.*', 'student_details.*')
-                                    ->where('user_key', '=', session()->get('user_id'))
-                                    ->where("deleted_at", "=", null)
-                                    ->orderBy('roll_no', 'ASC')
-                                    ->paginate(10);
-                                }
+            $students = $this->getOralSheetData();
+        }
         
         $oral_total_max = CriteriaModel::where("user_id", "=", session()->get("user_id"))->select("oral_total")->get();
         $trashBtn = "Oral/Practical Attainment";
@@ -50,7 +55,7 @@ class SheetsController extends Controller
         $searchText = $req['searchForm'] ?? "";
         if ($searchText != "") {
             $students = EndsemModel::join('student_details', 'student_details.id', 'endsem.id')
-                            ->select('endsem.*','student_details.*')
+                            ->select('endsem_marks', 'student_details.id', 'roll_no', 'student_id', 'name', 'div', 'gender')
                             ->where('name', "LIKE", "%$searchText%")
                             ->where("user_key", "=", session()->get("user_id"))
                             ->where("deleted_at", "=", null)
@@ -59,7 +64,7 @@ class SheetsController extends Controller
             }
         else{
             $students = EndsemModel::join('student_details', 'student_details.id', 'endsem.id')
-                            ->select('endsem.*','student_details.*')
+                            ->select('endsem_marks', 'student_details.id', 'roll_no', 'student_id', 'name', 'div', 'gender')
                             ->where("user_key", "=", session()->get("user_id"))
                             ->where("deleted_at", "=", null)
                             ->orderBy('roll_no', 'ASC')
@@ -76,7 +81,7 @@ class SheetsController extends Controller
         $searchText = $req['searchForm'] ?? "";
         if ($searchText != "") {
             $students = AssignmentModel::join('student_details', 'student_details.id', 'assignments.id')
-                            ->select('assignments.*','student_details.*')
+                            ->select('assignments.*', 'student_details.id', 'roll_no', 'student_id', 'name', 'div', 'gender')
                             ->where('name', "LIKE", "%$searchText%")
                             ->where("user_key", "=", session()->get("user_id"))
                             ->where("deleted_at", "=", null)
@@ -85,7 +90,7 @@ class SheetsController extends Controller
             }
         else{
             $students = AssignmentModel::join('student_details', 'student_details.id', 'assignments.id')
-                            ->select('assignments.*','student_details.*')
+                            ->select('a1p1', 'a1p2', 'a1p3', 'a1', 'a2p1', 'a2p2', 'a2p3', 'a2', 'student_details.id', 'roll_no', 'student_id', 'name', 'div', 'gender')
                             ->where("user_key", "=", session()->get("user_id"))
                             ->where("deleted_at", "=", null)
                             ->orderBy('roll_no', 'ASC')
@@ -101,7 +106,7 @@ class SheetsController extends Controller
         $searchText = $req['searchForm'] ?? "";
         if ($searchText != "") {
             $students = IaModel::join('student_details', 'student_details.id', 'ia.id')
-                            ->select('ia.*','student_details.*')
+                            ->select('ia.*', 'student_details.id', 'roll_no', 'student_id', 'name', 'div', 'gender')
                             ->where('name', "LIKE", "%$searchText%")
                             ->where("user_key", "=", session()->get("user_id"))
                             ->where("deleted_at", "=", null)
@@ -110,7 +115,7 @@ class SheetsController extends Controller
             }
         else{
             $students = IaModel::join('student_details', 'student_details.id', 'ia.id')
-                            ->select('ia.*','student_details.*')
+                            ->select('ia.*', 'student_details.id', 'roll_no', 'student_id', 'name', 'div', 'gender')
                             ->where("user_key", "=", session()->get("user_id"))
                             ->where("deleted_at", "=", null)
                             ->orderBy('roll_no', 'ASC')
@@ -126,7 +131,7 @@ class SheetsController extends Controller
         $searchText = $req['searchForm'] ?? "";
         if ($searchText != "") {
             $students = ExperimentModel::join('student_details', 'student_details.id', 'experiments.id')
-                            ->select('experiments.*','student_details.*')
+                            ->select('experiments.*', 'student_details.id', 'roll_no', 'student_id', 'name', 'div', 'gender')
                             ->where('name', "LIKE", "%$searchText%")
                             ->where("user_key", "=", session()->get("user_id"))
                             ->where("deleted_at", "=", null)
@@ -135,7 +140,7 @@ class SheetsController extends Controller
             }
         else{
             $students = ExperimentModel::join('student_details', 'student_details.id', 'experiments.id')
-                            ->select('experiments.*','student_details.*')
+                            ->select('experiments.*', 'student_details.id', 'roll_no', 'student_id', 'name', 'div', 'gender')
                             ->where("user_key", "=", session()->get("user_id"))
                             ->where("deleted_at", "=", null)
                             ->orderBy('roll_no', 'ASC')

@@ -25,4 +25,10 @@
         <h4><center>Oral/Practical Attainment</center></h4>
         <x-htable values={{$values}} />
     </div>
+
+
+    @php
+        echo "<pre>";
+        print_r($resArr);
+    @endphp
 @endsection

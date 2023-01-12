@@ -31,7 +31,7 @@ class AuthController extends Controller
         $user->password = $request['password'];  // password gets autohashed by mutator
         $user->save();
 
-        $last_tuple = signup_details::latest()->first();
+        $last_tuple = signup_details::where("user_key", "=", session()->get("user_id"))->latest()->first();
 
     // init criteria marks entry
         $crt_tuple = new CriteriaModel();
