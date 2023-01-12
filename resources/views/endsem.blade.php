@@ -43,7 +43,7 @@
                             <td>{{$student->name}}</td>
                             <td>
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:80px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}"  id="{{$student->group_key}}" max="{{$endsem_total_max[0]->endsem_total}}" min="0" value="{{$student->endsem_marks}}" style="height: 26px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}"  id="{{$student->group_key}}" max="{{$endsem_total_max[0]->endsem_total}}" min="0" value="{{$student->endsem_mark}}" style="height: 26px;">
                                 </div>
                             </td>
                         </tr>
@@ -73,15 +73,15 @@
                 },
                 success: function(res){
                         if(res == '0' ||  res == 0){
-                            document.getElementById(stuGroupKey).parentNode.style.borderColor = "red";
+                            e.target.parentNode.style.borderColor = "red";
                             setTimeout(() => {
-                                document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
+                                e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
                             }, 5000);                        }
                         else if(res == '1'|| res == 1){
-                            document.getElementById(stuGroupKey).parentNode.style.borderColor = "cyan";
+                            e.target.parentNode.style.borderColor = "cyan";
                             setTimeout(() => {
-                                document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
-                            }, 2000); 
+                                e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            }, 1500); 
                         }
                         else{
                             console.log(res);

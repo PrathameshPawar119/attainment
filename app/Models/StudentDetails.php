@@ -13,6 +13,10 @@ class StudentDetails extends Model
     protected $table = "student_details";
     protected $priamaryKey = "id";
 
+    protected $fillable = [
+        'roll_no', 'student_id', 'name', 'div', 'gender', 'user_key', 'group_key'
+    ];
+
 
     //  Mutators **************************
     // this function capitalies each leteters 1st char
@@ -25,9 +29,6 @@ class StudentDetails extends Model
     public function setStudentIdAttribute($value){
         $this->attributes['student_id'] = strtoupper($value);
     }
-
-
-    //  Accessors  ****************************
 
 
 }

@@ -112,7 +112,7 @@ class AttainmentControl extends Controller
         $numStdMoreThanCriteria = EndsemModel::join("student_details", "student_details.id", "endsem.id")
                                     ->where("user_key", "=", session()->get("user_id"))
                                     ->where("deleted_at", "=", null)
-                                    ->where("endsem_marks", ">=", $params["criteriaFromTotalMarks"])
+                                    ->where("endsem_mark", ">=", $params["criteriaFromTotalMarks"])
                                     ->select("student_id")
                                     ->distinct()->count();
         

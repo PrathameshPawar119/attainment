@@ -55,7 +55,7 @@ class SheetsController extends Controller
         $searchText = $req['searchForm'] ?? "";
         if ($searchText != "") {
             $students = EndsemModel::join('student_details', 'student_details.id', 'endsem.id')
-                            ->select('endsem_marks', 'student_details.id', 'roll_no', 'student_id', 'name', 'div', 'gender')
+                            ->select('endsem_mark', 'student_details.id', 'roll_no', 'student_id', 'name', 'div', 'gender')
                             ->where('name', "LIKE", "%$searchText%")
                             ->where("user_key", "=", session()->get("user_id"))
                             ->where("deleted_at", "=", null)
@@ -64,7 +64,7 @@ class SheetsController extends Controller
             }
         else{
             $students = EndsemModel::join('student_details', 'student_details.id', 'endsem.id')
-                            ->select('endsem_marks', 'student_details.id', 'roll_no', 'student_id', 'name', 'div', 'gender')
+                            ->select('endsem_mark', 'student_details.id', 'roll_no', 'student_id', 'name', 'div', 'gender')
                             ->where("user_key", "=", session()->get("user_id"))
                             ->where("deleted_at", "=", null)
                             ->orderBy('roll_no', 'ASC')

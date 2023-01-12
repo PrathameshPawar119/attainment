@@ -19,7 +19,7 @@ class studentController extends Controller
     }
 
     public function inputForm(){
-        $total_tuples = StudentDetails::query()->select('id')->distinct()->count();
+        $total_tuples = StudentDetails::where("user_key", "=", session()->get("user_id"))->select('id')->distinct()->count();
         return view("input", compact('total_tuples'));
     }
     
@@ -60,31 +60,17 @@ class studentController extends Controller
 
         //init endsem entry
             $endsem_tuple = new EndsemModel();
-            $endsem_tuple->endsem_marks = 0;
+            $endsem_tuple->endsem_mark = 0;
             $endsem_tuple->id = $last_tuple['id'];
             $endsem_tuple->save();
             
         //init assignments entry
             $assign_tuple = new  AssignmentModel();
-            $assign_tuple->a1p1 = 0;
-            $assign_tuple->a1p2 = 0;
-            $assign_tuple->a1p3 = 0;
-            $assign_tuple->a2p1 = 0;
-            $assign_tuple->a2p2 = 0;
-            $assign_tuple->a2p3 = 0;
             $assign_tuple->id = $last_tuple['id'];
             $assign_tuple->save();
 
         // init ia entry
             $ia_tuple = new IaModel();
-            $ia_tuple->ia1q1 = 0;
-            $ia_tuple->ia1q2 = 0;
-            $ia_tuple->ia1q3 = 0;
-            $ia_tuple->ia1q4 = 0;
-            $ia_tuple->ia2q1 = 0;
-            $ia_tuple->ia2q2 = 0;
-            $ia_tuple->ia2q3 = 0;
-            $ia_tuple->ia2q4 = 0;
             $ia_tuple->id = $last_tuple['id'];
             $ia_tuple->save();
 

@@ -41,7 +41,7 @@ class UpdateMarksController extends Controller
         $student = EndsemModel::join('student_details', 'student_details.id', 'endsem.id')
                         ->where("student_id", "=", $req['id'])
                         ->where("user_key", "=", session()->get('user_id'))
-                        ->update(['endsem_marks'=>$req['value']]);
+                        ->update(['endsem_mark'=>$req['value']]);
         if ($student) {
             echo "1";
         }

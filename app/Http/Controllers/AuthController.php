@@ -31,60 +31,26 @@ class AuthController extends Controller
         $user->password = $request['password'];  // password gets autohashed by mutator
         $user->save();
 
-        $last_tuple = signup_details::where("user_key", "=", session()->get("user_id"))->latest()->first();
+        $last_tuple = signup_details::select('user_id')->where('username', "=", $user->username)->first();
 
     // init criteria marks entry
         $crt_tuple = new CriteriaModel();
-        $crt_tuple->oral_total = 0;
-        $crt_tuple->endsem_total = 0;
-        $crt_tuple->assign_p1 = 0;
-        $crt_tuple->assign_p2 = 0;
-        $crt_tuple->assign_p3 = 0;
-        $crt_tuple->ia1_q1 = 0;
-        $crt_tuple->ia1_q2 = 0;
-        $crt_tuple->ia1_q3 = 0;
-        $crt_tuple->ia1_q4 = 0;
-        $crt_tuple->ia2_q1 = 0;
-        $crt_tuple->ia2_q2 = 0;
-        $crt_tuple->ia2_q3 = 0;
-        $crt_tuple->ia2_q4 = 0;
-        $crt_tuple->exp_r1 = 0;
-        $crt_tuple->exp_r2 = 0;
-        $crt_tuple->exp_r3 = 0;
         $crt_tuple->user_id = $last_tuple['user_id'];
         $crt_tuple->save();
 
     // init Co tables entry
         // table common for oral, endsem, assigns
-        $all_co_arr = json_encode(array(1,2,3,4,5,6));
-        $first_co_arr = json_encode(array());
         $co_group3s = new CO_Oral_Endsem_Assign();
-        $co_group3s->oral_co = $all_co_arr;
-        $co_group3s->endsem_co = $all_co_arr;
-        $co_group3s->assign1_co = $all_co_arr;
-        $co_group3s->assign2_co = $all_co_arr;
         $co_group3s->user_id = $last_tuple['user_id'];
         $co_group3s->save();
 
         //table for ias
         $co_ia_tuple = new CO_IA();
-        $co_ia_tuple->CO1 = $first_co_arr;
-        $co_ia_tuple->CO2 = $first_co_arr;
-        $co_ia_tuple->CO3 = $first_co_arr;
-        $co_ia_tuple->CO4 = $first_co_arr;
-        $co_ia_tuple->CO5 = $first_co_arr;
-        $co_ia_tuple->CO6 = $first_co_arr;
         $co_ia_tuple->user_id = $last_tuple['user_id'];
         $co_ia_tuple->save();
 
         //table for experiments
         $co_expt_tuple = new CO_Expt();
-        $co_expt_tuple->CO1 = $first_co_arr;
-        $co_expt_tuple->CO2 = $first_co_arr;
-        $co_expt_tuple->CO3 = $first_co_arr;
-        $co_expt_tuple->CO4 = $first_co_arr; 
-        $co_expt_tuple->CO5 = $first_co_arr;
-        $co_expt_tuple->CO6 = $first_co_arr;
         $co_expt_tuple->user_id = $last_tuple['user_id'];
         $co_expt_tuple->save();
 

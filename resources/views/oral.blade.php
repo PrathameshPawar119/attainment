@@ -72,14 +72,14 @@
                     },
                     success: function (res){
                         if(res == '0' ||  res == 0){
-                            document.getElementById(stuGroupKey).parentNode.style.borderColor = "red";
+                            e.target.parentNode.style.borderColor = "red";
                             setTimeout(() => {
-                                document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
+                                e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
                             }, 5000);                        }
                         else if(res == '1'|| res == 1){
-                            document.getElementById(stuGroupKey).parentNode.style.borderColor = "cyan";
+                            e.target.parentNode.style.borderColor = "cyan";
                             setTimeout(() => {
-                                document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
+                                e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
                             }, 1500);
                         }
                         else{

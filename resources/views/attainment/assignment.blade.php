@@ -38,6 +38,11 @@
         <table class="table table-hover my-4 mx-4">
             <tbody>
                 <tr>
+                    <th>Assignment</th>
+                    <th>Assign-1</th>
+                    <th>Assign-2</th>
+                </tr>
+                <tr>
                     <th>{{$params['markCriteria']->assigns}}% of Total {{$params['totalMarks']->assign_total}}</th>
                     @for($i = 0; $i < 2; $i++)
                         <td>{{$params['criteriaFromTotalMarks']}}</td>
@@ -60,8 +65,8 @@
                 </tr>
                 <tr>
                     <th>Attainment Level</th>
-                    <td>{{$assign1_arr[3]}}</td>
-                    <td>{{$assign2_arr[3]}}</td>
+                    <th>{{$assign1_arr[3]}}</th>
+                    <th>{{$assign2_arr[3]}}</th>
                 </tr>
             </tbody>
         </table>
