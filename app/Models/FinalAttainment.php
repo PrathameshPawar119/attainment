@@ -16,7 +16,8 @@ class FinalAttainment extends Model
         'endsem',
         'assignments',
         'ia',
-        'experiments'
+        'experiments',
+        'user_id'
     ];
 
     public function User(){
