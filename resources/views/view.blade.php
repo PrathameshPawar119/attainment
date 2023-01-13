@@ -4,8 +4,13 @@
 @push('title')
     <title>Students View</title>
 @endpush
-
-<x-alert-component mainclass="col-12" color="primary" message="Alert component needed to be done!" />
+@php
+    $msg = "...";
+    if (session()->has("alertMsg")) {
+        $msg = session()->get("alertMsg");
+    }
+@endphp
+<x-alert-component mainclass="col-12" color="primary" message={{$msg}} />
 <div class="container viewStudents">
     <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
         <form action="{{('/students/view')}}" method="get" style="display: inline-block;">

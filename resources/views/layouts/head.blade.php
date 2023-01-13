@@ -34,7 +34,7 @@
             <a class="nav-link {{url('/user/criteriaInput')==$currentUrl?'active':''}}" href="{{url('/user/criteriaInput')}}"><b>Criteria</b></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{url('/user/Profile')==$currentUrl?'active':''}}" href="{{url('/user/profile')}}">Logo</a>
+            <a class="nav-link {{url('/user/Profile')==$currentUrl?'active':''}}" href="{{url('/user/profile')}}" style="z-index: 1000;">Logo</a>
         </li>
     </div>
 </ul>

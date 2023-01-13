@@ -15,11 +15,28 @@
       width: 20px;
       height: 20px;
     }
+
+    /* alert */
+    @keyframes displayNone{
+      from{
+        opacity: 1;
+      }
+      to{
+        opacity: 0;
+      }
+    }
+    .hideAlert{
+      animation:displayNone 1s ease;
+      display: block !important;
+    }
+
   </style>
   <body>
     @include('layouts.head')
-    <div class="alert-section" style="height: 32px;">
-      @yield('alert-section')
+    <div class="alert-section"  style="height: 32px;">
+      <div class="alert-component" id="alert-section">
+        @yield('alert-section')
+      </div>
     </div>
     <div>
         @yield('main-section')
@@ -41,7 +58,11 @@
           clearTimeout(timeout);
           timeout = setTimeout(later, wait);
           if (callNow) func.apply(context, args);
-      };
-};
+      };  
+    };
+
+    // Fade out alert component arter 2.5s
+    $('#alert-section').delay(3000).fadeOut('slow');
+
   </script>
 </html>

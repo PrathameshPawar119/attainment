@@ -88,6 +88,7 @@ class studentController extends Controller
             $co_expt_table->id =  $last_tuple['id'];
             $co_expt_table->save();
 
+            session()->flash("alertMsg", "Student - $student->name ($student->student_id) saved successfully !");
             return redirect()->back();
             
         }
@@ -118,12 +119,13 @@ class studentController extends Controller
         return view('view')->with(compact('students', 'viewEditBtn', 'viewEditURL', 'viewDeleteBtn', 'viewDeleteURL', 'trashBtn', 'trashURL'));
     }
 
-    // soft deleting student
+    // soft deleting student (Moving to Trash)
     public function deleteStudent($id){
         $student = StudentDetails::withoutTrashed()->find($id);
         if (!is_null($student)) {
             $student->delete();
         }
+        session()->flash("alertMsg", "Student - $student->name ($student->student_id) moved to Trash.");
         return redirect()->back();
     }
 
@@ -140,6 +142,7 @@ class studentController extends Controller
         if (!is_null($student)) {
             $student->forceDelete();
         }
+        session()->flash("alertMsg", "Student - $student->name ($student->student_id) deleted permnantly.");
         return redirect()->back();
     }
 
@@ -148,6 +151,7 @@ class studentController extends Controller
         if ($student) {
             $student->restore();
         }
+        session()->flash("alertMsg", "Student - $student->name ($student->student_id) restored successfully.");
         return redirect()->back();
     }
 
@@ -212,6 +216,7 @@ class studentController extends Controller
             $student->group_key = $group_key;
             $student->save();
             
+            session()->flash("alertMsg", "Student Information of - $student->name ($student->student_id) updated.");
             return redirect('/students/view');
         }
         else{

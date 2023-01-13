@@ -12,10 +12,15 @@
 @php
     $divs = array("A", "B");
     $genders = array("M", "F");
+
+    $msg = "...";
+    if (session()->has("alertMsg")) {
+        $msg = session()->get("alertMsg");
+    }
 @endphp
 
 <div class="container my-4">
-    <x-alert-component mainclass="col-12" color="primary" message="Successful hua ree brio!" />
+    <x-alert-component mainclass="col-12" color="primary" message="{{$msg}}" />
     <h2>{{ucwords(session()->get('username'))}}</h2>
     <span class="text-danger">
         @if (session()->has('duplicateRecordError'))
