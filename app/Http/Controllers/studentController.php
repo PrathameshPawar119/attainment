@@ -20,8 +20,8 @@ class studentController extends Controller
 
     public function inputForm(){
         $total_tuples = StudentDetails::where("user_key", "=", session()->get("user_id"))->select('id')->distinct()->count();
-
-        return view("input", compact('total_tuples'));
+        $last_record = StudentDetails::where("user_key", "=", session()->get('user_id'))->latest()->first();
+        return view("input", compact('total_tuples', 'last_record'));
     }
     
     public function addStudent(Request $req){

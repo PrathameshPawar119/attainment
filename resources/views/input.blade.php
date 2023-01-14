@@ -17,6 +17,7 @@
     if (session()->has("alertMsg")) {
         $msg = session()->get("alertMsg");
     }
+
 @endphp
 
 <div class="container my-4">
@@ -69,6 +70,42 @@
             <button type="submit" class="btn btn-primary col-md-8" > Add Student</button>
         </div>
         </form>
+
+        {{-- Show last record added for easy user Xperience --}}
+        <br/>
+        <h5>Last Record Added</h5>
+        <table class="table my-4 table-hover">
+        <thead>
+            <tr>
+            <th scope="col">Sr. No</th>
+            <th scope="col">DIV</th>
+            <th scope="col">Roll No.</th>
+            <th scope="col">Student ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Last Modified</th>
+            </tr>
+        </thead>                                                                                                                    
+        <tbody>
+            @if (!isset($last_record))
+                <h3 class="my-2 mx-2"> {{"Ready to add first Student !"}} </h3>           
+            @endif
+            <tr>
+                <td>{{$total_tuples}}</td>
+                <td>{{$last_record->div}}</td>
+                <td>{{$last_record->roll_no}}</td>
+                <td>{{$last_record->student_id}}</td>
+                <td>{{$last_record->name}}</td>
+                <td>@if (($last_record->gender)=='M')
+                    Male
+                    @else
+                    Female
+                    @endif 
+                </td>
+                <td>{{get_formatted_date(($last_record->updated_at), 'd-M-Y')}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <script>
     
