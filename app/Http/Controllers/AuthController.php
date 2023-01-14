@@ -81,14 +81,18 @@ class AuthController extends Controller
                 session()->put("username", $user->username);
                 session()->put("user_email", $user->email);
                 session()->put("user_id", $user->user_id);
+
+                session()->flash("alertMsg", "Welcome $user->username");
                 return redirect("students/input");
             }
             else {
-                return "Wrong Password";
+                session()->flash("alertMsg", "Wrong credentials, Please try again !");
+                return redirect()->back();
             }
         }
         else{
-            return "User Not found";
+            session()->flash("alertMsg", "Wrong credentials, User not found !");
+            return redirect()->back();
         }
     }
 

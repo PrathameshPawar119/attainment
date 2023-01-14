@@ -9,12 +9,12 @@
 </style>
 @section('upperLeft-section')
     <div class="rightChartBox" style="border: 2px solid red;">
-
+        <canvas id="leftChart"></canvas>
     </div>
 @endsection
 @section('upperRight-section')
-    <div class="leftChartBox" style="border: 2px solid red;">
-
+    <div class="rightChartBox" style="border: 2px solid red;">
+        <canvas id="rightChart"></canvas>
     </div>
 @endsection
 @section('lower-section')
@@ -27,8 +27,33 @@
     </div>
 
 
-    @php
-        echo "<pre>";
-        print_r($resArr);
-    @endphp
+    <script>
+        // const leftChart = document.getElementById("leftChart");
+
+        // const Attain_level = "<?php echo $resArr[6]; ?>";
+        // console.log(Attain_level);
+
+        // new Chart(leftChart, {
+        //     type: "bar",  
+        //     data :{
+        //         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        //         datasets: [{
+        //             label: '# of Votes',
+        //             data: [Attain_level, Attain_level, Attain_level, Attain_level, Attain_level, Attain_level],
+        //             borderWidth: 1
+        //         }]
+        //     },
+        //     options: {
+        //     scales: {
+        //         y: {
+        //         beginAtZero: true
+        //         },
+        //         x: {
+
+        //         }
+        //     }
+        //     }
+        // })
+
+    </script>
 @endsection

@@ -20,6 +20,7 @@ class studentController extends Controller
 
     public function inputForm(){
         $total_tuples = StudentDetails::where("user_key", "=", session()->get("user_id"))->select('id')->distinct()->count();
+
         return view("input", compact('total_tuples'));
     }
     

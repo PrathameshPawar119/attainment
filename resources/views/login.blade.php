@@ -3,10 +3,16 @@
     @push('title')
         <title>Login</title>
     @endpush
+    @php
+        $msg = "...";
+        if (session()->has("alertMsg")) {
+            $msg = session()->get("alertMsg");
+        };
+    @endphp
 
     <div class="container">
         <div class="container loginpage">
-        <x-alert-component mainclass="col-12" color="primary" message="Alert component needed to be done" />
+        <x-alert-component mainclass="col-12" color="primary" message="{{$msg}}" />
             <form action="{{url('/auth/login_user')}}" method="POST" class="my-3">
                 @csrf
                 <x-input-component type="text" id="login_varify" name="user_credential" label="Email or Username " mainclass="mb-3" />

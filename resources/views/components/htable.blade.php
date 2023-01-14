@@ -39,7 +39,7 @@
             </tr>
             <tr>
                 <th>Attainment Level</th>
-                <th>{{$values[6]}}</th>
+                <th id="attain_level">{{$values[6]}}</th>
             </tr>
         </tbody>
     </table>

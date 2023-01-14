@@ -143,7 +143,7 @@
                 <div id="coInputBox">
                     <img src="{{URL::to('/')}}/images/sharing.png" alt="">
                     <h4>Select CO's</h4>
-                    <p>Mandantory Before Getting Attainment*</p>
+                    <small> Mandantory Before Getting Attainment*</small>
                 </div>
             </a>
             <div class="lineBox">

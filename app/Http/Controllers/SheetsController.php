@@ -48,7 +48,7 @@ class SheetsController extends Controller
         
         $oral_total_max = CriteriaModel::where("user_id", "=", session()->get("user_id"))->select("oral_total")->get();
         $trashBtn = "Oral/Practical Attainment";
-        return view('oral', compact('students', 'trashBtn', 'oral_total_max'));
+        return view('oral', compact('students', 'trashBtn', 'oral_total_max', 'searchText'));
     }
 
     public function endsemSheet(Request $req){
