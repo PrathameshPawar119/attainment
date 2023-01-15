@@ -52,7 +52,7 @@
                 </div>
             </div>
         <div class="table-responsive">
-            <table class="table my-2 table-hover text-center">
+            {{-- <table class="table my-2 table-hover text-center">
                 <thead>
                     <tr>
                         <th scope="col">Sr. No</th>
@@ -112,11 +112,11 @@
                         @endforeach
                     </form>
                 </tbody>
-            </table>
+            </table> --}}
         </div>
     <div class="LowerAttainmentTable container">
          <table class="table table-hover my-4 mx-4">
-            <tbody>
+            {{-- <tbody>
                 <tr>
                     <th>CO</th>
                     <th>CO1</th>
@@ -133,7 +133,7 @@
                     @endfor
                 </tr>
                 <tr>
-                    {{-- Mark Criteria is same for all COs --}}
+                    Mark Criteria is same for all COs
                     <th>{{$all_co_params[0]['markCriteria']->ia}}% of Total Marks (Marks Criteria)</th>
                     @for($i = 0; $i < 6; $i++)
                         <td>{{$all_co_params[$i]['criteriaFromTotalMarks']}}</td>
@@ -156,8 +156,8 @@
                     @for ($i=0; $i<6; $i++)
                         <td>{{$finalCoAttainments[$i]['attain_level']}}</td>
                     @endfor
-                </tr>
-            </tbody>
+                </tr> 
+            </tbody> --}}
         </table> 
         </div>
     </div>

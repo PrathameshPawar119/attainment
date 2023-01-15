@@ -68,4 +68,5 @@ Route::group(["prefix"=>"/attainment", "middleware"=>"loginRedirect"], function(
     Route::get("endsem", [AttainmentControl::class, "EndsemAttainment"]);
     Route::get("assignment", [AttainmentControl::class, "AssignAttainment"]);
     Route::get("ia", [AttainmentControl::class, "IaAttainment"]);
+    Route::get("expt", [AttainmentControl::class, "ExptAttainment"]);
 });

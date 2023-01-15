@@ -238,6 +238,9 @@ class AttainmentControl extends Controller
         }
 
         return view('attainment.ia', compact('co_total_table_details', 'outof_per_co', 'all_co_params', 'finalCoAttainments'));
+    }
 
+    public function ExptAttainment(){
+        
     }
 }

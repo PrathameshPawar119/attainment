@@ -128,7 +128,7 @@
     $(document).ready(function(){
         $(document).on("change", ".marksInputField", debounce(function(e){
             var expMarR = e.target.getAttribute("max");
-            var stuId = e.target.getAttribute("name");
+            var stuId = e.target.getAttribute("name").split("+");
             var stdVal = e.target.value > expMarR ? expMarR : e.target.value;
             var stuGroupKey = e.target.getAttribute("id");
             $.ajax({
@@ -136,21 +136,21 @@
                 type:"POST",
                 data: {
                     '_token': "{{csrf_token()}}",
-                    'id':stuId.split("+")[0],
+                    'id':stuId[0],
                     'value':stdVal,
-                    'column_name':`${stuId.split("+")[1]}`
+                    'column_name':`${stuId[1]}`
                 },
                 success: function(res){
                     if(res == '0' ||  res == 0){
-                        document.getElementById(stuGroupKey).parentNode.style.borderColor = "red";
+                        e.target.parentNode.style.borderColor = "red";
                         setTimeout(() => {
-                            document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
                         }, 5000);                        
                     }
                     else{
-                        document.getElementById(stuGroupKey).parentNode.style.borderColor = "cyan";
+                        e.target.parentNode.style.borderColor = "cyan";
                         setTimeout(() => {
-                            document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
                         }, 2000); 
                         var exp_total = 0;
                         var all_exp_total = 0;
@@ -158,10 +158,10 @@
                         var exp_limit = parseInt(parsedRes[12]);
                         for (let i = 0; i < 12; i++) {
                             exp_total = parseInt(parsedRes[i]);
-                            document.getElementById(`${stuId.split("+")[0]}+e${i+1}`).innerHTML = exp_total;
+                            document.getElementById(`${stuId("+")[0]}+e${i+1}`).innerHTML = exp_total;
                             all_exp_total += exp_total;
                         }
-                        document.getElementById(`${stuId.split("+")[0]}+avg`).innerHTML = (((all_exp_total)*15)/(exp_limit*12)).toFixed();
+                        document.getElementById(`${stuId[0]}+avg`).innerHTML = (((all_exp_total)*15)/(exp_limit*12)).toFixed();
                     }
                 }
             });
