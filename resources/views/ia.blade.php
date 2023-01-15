@@ -163,15 +163,15 @@
                 },
                 success: function(res){
                     if(res == '0' ||  res == 0){
-                        document.getElementById(stuGroupKey).parentNode.style.borderColor = "red";
+                        e.target.parentNode.style.borderColor = "red";
                         setTimeout(() => {
-                            document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
                         }, 5000);                        
                     }
                     else{
-                        document.getElementById(stuGroupKey).parentNode.style.borderColor = "cyan";
+                        e.target.parentNode.style.borderColor = "cyan";
                         setTimeout(() => {
-                            document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
                         }, 2000); 
                         var parsedRes = res.split("+");
                         var ia1_total = parseInt(parsedRes[0]);

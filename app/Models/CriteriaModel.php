@@ -10,4 +10,8 @@ class CriteriaModel extends Model
     use HasFactory;
     protected $table = 'criteria';
     protected $primaryKey = 'criteria_id';
+
+    public function getDummyAttribute(){
+        return 0;
+    }
 }

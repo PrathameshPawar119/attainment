@@ -24,7 +24,15 @@ class AttainmentControl extends Controller
         return array("markCriteria"=>$markCriteria, "totalMarks"=>$totalMarks,"totalStudents"=> $totalStudents,"criteriaFromTotalMarks"=> $criteriaFromTotalMarks);
     }
 
+    // this function returns primary params when total marks are ready
+    public function getAttainmentArrPartB($thresholdColumn, $totalMark){
+        $markCriteria = ThresholdModel::select($thresholdColumn)->where("user_id", "=", session()->get('user_id'))->first();
+        $totalStudents = $this->totalNumStd();
+        $criteriaFromTotalMarks = round((($totalMark)/100)*($markCriteria->$thresholdColumn), 2);
+        return array("markCriteria"=>$markCriteria, "totalMarks"=>$totalMark,"totalStudents"=> $totalStudents,"criteriaFromTotalMarks"=> $criteriaFromTotalMarks);
+    }
 
+    // public function get
     public function getGroup3Cos($co_column_name){
         return CO_Oral_Endsem_Assign::select($co_column_name)->where("user_id", "=", session()->get("user_id"))->first();
     }
@@ -41,6 +49,7 @@ class AttainmentControl extends Controller
 
 // 2 functions for IA total attainment
     public function IaTotalPerCO($arr){
+        // $arr must contain questions per co in ia
         $output_arr = array();
         for($i=0; $i<6; $i++){
             $j = $i+1;
@@ -53,7 +62,42 @@ class AttainmentControl extends Controller
             array_push($output_arr, $update_co_column);
         }
         return $output_arr;
+    }
 
+    // Function to calculate Total OutOf marks for each Co in IA and EXPT
+    public function OutOfMarksPerCo($arr){
+        // $arr must contain questions per co in ia
+        $output_arr = array();
+        $fake_arr = array();
+        for($i=0; $i<6; $i++){
+            $j = $i+1;
+            $co_arr = json_decode($arr[$i]["CO$j"]);
+            $co_arr2 = array();
+            foreach($co_arr as $q){
+                // converting '1a1q1' to 'ia1_q1'
+                $temp = substr_replace($q, "_", 3, 0);
+                array_push($co_arr2, $temp);
+            }
+            // Fetching required Question outof marks
+            $co_arr = $co_arr2;
+            $outOf = CriteriaModel::join("signup_details", "signup_details.user_id", "criteria.user_id")
+                            ->select((current($co_arr) ? current($co_arr) :'ia1_total') , (next($co_arr)?current($co_arr):'ia1_total'), (next($co_arr)?current($co_arr):'ia1_total'), (next($co_arr)?current($co_arr):'ia1_total'), (next($co_arr)?current($co_arr):'ia1_total'), (next($co_arr)?current($co_arr):'ia1_total'))
+                            ->where("signup_details.user_id", "=", session()->get("user_id"))->get();
+            array_push($output_arr, $outOf[0]);
+        }
+
+        //Adding question outof marks and pushing in final arr
+        foreach ($output_arr as $QsPerCo) {
+            $co_total = 0;
+            foreach (json_decode($QsPerCo) as $value) {
+                $co_total = $co_total +$value;
+            }
+            $co_total = $co_total - $QsPerCo->ia1_total; // remove dummy column
+            array_push($fake_arr, $co_total);
+        }
+
+        $output_arr = $fake_arr;
+        return $output_arr;
     }
 
     public function UpdateIaCoTotalTable($updateCOs, $cos){
@@ -72,20 +116,6 @@ class AttainmentControl extends Controller
                                             ->update([$current_co=>$ia_mark_sum]);
             }
         }
-    }
-
-    // Attainment Level for each co here
-    public function GetAttainLevelsForIaCo($column, $params){
-        $numStdMoreThanCriteria = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
-                                    ->where("user_key", "=", session()->get("user_id"))
-                                    ->where("deleted_at", "=", null)
-                                    ->where("$column", ">=", $params['criteriaFromTotalMarks'])
-                                    ->select("student_id")
-                                    ->distinct()->count();
-        $perStdMoreThanCriteria = round(($numStdMoreThanCriteria/$params['totalStudents'])*100);
-        $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria);
-
-        return array("numStdMoreThanCriteria"=>$numStdMoreThanCriteria, "perStdMoreThanCriteria"=>$perStdMoreThanCriteria, "attain_level"=>$attain_level);
     }
 
 
@@ -166,7 +196,23 @@ class AttainmentControl extends Controller
         return $co_total_table_details;
     }
 
+    // Attainment Level for each co here
+    public function GetAttainLevelsForIaCo($column, $params){
+        $numStdMoreThanCriteria = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
+                                    ->where("user_key", "=", session()->get("user_id"))
+                                    ->where("deleted_at", "=", null)
+                                    ->where("$column", ">=", $params['criteriaFromTotalMarks'])
+                                    ->select("student_id")
+                                    ->distinct()->count();
+        $perStdMoreThanCriteria = round((($numStdMoreThanCriteria/$params['totalStudents'])*100), 2);
+        $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria);
+
+        return array("numStdMoreThanCriteria"=>$numStdMoreThanCriteria, "perStdMoreThanCriteria"=>$perStdMoreThanCriteria, "attain_level"=>$attain_level);
+    }
+
+
     public function IaAttainment(){
+    //Table 1--> for showing total marks per co
         //get cos --> returns array of questions ask in each co, varies per user
         $cos = $this->IaQuestionsPerCo();
         // get iaQs marks for particular student --> returns nested array-object ending with onject cntaining, co_total_ia_id, and marks
@@ -177,25 +223,21 @@ class AttainmentControl extends Controller
         // Function to get co_total_ia table
         $co_total_table_details = $this->GetCoTotalIaTable();
 
+    // Table 2--> for showing attainment table
+        // Outof Marks per Co
+        $outof_per_co = $this->OutOfMarksPerCo($cos);
 
-        // normal getparams function will not work for this cos
-        // weh have to calculate total marks for each 6 cos
-        // access criteria table to get total marks for each question
-        // add this according to questions present in each co in table co_ia
-        // so you will get array of total marks for each co
-        // then calculate attainment params for each co and level for reach co
+        $all_co_params = array();
+        $finalCoAttainments = array();
+        for ($i=0; $i < 6; $i++) { 
+            $j = $i+1;
+            $co_param = $this->getAttainmentArrPartB('ia', $outof_per_co[$i]);
+            array_push($all_co_params, $co_param);        
+            $co_attain = $this->GetAttainLevelsForIaCo("CO$j", $co_param);
+            array_push($finalCoAttainments, $co_attain);    
+        }
 
-        // $all_co_params = array();
-        // for ($i=0; $i < 6; $i++) { 
-        //     $j = $i+1;
-        //     $co_params = $cos[$i]["CO$j"];
-        // }
-
-        // $FinalIaCoAttainments = array();
-        // foreach ($all_co_params as $key => $co_param) {
-        //     $co_attainment = $this->GetAttainLevelsForIaCo('', $co_param);
-        // }
-        // return view('attainment.ia', compact('co_total_table_details'));
+        return view('attainment.ia', compact('co_total_table_details', 'outof_per_co', 'all_co_params', 'finalCoAttainments'));
 
     }
 }

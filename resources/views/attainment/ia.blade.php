@@ -37,7 +37,7 @@
             <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
                 <form action="{{('/sheets/assignment')}}" method="get" style="display: inline-block;">
                     <div class="input-group mx-1">
-                        <input type="text" class="form-control" placeholder="Search name here" value="{{old('searchForm')}}" name="searchForm" aria-describedby="button-addon2">
+                        <input type="text" class="form-control" placeholder="Not Working Yet" value="{{old('searchForm')}}" name="searchForm" aria-describedby="button-addon2">
                         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
                     </div>
                 </form>
@@ -68,6 +68,16 @@
                         {{"Please add some students Please"}}            
                     @endif
                     <form id="ia_attainment_Sheet">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Total Marks</td>
+                            @for ($i=0; $i<6; $i++)
+                                <td>/{{$outof_per_co[$i]}}</td>
+                            @endfor
+                        </tr>
                         @foreach($co_total_table_details as $key=>$student)
                             <tr>
                                 <td>{{$key+1}}</td>
@@ -99,38 +109,52 @@
                 </tbody>
             </table>
         </div>
-    {{-- <div class="LowerAttainmentTable">
+    <div class="LowerAttainmentTable">
          <table class="table table-hover my-4 mx-4">
             <tbody>
                 <tr>
-                    <th>{{$params['markCriteria']->assigns}}% of Total {{$params['totalMarks']->assign_total}}</th>
-                    @for($i = 0; $i < 2; $i++)
-                        <td>{{$params['criteriaFromTotalMarks']}}</td>
+                    <th>CO</th>
+                    <th>CO1</th>
+                    <th>CO2</th>
+                    <th>CO3</th>
+                    <th>CO4</th>
+                    <th>CO5</th>
+                    <th>CO6</th>
+                </tr>
+                <tr>
+                    <th>Total Marks For CO</th>
+                    @for ($i=0; $i<6; $i++)
+                        <td>{{$all_co_params[$i]['totalMarks']}}</td>
                     @endfor
                 </tr>
                 <tr>
-                    <th>Number of Students Scored more than {{$params['criteriaFromTotalMarks']}}/{{$params['totalMarks']->assign_total}}</th>
-                    <td>{{$assign1_arr[0]}}</td>
-                    <td>{{$assign2_arr[0]}}</td>
+                    {{-- Mark Criteria is same for all COs --}}
+                    <th>{{$all_co_params[0]['markCriteria']->ia}}% of Total Marks (Marks Criteria)</th>
+                    @for($i = 0; $i < 6; $i++)
+                        <td>{{$all_co_params[$i]['criteriaFromTotalMarks']}}</td>
+                    @endfor
                 </tr>
                 <tr>
-                    <th>% of students scored more than {{$params['criteriaFromTotalMarks']}}/{{$params['totalMarks']->assign_total}}</th>
-                    <td>{{$assign1_arr[1]}}%</td>
-                    <td>{{$assign2_arr[1]}}%</td>
+                    <th>Number of Students Scored more than Mark Criteria</th>
+                    @for ($i=0; $i<6; $i++)
+                        <td>{{$finalCoAttainments[$i]['numStdMoreThanCriteria']}}</td>
+                    @endfor
                 </tr>
                 <tr>
-                    <th>COs</th>
-                    <td>{{$assign1_arr[2]->assign1_co}}</td>
-                    <td>{{$assign2_arr[2]->assign2_co}}</td>
+                    <th>% of students scored more than {{$all_co_params[0]['markCriteria']->ia}}% of Total Marks</th>
+                    @for ($i=0; $i<6; $i++)
+                        <td>{{$finalCoAttainments[$i]['perStdMoreThanCriteria']}}</td>
+                    @endfor
                 </tr>
                 <tr>
                     <th>Attainment Level</th>
-                    <td>{{$assign1_arr[3]}}</td>
-                    <td>{{$assign2_arr[3]}}</td>
+                    @for ($i=0; $i<6; $i++)
+                        <td>{{$finalCoAttainments[$i]['attain_level']}}</td>
+                    @endfor
                 </tr>
             </tbody>
         </table> 
-        </div> --}}
+        </div>
     </div>
 @endsection
 
