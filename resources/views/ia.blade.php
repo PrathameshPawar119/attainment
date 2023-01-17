@@ -12,6 +12,12 @@
         -webkit-appearance: none; 
         margin: 0; 
     }
+    .StdNameCol{
+        min-width: 360px;
+    }
+    .table-responsive table{
+        min-width: 1200px;
+    }
 </style>
 @php
     $ia_total_max[0]->ia1_total = ($ia_total_max[0]->ia1_total == 0 ? 1 : $ia_total_max[0]->ia1_total);
@@ -63,7 +69,7 @@
                             <td>{{$student->div}}</td>
                             <td>{{$student->roll_no}}</td>
                             <td>{{$student->student_id}}</td>
-                            <td style="width: 300px; text-align:left;">{{$student->name}}</td>
+                            <td style="width: 440px; text-align:left;" class="StdNameCol">{{$student->name}}</td>
                             <td class="sideColumn1">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
                                     <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+ia1q1"  id="{{$student->group_key}}+ia1q1" max="{{$ia_total_max[0]->ia1_q1}}" min="0" value="{{$student->ia1q1}}" style="height: 26px;">

@@ -12,6 +12,12 @@
         -webkit-appearance: none; 
         margin: 0; 
     }
+    .StdNameCol{
+        min-width: 340px !important;
+    }
+    .table-responsive table {
+        min-width: 1400px;
+    }
 </style>
 @php
     $exp_total_max[0]->exp_total = ($exp_total_max[0]->exp_total == 0 ? 1:$exp_total_max[0]->exp_total);
@@ -65,7 +71,7 @@
                             <td>{{$student->div}}</td>
                             <td>{{$student->roll_no}}</td>
                             <td>{{$student->student_id}}</td>
-                            <td style="width: 300px; text-align:left;">{{$student->name}}</td>
+                            <td style="width: 400px; text-align:left;" class="StdNameCol">{{$student->name}}</td>
                             @for ($i=1; $i <= 12; $i++)
                                 <td class='sideColumn{{$i}} px-0'>
                                     <div class='smallInputField center mx-0' style='border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;'>
