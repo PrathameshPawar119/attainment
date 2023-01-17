@@ -148,7 +148,7 @@
                 <tr>
                     <th>% of students scored more than {{$all_co_params[0]['markCriteria']->ia}}% of Total Marks</th>
                     @for ($i=0; $i<6; $i++)
-                        <td>{{$finalCoAttainments[$i]['perStdMoreThanCriteria']}}</td>
+                        <td>{{$finalCoAttainments[$i]['perStdMoreThanCriteria']}}%</td>
                     @endfor
                 </tr>
                 <tr>

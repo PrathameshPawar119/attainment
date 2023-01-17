@@ -52,7 +52,7 @@ class studentController extends Controller
             $student->save();
 
             
-            $last_tuple = StudentDetails::latest()->first();
+            $last_tuple = StudentDetails::where("user_key", "=", session()->get('user_id'))->latest()->first();
         // init oral entry
             $oral_tuple = new OralModel();
             $oral_tuple->oral_marks = 0;

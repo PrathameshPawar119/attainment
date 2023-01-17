@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\AssignmentModel;
 use App\Models\CO_IA;
+use App\Models\CO_Expt;
 use App\Models\CO_Oral_Endsem_Assign;
+use App\Models\Co_Total_Expt;
 use App\Models\Co_Total_Ia;
 use Illuminate\Http\Request;
 use App\Models\ThresholdModel;
@@ -24,7 +26,7 @@ class AttainmentControl extends Controller
         return array("markCriteria"=>$markCriteria, "totalMarks"=>$totalMarks,"totalStudents"=> $totalStudents,"criteriaFromTotalMarks"=> $criteriaFromTotalMarks);
     }
 
-    // this function returns primary params when total marks are ready
+    // this function returns primary params when total marks are known
     public function getAttainmentArrPartB($thresholdColumn, $totalMark){
         $markCriteria = ThresholdModel::select($thresholdColumn)->where("user_id", "=", session()->get('user_id'))->first();
         $totalStudents = $this->totalNumStd();
@@ -38,27 +40,41 @@ class AttainmentControl extends Controller
     }
 
 // IA questions in each co
-    public function IaQuestionsPerCo(){
+    public function UnitsPerCo($sheet){
         $output_arr = array();
         for ($i=1; $i <= 6; $i++) { 
-            $Questions = CO_IA::select("CO$i")->where("user_id", "=", session()->get("user_id"))->first();
+            if($sheet == 'ia'){
+                $Questions = CO_IA::select("CO$i")->where("user_id", "=", session()->get("user_id"))->first();
+            }
+            else if($sheet == 'expt'){
+                $Questions = CO_Expt::select("CO$i")->where("user_id", "=", session()->get("user_id"))->first();
+            }
             array_push($output_arr, $Questions);
         }
         return $output_arr;
     }
 
 // 2 functions for IA total attainment
-    public function IaTotalPerCO($arr){
+    public function MarksTotalPerCO($arr, $sheet){
         // $arr must contain questions per co in ia
         $output_arr = array();
         for($i=0; $i<6; $i++){
             $j = $i+1;
             $co_arr = json_decode($arr[$i]["CO$j"]);
-            $update_co_column = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
-                                    ->join("ia", "ia.id", "co_total_ia.id")
-                                    ->select("co_total_ia_id", (current($co_arr) ?current($co_arr) :'ia1') , (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'))
-                                    ->where("user_key", "=", session()->get("user_id"))
-                                    ->where("student_details.deleted_at", "=", null)->get();
+            if($sheet == 'ia'){
+                $update_co_column = Co_Total_Ia::join("student_details", "student_details.id", "co_total_$sheet.id")
+                                        ->join("ia", "ia.id", "co_total_ia.id")
+                                        ->select("co_total_".$sheet."_id", (current($co_arr) ?current($co_arr) :'ia1') , (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'))
+                                        ->where("user_key", "=", session()->get("user_id"))
+                                        ->where("student_details.deleted_at", "=", null)->get();
+            }
+            else if($sheet == 'expt'){
+                $update_co_column = Co_Total_Expt::join("student_details", "student_details.id", "co_total_$sheet.id")
+                                        ->join("experiments", "experiments.id", "co_total_expt.id")
+                                        ->select("co_total_".$sheet."_id", (current($co_arr) ?current($co_arr) :'experiments.id') , (next($co_arr)?current($co_arr):'experiments.id'), (next($co_arr)?current($co_arr):'experiments.id'), (next($co_arr)?current($co_arr):'experiments.id'), (next($co_arr)?current($co_arr):'experiments.id'), (next($co_arr)?current($co_arr):'experiments.id'))
+                                        ->where("user_key", "=", session()->get("user_id"))
+                                        ->where("student_details.deleted_at", "=", null)->get();
+            }
             array_push($output_arr, $update_co_column);
         }
         return $output_arr;
@@ -100,7 +116,7 @@ class AttainmentControl extends Controller
         return $output_arr;
     }
 
-    public function UpdateIaCoTotalTable($updateCOs, $cos){
+    public function UpdateCoTotalTable($updateCOs, $cos, $sheet){
         foreach ($updateCOs as $key=>$QuestionsPerCo) {
             // 6 COS Questions
             $current_co = "CO".$key+1;
@@ -112,8 +128,14 @@ class AttainmentControl extends Controller
                 foreach ($current_qs_arr as $key => $value) {
                     $ia_mark_sum = $ia_mark_sum + $a->$value;
                 }
-                $update_co_column_query = Co_Total_Ia::where("co_total_ia_id", "=", $a->co_total_ia_id)
-                                            ->update([$current_co=>$ia_mark_sum]);
+                if($sheet = 'ia'){
+                    $update_co_column_query = Co_Total_Ia::where("co_total_ia_id", "=", $a->co_total_ia_id)
+                                                ->update([$current_co=>$ia_mark_sum]);
+                }
+                else if($sheet = 'expt'){
+                    $update_co_column_query = Co_Total_Expt::where("co_total_expt_id", "=", $a->co_total_expt_id)
+                            ->update([$current_co=>$ia_mark_sum]);
+                }
             }
         }
     }
@@ -137,6 +159,7 @@ class AttainmentControl extends Controller
         return view('attainment.oral', compact('resArr'));
     }
 
+
     public function EndsemAttainment(Request $req){
         $params = $this->getAttainmentArrPartA('endsem', 'endsem_total');
         $numStdMoreThanCriteria = EndsemModel::join("student_details", "student_details.id", "endsem.id")
@@ -154,6 +177,7 @@ class AttainmentControl extends Controller
         $resArr = array($params["markCriteria"]->endsem, $params["totalMarks"]->endsem_total, $params["criteriaFromTotalMarks"], $numStdMoreThanCriteria, $perStdMoreThanCriteria, $endsem_cos->endsem_co, $attain_level);
         return view('attainment.endsem', compact('resArr'));
     }
+
 
     public function AssignAttainment(Request $req){
         $params = $this->getAttainmentArrPartA('assigns', 'assign_total');
@@ -183,6 +207,7 @@ class AttainmentControl extends Controller
 
         return view("attainment.assignment", compact('params', 'assign1_arr', 'assign2_arr'));
     }
+
 
     public function GetCoTotalIaTable(){
         // Made this saperate function, so that it can be called by ajax 
@@ -214,11 +239,11 @@ class AttainmentControl extends Controller
     public function IaAttainment(){
     //Table 1--> for showing total marks per co
         //get cos --> returns array of questions ask in each co, varies per user
-        $cos = $this->IaQuestionsPerCo();
-        // get iaQs marks for particular student --> returns nested array-object ending with onject cntaining, co_total_ia_id, and marks
-        $updateCOs = $this->IaTotalPerCO($cos);
+        $cos = $this->UnitsPerCo('ia');
+        // get iaQs marks for particular student --> returns nested array-object ending with object cntaining, co_total_ia_id, and marks
+        $updateCOs = $this->MarksTotalPerCO($cos, 'ia');
         // update co_table_isa according to cos and updateCOs data of students marks
-        $finallyUpdateCOTableIA = $this->UpdateIaCoTotalTable($updateCOs, $cos);
+        $finallyUpdateCOTableIA = $this->UpdateCoTotalTable($updateCOs, $cos, 'ia');
 
         // Function to get co_total_ia table
         $co_total_table_details = $this->GetCoTotalIaTable();
@@ -241,6 +266,17 @@ class AttainmentControl extends Controller
     }
 
     public function ExptAttainment(){
+    // Table 1 --> For showing Marks Total per CO
+        // Get Experiments in each Co
+        $cos = $this->UnitsPerCo('expt');
+
+        // get Expts marks for particular student --> returns nested array-object ending with object containing, co_total_expt_id, and marks
+        $updateCOs = $this->MarksTotalPerCO($cos, 'expt');
+
+        // update co_table_expt according to cos and updateCOs data of students marks
+        $finallyUpdateCOTableIA = $this->UpdateCoTotalTable($updateCOs, $cos, 'expt');
+
         
+        return view('attainment.expt', compact('updateCOs'));
     }
 }

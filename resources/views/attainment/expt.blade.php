@@ -51,6 +51,10 @@
                     <button class="btn btn-outline-secondary" type="submit" value="update">Refresh</button>
                 </div>
             </div>
+            @php
+                echo "<pre>";
+                print_r($updateCOs);  
+            @endphp
         <div class="table-responsive">
             {{-- <table class="table my-2 table-hover text-center">
                 <thead>

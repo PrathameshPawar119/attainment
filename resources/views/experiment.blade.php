@@ -31,7 +31,7 @@
             </div>
         </form>
         <div class="upperBoxBtns" style="display: inline-block;">
-            <a href="{{url("/students/input")}}" class="mx-2"><button class="btn btn-outline-secondary">{{$trashBtn}}</button></a>
+            <a href="{{url("/attainment/expt")}}" class="mx-2"><button class="btn btn-outline-secondary">{{$trashBtn}}</button></a>
             <button class="btn btn-outline-secondary" type="submit" value="update" >Refresh</button>
         </div>
     </div>
