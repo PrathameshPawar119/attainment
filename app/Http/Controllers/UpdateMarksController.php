@@ -105,11 +105,11 @@ class UpdateMarksController extends Controller
                 ->select('experiments.e1', 'experiments.e2', 'experiments.e3', 'experiments.e4', 'experiments.e5', 'experiments.e6', 'experiments.e7', 'experiments.e8', 'experiments.e9', 'experiments.e10', 'experiments.e11', 'experiments.e12')
                 ->where("student_id", "=", $req['id'])
                 ->where("user_key", "=", session()->get('user_id'))
-                ->get();
+                ->first();
         $temp = getCriteiaTotalMarks();
 
         if($student){
-            echo $ex[0]->e1."+".$ex[0]->e2."+".$ex[0]->e3."+".$ex[0]->e4."+".$ex[0]->e5."+".$ex[0]->e6."+".$ex[0]->e7."+".$ex[0]->e8."+".$ex[0]->e9."+".$ex[0]->e10."+".$ex[0]->e11."+".$ex[0]->e12."+".$temp->exp_total;
+            echo $ex->e1."+".$ex->e2."+".$ex->e3."+".$ex->e4."+".$ex->e5."+".$ex->e6."+".$ex->e7."+".$ex->e8."+".$ex->e9."+".$ex->e10."+".$ex->e11."+".$ex->e12."+".$temp->exp_total;
         }
         else{
             echo "0";

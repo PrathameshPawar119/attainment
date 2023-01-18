@@ -1,6 +1,6 @@
 @extends('layouts.attain')
 @push('title')
-    <title>IA Attainment</title>
+    <title>Expt Attainment</title>
 @endpush
 <style>
 
@@ -37,7 +37,7 @@
 @endsection
 @section('lower-section')
     <div class="lowerSectionBox container">
-        <h4><center>IA Attainment</center></h4>
+        <h4><center>Expt Attainment</center></h4>
         {{-- Table to show co_total_ia --}}
             <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
                 <form action="{{('/sheets/assignment')}}" method="get" style="display: inline-block;">
@@ -51,12 +51,8 @@
                     <button class="btn btn-outline-secondary" type="submit" value="update">Refresh</button>
                 </div>
             </div>
-            @php
-                echo "<pre>";
-                print_r($updateCOs);  
-            @endphp
         <div class="table-responsive">
-            {{-- <table class="table my-2 table-hover text-center">
+            <table class="table my-2 table-hover text-center">
                 <thead>
                     <tr>
                         <th scope="col">Sr. No</th>
@@ -93,7 +89,7 @@
                                 <td>{{$student->div}}</td>
                                 <td>{{$student->roll_no}}</td>
                                 <td>{{$student->student_id}}</td>
-                                <td style="width: 300px; text-align:left;">{{$student->name}}</td>
+                                <td style="width: 440px; text-align:left; min-width:360px;">{{$student->name}}</td>
                                 <td class="sideColumn1">
                                     {{$student->CO1}}
                                 </td>
@@ -116,11 +112,11 @@
                         @endforeach
                     </form>
                 </tbody>
-            </table> --}}
+            </table>
         </div>
     <div class="LowerAttainmentTable container">
          <table class="table table-hover my-4 mx-4">
-            {{-- <tbody>
+            <tbody>
                 <tr>
                     <th>CO</th>
                     <th>CO1</th>
@@ -137,8 +133,8 @@
                     @endfor
                 </tr>
                 <tr>
-                    Mark Criteria is same for all COs
-                    <th>{{$all_co_params[0]['markCriteria']->ia}}% of Total Marks (Marks Criteria)</th>
+                    {{-- Mark Criteria is same for all COs --}}
+                    <th>{{$all_co_params[0]['markCriteria']->expt}}% of Total Marks (Marks Criteria)</th>
                     @for($i = 0; $i < 6; $i++)
                         <td>{{$all_co_params[$i]['criteriaFromTotalMarks']}}</td>
                     @endfor
@@ -150,9 +146,9 @@
                     @endfor
                 </tr>
                 <tr>
-                    <th>% of students scored more than {{$all_co_params[0]['markCriteria']->ia}}% of Total Marks</th>
+                    <th>% of students scored more than {{$all_co_params[0]['markCriteria']->expt}}% of Total Marks</th>
                     @for ($i=0; $i<6; $i++)
-                        <td>{{$finalCoAttainments[$i]['perStdMoreThanCriteria']}}</td>
+                        <td>{{$finalCoAttainments[$i]['perStdMoreThanCriteria']}}%</td>
                     @endfor
                 </tr>
                 <tr>
@@ -161,10 +157,8 @@
                         <td>{{$finalCoAttainments[$i]['attain_level']}}</td>
                     @endfor
                 </tr> 
-            </tbody> --}}
+            </tbody>
         </table> 
         </div>
     </div>
 @endsection
-
-

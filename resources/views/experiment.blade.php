@@ -158,13 +158,15 @@
                         setTimeout(() => {
                             e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
                         }, 2000); 
+
                         var exp_total = 0;
                         var all_exp_total = 0;
                         var parsedRes = res.split("+");
+                        console.log(res);
                         var exp_limit = parseInt(parsedRes[12]);
                         for (let i = 0; i < 12; i++) {
                             exp_total = parseInt(parsedRes[i]);
-                            document.getElementById(`${stuId("+")[0]}+e${i+1}`).innerHTML = exp_total;
+                            document.getElementById(`${stuId[0]}+e${i+1}`).innerHTML = exp_total;
                             all_exp_total += exp_total;
                         }
                         document.getElementById(`${stuId[0]}+avg`).innerHTML = (((all_exp_total)*15)/(exp_limit*12)).toFixed();

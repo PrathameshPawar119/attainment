@@ -62,16 +62,16 @@ class AttainmentControl extends Controller
             $j = $i+1;
             $co_arr = json_decode($arr[$i]["CO$j"]);
             if($sheet == 'ia'){
-                $update_co_column = Co_Total_Ia::join("student_details", "student_details.id", "co_total_$sheet.id")
+                $update_co_column = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
                                         ->join("ia", "ia.id", "co_total_ia.id")
-                                        ->select("co_total_".$sheet."_id", (current($co_arr) ?current($co_arr) :'ia1') , (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'))
+                                        ->select("co_total_ia_id", (current($co_arr) ?current($co_arr) :'ia1') , (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'), (next($co_arr)?current($co_arr):'ia1'))
                                         ->where("user_key", "=", session()->get("user_id"))
                                         ->where("student_details.deleted_at", "=", null)->get();
             }
             else if($sheet == 'expt'){
-                $update_co_column = Co_Total_Expt::join("student_details", "student_details.id", "co_total_$sheet.id")
+                $update_co_column = Co_Total_Expt::join("student_details", "student_details.id", "co_total_expt.id")
                                         ->join("experiments", "experiments.id", "co_total_expt.id")
-                                        ->select("co_total_".$sheet."_id", (current($co_arr) ?current($co_arr) :'experiments.id') , (next($co_arr)?current($co_arr):'experiments.id'), (next($co_arr)?current($co_arr):'experiments.id'), (next($co_arr)?current($co_arr):'experiments.id'), (next($co_arr)?current($co_arr):'experiments.id'), (next($co_arr)?current($co_arr):'experiments.id'))
+                                        ->select("co_total_expt_id", (current($co_arr) ?current($co_arr) :'experiments.id') , (next($co_arr)?current($co_arr):'experiments.id'), (next($co_arr)?current($co_arr):'experiments.id'), (next($co_arr)?current($co_arr):'experiments.id'), (next($co_arr)?current($co_arr):'experiments.id'), (next($co_arr)?current($co_arr):'experiments.id'))
                                         ->where("user_key", "=", session()->get("user_id"))
                                         ->where("student_details.deleted_at", "=", null)->get();
             }
@@ -81,27 +81,46 @@ class AttainmentControl extends Controller
     }
 
     // Function to calculate Total OutOf marks for each Co in IA and EXPT
-    public function OutOfMarksPerCo($arr){
+    public function OutOfMarksPerCo($arr, $sheet){
         // $arr must contain questions per co in ia
         $output_arr = array();
         $fake_arr = array();
+        $ExptTotalMark = 0;
+        if($sheet == 'expt'){
+            $ExptTotalMark = CriteriaModel::join("signup_details", "signup_details.user_id", "criteria.user_id")
+                                ->select('criteria.exp_total')
+                                ->where("signup_details.user_id", "=", session()->get("user_id"))->first();
+        }
         for($i=0; $i<6; $i++){
             $j = $i+1;
             $co_arr = json_decode($arr[$i]["CO$j"]);
-            $co_arr2 = array();
-            foreach($co_arr as $q){
-                // converting '1a1q1' to 'ia1_q1'
-                $temp = substr_replace($q, "_", 3, 0);
-                array_push($co_arr2, $temp);
+            if($sheet == 'ia'){
+                $co_arr2 = array();
+                // Modifying string only needed for IA not for expts
+                foreach($co_arr as $q){
+                    // converting '1a1q1' to 'ia1_q1'
+                    $temp = substr_replace($q, "_", 3, 0);
+                    array_push($co_arr2, $temp);
+                }
+                $co_arr = $co_arr2;
+                // Fetching required Question outof marks
+                $outOf = CriteriaModel::join("signup_details", "signup_details.user_id", "criteria.user_id")
+                                ->select((current($co_arr) ? current($co_arr) :'ia1_total') , (next($co_arr)?current($co_arr):'ia1_total'), (next($co_arr)?current($co_arr):'ia1_total'), (next($co_arr)?current($co_arr):'ia1_total'), (next($co_arr)?current($co_arr):'ia1_total'), (next($co_arr)?current($co_arr):'ia1_total'))
+                                ->where("signup_details.user_id", "=", session()->get("user_id"))->first();
+                array_push($output_arr, $outOf);
             }
-            // Fetching required Question outof marks
-            $co_arr = $co_arr2;
-            $outOf = CriteriaModel::join("signup_details", "signup_details.user_id", "criteria.user_id")
-                            ->select((current($co_arr) ? current($co_arr) :'ia1_total') , (next($co_arr)?current($co_arr):'ia1_total'), (next($co_arr)?current($co_arr):'ia1_total'), (next($co_arr)?current($co_arr):'ia1_total'), (next($co_arr)?current($co_arr):'ia1_total'), (next($co_arr)?current($co_arr):'ia1_total'))
-                            ->where("signup_details.user_id", "=", session()->get("user_id"))->get();
-            array_push($output_arr, $outOf[0]);
+            else if($sheet == 'expt'){
+                // Mark critaria is same for every Expt, so no need to traverse and add expt total according to expts in per co
+                // directly multiply  by number of expts
+                $coCount = count($co_arr);
+                array_push($output_arr, ($coCount*($ExptTotalMark->exp_total)));
+            }
         }
-
+        if($sheet == 'expt'){
+            // For expt no need to traverse every qs like ia
+            return $output_arr;
+        }
+        // For IA
         //Adding question outof marks and pushing in final arr
         foreach ($output_arr as $QsPerCo) {
             $co_total = 0;
@@ -128,11 +147,11 @@ class AttainmentControl extends Controller
                 foreach ($current_qs_arr as $key => $value) {
                     $ia_mark_sum = $ia_mark_sum + $a->$value;
                 }
-                if($sheet = 'ia'){
+                if($sheet == 'ia'){
                     $update_co_column_query = Co_Total_Ia::where("co_total_ia_id", "=", $a->co_total_ia_id)
                                                 ->update([$current_co=>$ia_mark_sum]);
                 }
-                else if($sheet = 'expt'){
+                else if($sheet == 'expt'){
                     $update_co_column_query = Co_Total_Expt::where("co_total_expt_id", "=", $a->co_total_expt_id)
                             ->update([$current_co=>$ia_mark_sum]);
                 }
@@ -209,26 +228,46 @@ class AttainmentControl extends Controller
     }
 
 
-    public function GetCoTotalIaTable(){
+    public function GetCoTotalTable($sheet){
         // Made this saperate function, so that it can be called by ajax 
         // so for paginate, no need to calculate and update co_total_ia again and again
         // https://stackoverflow.com/questions/36279716/how-to-set-pagination-in-laravel-without-refreshing-the-whole-page
-        $co_total_table_details = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
-                            ->select("student_details.roll_no","student_details.student_id","student_details.name", "student_details.div", "co_total_ia.CO1", "co_total_ia.CO2", "co_total_ia.CO3", "co_total_ia.CO4", "co_total_ia.CO5", "co_total_ia.CO6" )
-                            ->where("user_key", "=", session()->get('user_id'))
-                            ->where("deleted_at", "=", null)
-                            ->orderBy('roll_no', 'ASC')->paginate(10);
-        return $co_total_table_details;
+        if($sheet == 'ia'){
+            $co_total_table_details = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
+                                ->select("student_details.roll_no","student_details.student_id","student_details.name", "student_details.div", "co_total_ia.CO1", "co_total_ia.CO2", "co_total_ia.CO3", "co_total_ia.CO4", "co_total_ia.CO5", "co_total_ia.CO6" )
+                                ->where("user_key", "=", session()->get('user_id'))
+                                ->where("deleted_at", "=", null)
+                                ->orderBy('roll_no', 'ASC')->paginate(10);
+            }
+            else if($sheet == 'expt'){
+                $co_total_table_details = Co_Total_Expt::join("student_details", "student_details.id", "co_total_expt.id")
+                    ->select("student_details.roll_no","student_details.student_id","student_details.name", "student_details.div", "co_total_expt.CO1", "co_total_expt.CO2", "co_total_expt.CO3", "co_total_expt.CO4", "co_total_expt.CO5", "co_total_expt.CO6" )
+                    ->where("user_key", "=", session()->get('user_id'))
+                    ->where("deleted_at", "=", null)
+                    ->orderBy('roll_no', 'ASC')->paginate(10);
+            }
+            return $co_total_table_details;
     }
 
-    // Attainment Level for each co here
-    public function GetAttainLevelsForIaCo($column, $params){
-        $numStdMoreThanCriteria = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
-                                    ->where("user_key", "=", session()->get("user_id"))
-                                    ->where("deleted_at", "=", null)
-                                    ->where("$column", ">=", $params['criteriaFromTotalMarks'])
-                                    ->select("student_id")
-                                    ->distinct()->count();
+    // Attainment Level for each co here for ia and expt
+    public function GetAttainLevelsForCo($column, $params, $sheet){
+        if($sheet == 'ia')
+        {
+            $numStdMoreThanCriteria = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
+                                        ->where("user_key", "=", session()->get("user_id"))
+                                        ->where("deleted_at", "=", null)
+                                        ->where("$column", ">=", $params['criteriaFromTotalMarks'])
+                                        ->select("student_id")
+                                        ->distinct()->count();
+        }
+        else if($sheet == 'expt'){
+            $numStdMoreThanCriteria = Co_Total_Expt::join("student_details", "student_details.id", "co_total_expt.id")
+                                        ->where("user_key", "=", session()->get("user_id"))
+                                        ->where("deleted_at", "=", null)
+                                        ->where("$column", ">=", $params['criteriaFromTotalMarks'])
+                                        ->select("student_id")
+                                        ->distinct()->count();
+        }
         $perStdMoreThanCriteria = round((($numStdMoreThanCriteria/$params['totalStudents'])*100), 2);
         $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria);
 
@@ -246,11 +285,11 @@ class AttainmentControl extends Controller
         $finallyUpdateCOTableIA = $this->UpdateCoTotalTable($updateCOs, $cos, 'ia');
 
         // Function to get co_total_ia table
-        $co_total_table_details = $this->GetCoTotalIaTable();
+        $co_total_table_details = $this->GetCoTotalTable('ia');
 
     // Table 2--> for showing attainment table
         // Outof Marks per Co
-        $outof_per_co = $this->OutOfMarksPerCo($cos);
+        $outof_per_co = $this->OutOfMarksPerCo($cos, 'ia');
 
         $all_co_params = array();
         $finalCoAttainments = array();
@@ -258,7 +297,7 @@ class AttainmentControl extends Controller
             $j = $i+1;
             $co_param = $this->getAttainmentArrPartB('ia', $outof_per_co[$i]);
             array_push($all_co_params, $co_param);        
-            $co_attain = $this->GetAttainLevelsForIaCo("CO$j", $co_param);
+            $co_attain = $this->GetAttainLevelsForCo("CO$j", $co_param, 'ia');
             array_push($finalCoAttainments, $co_attain);    
         }
 
@@ -276,7 +315,25 @@ class AttainmentControl extends Controller
         // update co_table_expt according to cos and updateCOs data of students marks
         $finallyUpdateCOTableIA = $this->UpdateCoTotalTable($updateCOs, $cos, 'expt');
 
+        // Function to get co_total_expt table
+        $co_total_table_details = $this->GetCoTotalTable('expt');
+
+    // Table 2--> for showing attainment table
+        // Outof Marks per Co
+        $outof_per_co = $this->OutOfMarksPerCo($cos, 'expt');
+
         
-        return view('attainment.expt', compact('updateCOs'));
+        $all_co_params = array();
+        $finalCoAttainments = array();
+        for ($i=0; $i < 6; $i++) { 
+            $j = $i+1;
+            $co_param = $this->getAttainmentArrPartB('expt', $outof_per_co[$i]);
+            array_push($all_co_params, $co_param);        
+            $co_attain = $this->GetAttainLevelsForCo("CO$j", $co_param, 'expt');
+            array_push($finalCoAttainments, $co_attain);    
+        }
+
+        
+        return view('attainment.expt', compact('co_total_table_details', 'outof_per_co', 'all_co_params', 'finalCoAttainments'));
     }
 }
