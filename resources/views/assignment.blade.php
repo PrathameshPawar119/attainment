@@ -20,9 +20,15 @@
     }
 </style>
 @php
-  $assign_total_max[0]->assign_total =   ($assign_total_max[0]->assign_total == 0 ? 1: $assign_total_max[0]->assign_total);
+  $assign_total_max->assign_total =   ($assign_total_max->assign_total == 0 ? 1: $assign_total_max->assign_total);
+    $msg = "...";
+    if (session()->has("alertMsg")) {
+        $msg = session()->get("alertMsg");
+    }
+
 @endphp
 <div class="assignmentPage container">
+<x-alert-component mainclass="col-12" color="primary" message="{{$msg}}" />
     <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
         <form action="{{('/sheets/assignment')}}" method="get" style="display: inline-block;">
             <div class="input-group mx-1">
@@ -70,38 +76,38 @@
                             <td style="width: 440px; text-align:left;" class="StdNameCol">{{$student->name}}</td>
                             <td class="sideColumn1">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a1p1"  id="{{$student->group_key}}+a1p1" max="{{$assign_total_max[0]->assign_p1}}" min="0" value="{{$student->a1p1}}" style="height: 26px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a1p1"  id="{{$student->group_key}}+a1p1" max="{{$assign_total_max->assign_p1}}" min="0" value="{{$student->a1p1}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="sideColumn1">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a1p2"  id="{{$student->group_key}}+a1p2" max="{{$assign_total_max[0]->assign_p2}}" min="0" value="{{$student->a1p2}}" style="height: 26px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a1p2"  id="{{$student->group_key}}+a1p2" max="{{$assign_total_max->assign_p2}}" min="0" value="{{$student->a1p2}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="sideColumn1">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a1p3"  id="{{$student->group_key}}+a1p3" max="{{$assign_total_max[0]->assign_p3}}" min="0" value="{{$student->a1p3}}" style="height: 26px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a1p3"  id="{{$student->group_key}}+a1p3" max="{{$assign_total_max->assign_p3}}" min="0" value="{{$student->a1p3}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="mainColumn1" style="background-color: aliceblue; cursor: pointer;" id="{{$student->student_id}}+a1">{{$student->a1}}</td>
                             <td class="sideColumn2">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a2p1"  id="{{$student->group_key}}+a2p1" max="{{$assign_total_max[0]->assign_p1}}" min="0" value="{{$student->a2p1}}" style="height: 26px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a2p1"  id="{{$student->group_key}}+a2p1" max="{{$assign_total_max->assign_p1}}" min="0" value="{{$student->a2p1}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="sideColumn2">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a2p2"  id="{{$student->group_key}}+a2p2" max="{{$assign_total_max[0]->assign_p2}}" min="0" value="{{$student->a2p2}}" style="height: 26px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a2p2"  id="{{$student->group_key}}+a2p2" max="{{$assign_total_max->assign_p2}}" min="0" value="{{$student->a2p2}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="sideColumn2">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
-                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a2p3"  id="{{$student->group_key}}+a2p3" max="{{$assign_total_max[0]->assign_p3}}" min="0" value="{{$student->a2p3}}" style="height: 26px;">
+                                    <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}+a2p3"  id="{{$student->group_key}}+a2p3" max="{{$assign_total_max->assign_p3}}" min="0" value="{{$student->a2p3}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="mainColumn2" style="background-color: aliceblue; cursor: pointer;" id="{{$student->student_id}}+a2">{{$student->a2}}</td>
                             <td id="{{$student->student_id}}+a1a2">{{$student->a1+$student->a2}}</td>
-                            <td id="{{$student->student_id}}+avg+a1a2">{{round((($student->a1+$student->a2)*5)/(($assign_total_max[0]->assign_total*2)))}}</td>
+                            <td id="{{$student->student_id}}+avg+a1a2">{{round((($student->a1+$student->a2)*5)/(($assign_total_max->assign_total*2)))}}</td>
                         </tr>
                     @endforeach
                 </form>

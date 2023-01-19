@@ -1,10 +1,6 @@
 @extends('layouts.main')
 @section('main-section')
 
-    @if (!session()->has('user_id'))
-        {{header('Location: ')}}
-    @endif
-
 @push('title')
     <title>Input</title>
 @endpush
@@ -73,7 +69,7 @@
 
         {{-- Show last record added for easy user Xperience --}}
         <br/>
-        <h5>Last Record Added</h5>
+        <h5>Last Record Added →</h5>
         <table class="table my-4 table-hover">
         <thead>
             <tr>
@@ -87,23 +83,24 @@
             </tr>
         </thead>                                                                                                                    
         <tbody>
-            @if (!isset($last_record))
+            @if (!($total_tuples))
                 <h3 class="my-2 mx-2"> {{"Ready to add first Student !"}} </h3>           
+                @else
+                <tr>
+                    <td>{{$total_tuples}}</td>
+                    <td>{{$last_record->div}}</td>
+                    <td>{{$last_record->roll_no}}</td>
+                    <td>{{$last_record->student_id}}</td>
+                    <td>{{$last_record->name}}</td>
+                    <td>@if (($last_record->gender)=='M')
+                        Male
+                        @else
+                        Female
+                        @endif 
+                    </td>
+                    <td>{{get_formatted_date(($last_record->updated_at), 'd-M-Y')}}</td>
+                </tr>
             @endif
-            <tr>
-                <td>{{$total_tuples}}</td>
-                <td>{{$last_record->div}}</td>
-                <td>{{$last_record->roll_no}}</td>
-                <td>{{$last_record->student_id}}</td>
-                <td>{{$last_record->name}}</td>
-                <td>@if (($last_record->gender)=='M')
-                    Male
-                    @else
-                    Female
-                    @endif 
-                </td>
-                <td>{{get_formatted_date(($last_record->updated_at), 'd-M-Y')}}</td>
-            </tr>
         </tbody>
     </table>
 </div>

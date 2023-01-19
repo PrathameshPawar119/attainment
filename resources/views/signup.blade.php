@@ -6,7 +6,7 @@
 
     <div class="container" style="margin-top: 40px;">
         <div class="container signup box">
-            <x-alert-component mainclass="col-12" color="primary" message="Successful hua ree brio!" />
+            <x-alert-component mainclass="col-12" color="primary" message="..." />
             <form method="POST" action="{{url('/auth/signup_user')}}">
                 @csrf
                 <x-input-component id="new_email" name="email" type="email" label="Enter Email" mainclass="mb-3"/>

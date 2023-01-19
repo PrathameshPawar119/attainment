@@ -20,9 +20,14 @@
     }
 </style>
 @php
-    $exp_total_max[0]->exp_total = ($exp_total_max[0]->exp_total == 0 ? 1:$exp_total_max[0]->exp_total);
+    $exp_total_max->exp_total = ($exp_total_max->exp_total == 0 ? 1:$exp_total_max->exp_total);
+    $msg = "...";
+    if (session()->has("alertMsg")) {
+        $msg = session()->get("alertMsg");
+    }
 @endphp
 <div class="iaPage container">
+<x-alert-component mainclass="col-12" color="primary" message="{{$msg}}" />
     <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
         <form action="{{('/sheets/experiments')}}" method="get" style="display: inline-block;">
             <div class="input-group mx-1">
@@ -75,22 +80,22 @@
                             @for ($i=1; $i <= 12; $i++)
                                 <td class='sideColumn{{$i}} px-0'>
                                     <div class='smallInputField center mx-0' style='border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;'>
-                                        <input type='number' class='form-control my-0 marksInputField' name='{{$student->student_id}}+e{{$i}}r1'  id='{{$student->group_key}}+e{{$i}}r1' max="{{$exp_total_max[0]->exp_r1}}" min="0" value='{{$Exp_r1[$i-1]}}' style='height: 26px;'>
+                                        <input type='number' class='form-control my-0 marksInputField' name='{{$student->student_id}}+e{{$i}}r1'  id='{{$student->group_key}}+e{{$i}}r1' max="{{$exp_total_max->exp_r1}}" min="0" value='{{$Exp_r1[$i-1]}}' style='height: 26px;'>
                                     </div>
                                 </td>
                                 <td class='sideColumn{{$i}} px-0'>
                                     <div class='smallInputField center mx-0' style='border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;'>
-                                        <input type='number' class='form-control my-0 marksInputField' name='{{$student->student_id}}+e{{$i}}r2'  id='{{$student->group_key}}+e{{$i}}r2' max="{{$exp_total_max[0]->exp_r2}}" min="0" value='{{$Exp_r2[$i-1]}}' style='height: 26px;'>
+                                        <input type='number' class='form-control my-0 marksInputField' name='{{$student->student_id}}+e{{$i}}r2'  id='{{$student->group_key}}+e{{$i}}r2' max="{{$exp_total_max->exp_r2}}" min="0" value='{{$Exp_r2[$i-1]}}' style='height: 26px;'>
                                     </div>
                                 </td>
                                 <td class='sideColumn{{$i}} px-0'>
                                     <div class='smallInputField center mx-0' style='border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;'>
-                                        <input type='number' class='form-control my-0 marksInputField' name='{{$student->student_id}}+e{{$i}}r3'  id='{{$student->group_key}}+e{{$i}}r3' max="{{$exp_total_max[0]->exp_r3}}" min="0" value='{{$Exp_r3[$i-1]}}' style='height: 26px;'>
+                                        <input type='number' class='form-control my-0 marksInputField' name='{{$student->student_id}}+e{{$i}}r3'  id='{{$student->group_key}}+e{{$i}}r3' max="{{$exp_total_max->exp_r3}}" min="0" value='{{$Exp_r3[$i-1]}}' style='height: 26px;'>
                                     </div>
                                 </td>
                                 <td class='mainColumn{{$i}}' style='background-color: aliceblue; cursor: pointer;' id='{{$student->student_id}}+e{{$i}}'>{{$Exp_Totals[$i-1]}}</td>
                             @endfor
-                            <td id="{{$student->student_id}}+avg">{{round((($student->e1+$student->e2+$student->e3+$student->e4+$student->e5+$student->e6+$student->e7+$student->e8+$student->e9+$student->e10+$student->e11+$student->e12)*15)/($exp_total_max[0]->exp_total*12))}}</td>
+                            <td id="{{$student->student_id}}+avg">{{round((($student->e1+$student->e2+$student->e3+$student->e4+$student->e5+$student->e6+$student->e7+$student->e8+$student->e9+$student->e10+$student->e11+$student->e12)*15)/($exp_total_max->exp_total*12))}}</td>
                         </tr>
                     @endforeach
                 </form>

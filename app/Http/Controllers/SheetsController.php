@@ -97,7 +97,7 @@ class SheetsController extends Controller
                             ->paginate(10);
                         }
         
-        $assign_total_max = CriteriaModel::where("user_id", "=", session()->get("user_id"))->select("assign_total", "assign_p1", "assign_p2", "assign_p3")->get();
+        $assign_total_max = CriteriaModel::where("user_id", "=", session()->get("user_id"))->select("assign_total", "assign_p1", "assign_p2", "assign_p3")->first();
         $trashBtn = "Assignments Attainment";
         return view("assignment", compact('students', 'trashBtn', 'searchText', 'assign_total_max'));
     }
@@ -122,7 +122,7 @@ class SheetsController extends Controller
                             ->paginate(10);
                         }
 
-        $ia_total_max = CriteriaModel::where("user_id", "=", session()->get("user_id"))->select("ia1_q1", "ia1_q2", "ia1_q3", "ia1_q4", "ia1_total", "ia2_q1", "ia2_q2", "ia2_q3", "ia2_q4", "ia2_total")->get();
+        $ia_total_max = CriteriaModel::where("user_id", "=", session()->get("user_id"))->select("ia1_q1", "ia1_q2", "ia1_q3", "ia1_q4", "ia1_total", "ia2_q1", "ia2_q2", "ia2_q3", "ia2_q4", "ia2_total")->first();
         $trashBtn = "IA Attainment";
         return view("ia", compact('students', 'trashBtn', 'searchText', 'ia_total_max'));
     }
@@ -147,7 +147,7 @@ class SheetsController extends Controller
                             ->paginate(10);
                         }
 
-        $exp_total_max = CriteriaModel::where("user_id", "=", session()->get("user_id"))->select("exp_r1", "exp_r2", "exp_r3", "exp_total")->get();
+        $exp_total_max = CriteriaModel::where("user_id", "=", session()->get("user_id"))->select("exp_r1", "exp_r2", "exp_r3", "exp_total")->first();
         $trashBtn = "Expt Attainment";
         return view("experiment", compact('students', 'trashBtn', 'searchText', 'exp_total_max'));
     }

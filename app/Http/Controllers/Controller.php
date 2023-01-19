@@ -33,4 +33,11 @@ class Controller extends BaseController
         }
         return 0;
     }
+
+    //function to put login details in session to keep user logged in
+    public function PutUserSession($username, $email, $user_id){
+        session()->put("username", $username);
+        session()->put("user_email", $email);
+        session()->put("user_id", $user_id);
+    }
 }

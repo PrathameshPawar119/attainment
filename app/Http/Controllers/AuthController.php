@@ -31,6 +31,8 @@ class AuthController extends Controller
         $user->password = $request['password'];  // password gets autohashed by mutator
         $user->save();
 
+        $this->PutUserSession($user->username, $user->email, $user->user_id);
+
         $last_tuple = signup_details::select('user_id')->where('username', "=", $user->username)->first();
 
     // init criteria marks entry
@@ -78,9 +80,9 @@ class AuthController extends Controller
         if ($user) {
             $varify = password_verify($request['login_password'], $user->password);
             if($varify){
-                session()->put("username", $user->username);
-                session()->put("user_email", $user->email);
-                session()->put("user_id", $user->user_id);
+
+                // Put UserDetails in session
+                $this->PutUserSession($user->username, $user->email, $user->user_id);
 
                 session()->flash("alertMsg", "Welcome $user->username");
                 return redirect("students/input");

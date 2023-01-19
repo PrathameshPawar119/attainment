@@ -3,8 +3,15 @@
     <title>End-Sem</title>
 @endpush
 @section('main-section')
+@php
+    $msg = "...";
+    if (session()->has("alertMsg")) {
+        $msg = session()->get("alertMsg");
+    }
 
+@endphp
 <div class="container oralPage">
+    <x-alert-component mainclass="col-12" color="primary" message="{{$msg}}" />
     <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
         <form action="{{('/sheets/endsem')}}" method="get" style="display: inline-block;">
             <div class="input-group mx-1">
