@@ -66,9 +66,12 @@
 <script>
     $(document).ready(function(){
         $(document).on("change", ".marksInputField", debounce(function(e){
-            var endsem_max_limit = "<?php echo $endsem_total_max[0]->endsem_total; ?>";
+            var endsem_max_limit = parseInt("<?php echo $endsem_total_max[0]->endsem_total; ?>");
             var stuId = e.target.getAttribute("name");
-            var stdVal = (e.target.value) > endsem_max_limit ? endsem_max_limit : e.target.value;
+            var stdVal = parseInt(e.target.value);
+            if (stdVal > endsem_max_limit) {
+                stdVal = endsem_max_limit;
+            }
             var stuGroupKey = e.target.getAttribute("id");
             $.ajax({
                 url: "{{route('updateEndsemMarks')}}",

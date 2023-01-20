@@ -237,14 +237,14 @@ class AttainmentControl extends Controller
                                 ->select("student_details.roll_no","student_details.student_id","student_details.name", "student_details.div", "co_total_ia.CO1", "co_total_ia.CO2", "co_total_ia.CO3", "co_total_ia.CO4", "co_total_ia.CO5", "co_total_ia.CO6" )
                                 ->where("user_key", "=", session()->get('user_id'))
                                 ->where("deleted_at", "=", null)
-                                ->orderBy('roll_no', 'ASC')->paginate(10);
+                                ->orderBy('roll_no', 'ASC')->get();
             }
             else if($sheet == 'expt'){
                 $co_total_table_details = Co_Total_Expt::join("student_details", "student_details.id", "co_total_expt.id")
                     ->select("student_details.roll_no","student_details.student_id","student_details.name", "student_details.div", "co_total_expt.CO1", "co_total_expt.CO2", "co_total_expt.CO3", "co_total_expt.CO4", "co_total_expt.CO5", "co_total_expt.CO6" )
                     ->where("user_key", "=", session()->get('user_id'))
                     ->where("deleted_at", "=", null)
-                    ->orderBy('roll_no', 'ASC')->paginate(10);
+                    ->orderBy('roll_no', 'ASC')->get();
             }
             return $co_total_table_details;
     }

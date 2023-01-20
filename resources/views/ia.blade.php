@@ -163,7 +163,10 @@
         $(document).on("change", ".marksInputField", debounce(function(e){
             var iaQMax = parseInt(e.target.getAttribute("max"));
             var stuId = e.target.getAttribute("name");
-            var stdVal = (e.target.value > iaQMax ? iaQMax : e.target.value);
+            var stdVal = parseInt(e.target.value);
+            if (stdVal > iaQMax) {
+                stdVal = iaQMax;
+            }
             var stuGroupKey = e.target.getAttribute("id");
             $.ajax({
                 url: "{{route('updateIaMarks')}}",

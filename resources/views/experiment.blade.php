@@ -127,7 +127,6 @@
             else{
                 CurrentPillar.style.backgroundColor = "aliceblue";
             }
-            // Open/Close sidecolunms
             var arr = document.getElementsByClassName(`sideColumn${i}`);
             for (let j = 0; j < arr.length; j++) {
                 const element = arr[j];
@@ -138,9 +137,12 @@
 
     $(document).ready(function(){
         $(document).on("change", ".marksInputField", debounce(function(e){
-            var expMarR = e.target.getAttribute("max");
+            var expMarR = parseInt(e.target.getAttribute("max"));
             var stuId = e.target.getAttribute("name").split("+");
-            var stdVal = e.target.value > expMarR ? expMarR : e.target.value;
+            var stdVal = parseInt(e.target.value);
+            if (stdVal > expMarR) {
+                stdVal = expMarR;
+            }
             var stuGroupKey = e.target.getAttribute("id");
             $.ajax({
                 url: "{{route('updateExperimentMarks')}}",

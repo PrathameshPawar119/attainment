@@ -67,9 +67,12 @@
     $(document).ready(function(){
         // Change Input Marks -- autoupdate
         $(document).on("change", ".marksInputField", debounce(function(e){
-            var max_oral_limit = '<?php echo $oral_total_max[0]->oral_total; ?>'; 
+            var max_oral_limit = parseInt('<?php echo $oral_total_max[0]->oral_total; ?>'); 
             var stuId = e.target.getAttribute("name");
-            var stdValue = (e.target.value) > max_oral_limit ? max_oral_limit : e.target.value;
+            var stdValue = parseInt(e.target.value);
+            if(stdValue >= max_oral_limit) {
+                stdValue =  max_oral_limit;
+            }
             var stuGroupKey = e.target.getAttribute("id");
                 $.ajax({
                     url: "{{route('updateOralMarks')}}",

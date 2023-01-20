@@ -149,9 +149,12 @@
 
     $(document).ready(function(){
         $(document).on("change", ".marksInputField", debounce(function(e){
-            var max_assign_limit = e.target.getAttribute("max");
+            var max_assign_limit = parseInt(e.target.getAttribute("max"));
             var stuId = e.target.getAttribute("name");
-            var stdVal = e.target.value > max_assign_limit ? max_assign_limit : e.target.value;
+            var stdVal = parseInt(e.target.value);
+            if (stdVal > max_assign_limit) {
+                stdVal = max_assign_limit;
+            }
             var stuGroupKey = e.target.getAttribute("id");
             
             $.ajax({
@@ -165,16 +168,17 @@
                 },
                 success: function(res){
                     if(res == '0' ||  res == 0){
-                        document.getElementById(stuGroupKey).parentNode.style.borderColor = "red";
+                        e.target.parentNode.style.borderColor = "red";
                         setTimeout(() => {
-                            document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
                         }, 5000);                        
                     }
                     else{
-                        document.getElementById(stuGroupKey).parentNode.style.borderColor = "cyan";
+                        e.target.parentNode.style.borderColor = "cyan";
                         setTimeout(() => {
-                            document.getElementById(stuGroupKey).parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
                         }, 2000); 
+
                         var a1_total = parseInt(res.split("+")[0]);
                         var a2_total = parseInt(res.split("+")[1]);
                         var assign_total = parseInt(res.split("+")[2]);

@@ -51,8 +51,7 @@
                     <button class="btn btn-outline-secondary" type="submit" value="update">Refresh</button>
                 </div>
             </div>
-        <div class="table-responsive">
-            <table class="table my-2 table-hover text-center">
+            <table class="table mt-2 mb-0">
                 <thead>
                     <tr>
                         <th scope="col">Sr. No</th>
@@ -68,6 +67,9 @@
                         <th class="sideColumn1" scope="col">CO6</th>
                     </tr>
                 </thead>
+            </table>
+        <div class="table-responsive" style="height: 500px; overflow-y:auto;">
+            <table class="table table-hover text-center">
                 <tbody>
                     @if (!isset($co_total_table_details))
                         {{"Please add some students Please"}}            
