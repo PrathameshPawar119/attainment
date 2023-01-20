@@ -172,7 +172,7 @@ class AttainmentControl extends Controller
         $perStdMoreThanCriteria = round(($numStdMoreThanCriteria/$params["totalStudents"])*100);
         
         $oral_cos = $this->getGroup3Cos("oral_co");
-        $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria);
+        $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria, $params['totalMarks']);
 
         $resArr = array($params["markCriteria"]->oral, $params["totalMarks"]->oral_total, $params["criteriaFromTotalMarks"], $numStdMoreThanCriteria, $perStdMoreThanCriteria,$oral_cos->oral_co, $attain_level);
         return view('attainment.oral', compact('resArr'));
@@ -191,7 +191,7 @@ class AttainmentControl extends Controller
         $perStdMoreThanCriteria = round(($numStdMoreThanCriteria/$params["totalStudents"])*100);
         
         $endsem_cos = $this->getGroup3Cos("endsem_co");
-        $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria);
+        $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria, $params['totalMarks']);
 
         $resArr = array($params["markCriteria"]->endsem, $params["totalMarks"]->endsem_total, $params["criteriaFromTotalMarks"], $numStdMoreThanCriteria, $perStdMoreThanCriteria, $endsem_cos->endsem_co, $attain_level);
         return view('attainment.endsem', compact('resArr'));
@@ -218,8 +218,8 @@ class AttainmentControl extends Controller
         $assign1_cos = $this->getGroup3Cos("assign1_co");
         $assign2_cos = $this->getGroup3Cos("assign2_co");
 
-        $attain_level_A1 = $this->getAttainmentLevel($perStdMoreThanCriteriaA1);
-        $attain_level_A2 = $this->getAttainmentLevel($perStdMoreThanCriteriaA2);
+        $attain_level_A1 = $this->getAttainmentLevel($perStdMoreThanCriteriaA1, $params['totalMarks']);
+        $attain_level_A2 = $this->getAttainmentLevel($perStdMoreThanCriteriaA2, $params['totalMarks']);
 
         $assign1_arr = array($numStdMoreThanCriteriaA1, $perStdMoreThanCriteriaA1, $assign1_cos, $attain_level_A1);
         $assign2_arr = array($numStdMoreThanCriteriaA2, $perStdMoreThanCriteriaA2, $assign2_cos, $attain_level_A2);
@@ -269,7 +269,7 @@ class AttainmentControl extends Controller
                                         ->distinct()->count();
         }
         $perStdMoreThanCriteria = round((($numStdMoreThanCriteria/$params['totalStudents'])*100), 2);
-        $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria);
+        $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria, $params['totalMarks']);
 
         return array("numStdMoreThanCriteria"=>$numStdMoreThanCriteria, "perStdMoreThanCriteria"=>$perStdMoreThanCriteria, "attain_level"=>$attain_level);
     }

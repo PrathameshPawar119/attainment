@@ -11,7 +11,10 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function getAttainmentLevel($percent){
+    public function getAttainmentLevel($percent, $totalMarks){
+        if ($percent == 100 && $totalMarks == 0) {
+            return 0;
+        }
         if($percent >= 60)
         {
             return 3; //attainment level 3
