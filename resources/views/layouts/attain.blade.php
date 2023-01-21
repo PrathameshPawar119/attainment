@@ -21,7 +21,7 @@
     }
     .upperSection{
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 2fr 3fr;
       grid-template-rows: 1fr;
       grid-gap: 14px;
       margin: 20px 80px;

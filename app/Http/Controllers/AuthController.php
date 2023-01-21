@@ -9,6 +9,7 @@ use App\Models\CriteriaModel;
 use App\Models\CO_Oral_Endsem_Assign;
 use App\Models\CO_IA;
 use App\Models\CO_Expt;
+use App\Models\FinalAttainment;
 use App\Models\ThresholdModel;
 
 class AuthController extends Controller
@@ -66,6 +67,10 @@ class AuthController extends Controller
         $th_table->user_id = $last_tuple['user_id'];
         $th_table->save();
 
+        // final_attainment table
+        $finAttain = new FinalAttainment();
+        $finAttain->user_id = $last_tuple['user_id'];
+        $finAttain->save();
 
         return redirect("/students/view");
     }

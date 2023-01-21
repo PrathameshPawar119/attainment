@@ -51,6 +51,7 @@
                     <button class="btn btn-outline-secondary" type="submit" value="update">Refresh</button>
                 </div>
             </div>
+        <div class="table-responsive">
             <table class="table mt-2 mb-0">
                 <thead>
                     <tr>
@@ -68,53 +69,54 @@
                     </tr>
                 </thead>
             </table>
-        <div class="table-responsive" style="height: 500px; overflow-y:auto;">
-            <table class="table table-hover text-center">
-                <tbody>
-                    @if (!isset($co_total_table_details))
-                        {{"Please add some students Please"}}            
-                    @endif
-                    <form id="ia_attainment_Sheet">
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>Total Marks</td>
-                            @for ($i=0; $i<6; $i++)
-                                <td class="highlightTd">/{{$outof_per_co[$i]}}</td>
-                            @endfor
-                        </tr>
-                        @foreach($co_total_table_details as $key=>$student)
+            <div class="SelectBox" style="height:500px; overflow-y:auto;">
+                <table class="table table-hover text-center">
+                    <tbody class="scrollDown">
+                        @if (!isset($co_total_table_details))
+                            {{"Please add some students Please"}}            
+                        @endif
+                        <form id="ia_attainment_Sheet">
                             <tr>
-                                <td>{{$key+1}}</td>
-                                <td>{{$student->div}}</td>
-                                <td>{{$student->roll_no}}</td>
-                                <td>{{$student->student_id}}</td>
-                                <td style="width: 440px; text-align:left; min-width:360px;">{{$student->name}}</td>
-                                <td class="sideColumn1">
-                                    {{$student->CO1}}
-                                </td>
-                                <td class="sideColumn2">
-                                    {{$student->CO2}}
-                                </td>
-                                <td class="sideColumn3">
-                                    {{$student->CO3}}
-                                </td>
-                                <td class="sideColumn4">
-                                    {{$student->CO4}}
-                                </td>
-                                <td class="sideColumn5">
-                                    {{$student->CO5}}
-                                </td>
-                                <td class="sideColumn6">
-                                    {{$student->CO6}}
-                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>Total Marks</td>
+                                @for ($i=0; $i<6; $i++)
+                                    <td class="highlightTd">/{{$outof_per_co[$i]}}</td>
+                                @endfor
                             </tr>
-                        @endforeach
-                    </form>
-                </tbody>
-            </table>
+                            @foreach($co_total_table_details as $key=>$student)
+                                <tr>
+                                    <td>{{$key+1}}</td>
+                                    <td>{{$student->div}}</td>
+                                    <td>{{$student->roll_no}}</td>
+                                    <td>{{$student->student_id}}</td>
+                                    <td style="width: 440px; text-align:left; min-width:360px;">{{$student->name}}</td>
+                                    <td class="sideColumn1">
+                                        {{$student->CO1}}
+                                    </td>
+                                    <td class="sideColumn2">
+                                        {{$student->CO2}}
+                                    </td>
+                                    <td class="sideColumn3">
+                                        {{$student->CO3}}
+                                    </td>
+                                    <td class="sideColumn4">
+                                        {{$student->CO4}}
+                                    </td>
+                                    <td class="sideColumn5">
+                                        {{$student->CO5}}
+                                    </td>
+                                    <td class="sideColumn6">
+                                        {{$student->CO6}}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </form>
+                    </tbody>
+                </table>
+            </div>
         </div>
     <div class="LowerAttainmentTable container">
          <table class="table table-hover my-4 mx-4">

@@ -29,7 +29,12 @@
       animation:displayNone 1s ease;
       display: block !important;
     }
-
+    /* .PageLinks{
+      text-decoration: none;
+      font-weight: bold;
+      color: rgb(81, 26, 133);
+      margin: 10px
+    } */
   </style>
   <body>
     @include('layouts.head')

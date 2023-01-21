@@ -24,7 +24,7 @@
             <a href="{{$trashURL}}" class="mx-2"><button class="btn btn-outline-secondary">{{$trashBtn}}</button></a>
         </div>
     </div>
-    <table class="table my-4 table-hover">
+    <table class="table table-hover">
         <thead>
             <tr>
             <th scope="col">Sr. No</th>
@@ -64,7 +64,7 @@
         </tbody>
     </table>
     <div class="row center p-2" style="align-items: center; text-align:center;">
-        {{$students->links()}}
+        {{$students->links('pagination::bootstrap-5')}}
     </div>
 </div>
 

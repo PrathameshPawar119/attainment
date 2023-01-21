@@ -54,7 +54,7 @@
         </div>
 
         <div class="col-12 my-4" style="display: flex; align-items:center; justify-content:center;">
-            <button type="submit" class="btn btn-primary col-md-8" > Add Student</button>
+            <button type="submit" class="btn btn-primary col-md-8" > Update Student</button>
         </div>
         </form>
 </div>

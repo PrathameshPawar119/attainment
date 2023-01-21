@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\ThresholdModel;
 use App\Models\CriteriaModel;
 use App\Models\EndsemModel;
+use App\Models\FinalAttainment;
 use App\Models\OralModel;
 
 class AttainmentControl extends Controller
@@ -172,9 +173,11 @@ class AttainmentControl extends Controller
         $perStdMoreThanCriteria = round(($numStdMoreThanCriteria/$params["totalStudents"])*100);
         
         $oral_cos = $this->getGroup3Cos("oral_co");
-        $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria, $params['totalMarks']);
+        $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria, $params['totalMarks']->oral_total);
 
         $resArr = array($params["markCriteria"]->oral, $params["totalMarks"]->oral_total, $params["criteriaFromTotalMarks"], $numStdMoreThanCriteria, $perStdMoreThanCriteria,$oral_cos->oral_co, $attain_level);
+        // Update Attainment Table
+        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get("user_id"))->update(['oral'=> json_encode(array($attain_level))]);
         return view('attainment.oral', compact('resArr'));
     }
 
@@ -191,9 +194,12 @@ class AttainmentControl extends Controller
         $perStdMoreThanCriteria = round(($numStdMoreThanCriteria/$params["totalStudents"])*100);
         
         $endsem_cos = $this->getGroup3Cos("endsem_co");
-        $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria, $params['totalMarks']);
+        $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria, $params['totalMarks']->endsem_total);
 
         $resArr = array($params["markCriteria"]->endsem, $params["totalMarks"]->endsem_total, $params["criteriaFromTotalMarks"], $numStdMoreThanCriteria, $perStdMoreThanCriteria, $endsem_cos->endsem_co, $attain_level);
+
+        // Update Attain Table
+        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get('user_id'))->update(['endsem' => json_encode(array($attain_level))]);
         return view('attainment.endsem', compact('resArr'));
     }
 
@@ -218,12 +224,13 @@ class AttainmentControl extends Controller
         $assign1_cos = $this->getGroup3Cos("assign1_co");
         $assign2_cos = $this->getGroup3Cos("assign2_co");
 
-        $attain_level_A1 = $this->getAttainmentLevel($perStdMoreThanCriteriaA1, $params['totalMarks']);
-        $attain_level_A2 = $this->getAttainmentLevel($perStdMoreThanCriteriaA2, $params['totalMarks']);
+        $attain_level_A1 = $this->getAttainmentLevel($perStdMoreThanCriteriaA1, $params['totalMarks']->assign_total);
+        $attain_level_A2 = $this->getAttainmentLevel($perStdMoreThanCriteriaA2, $params['totalMarks']->assign_total);
 
         $assign1_arr = array($numStdMoreThanCriteriaA1, $perStdMoreThanCriteriaA1, $assign1_cos, $attain_level_A1);
         $assign2_arr = array($numStdMoreThanCriteriaA2, $perStdMoreThanCriteriaA2, $assign2_cos, $attain_level_A2);
 
+        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get('user_id'))->update(['assignments' => json_encode(array($attain_level_A1, $attain_level_A2))]); 
         return view("attainment.assignment", compact('params', 'assign1_arr', 'assign2_arr'));
     }
 
@@ -253,6 +260,7 @@ class AttainmentControl extends Controller
     public function GetAttainLevelsForCo($column, $params, $sheet){
         if($sheet == 'ia')
         {
+            $finAttainCol = 'ia';
             $numStdMoreThanCriteria = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
                                         ->where("user_key", "=", session()->get("user_id"))
                                         ->where("deleted_at", "=", null)
@@ -261,6 +269,7 @@ class AttainmentControl extends Controller
                                         ->distinct()->count();
         }
         else if($sheet == 'expt'){
+            $finAttainCol = 'experiments';
             $numStdMoreThanCriteria = Co_Total_Expt::join("student_details", "student_details.id", "co_total_expt.id")
                                         ->where("user_key", "=", session()->get("user_id"))
                                         ->where("deleted_at", "=", null)
@@ -271,6 +280,7 @@ class AttainmentControl extends Controller
         $perStdMoreThanCriteria = round((($numStdMoreThanCriteria/$params['totalStudents'])*100), 2);
         $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria, $params['totalMarks']);
 
+        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get('user_id'))->update([$finAttainCol => json_encode(array($attain_level))]);
         return array("numStdMoreThanCriteria"=>$numStdMoreThanCriteria, "perStdMoreThanCriteria"=>$perStdMoreThanCriteria, "attain_level"=>$attain_level);
     }
 

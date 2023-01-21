@@ -115,7 +115,7 @@
         </table>
     </div>
     <div class="row center p-2" style="align-items: center; text-align:center; ">
-        {{$students->links()}}
+        {{$students->links('pagination::bootstrap-5')}}
     </div>
 </div>
 <script>
