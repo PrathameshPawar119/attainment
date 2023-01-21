@@ -24,6 +24,18 @@
         border:2px transparent;
         border-radius: 4px;
     }
+    .SelectBox::-webkit-scrollbar{
+        width: 12px;
+    }
+    .SelectBox::-webkit-scrollbar-track{
+        background : #555999;
+        border-radius: 10px;
+    }
+    .SelectBox::-webkit-scrollbar-thumb{
+        background : rgba(255,255,255,0.5);
+        border-radius: 10px;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+    }
 </style>
 @section('upperLeft-section')
     <div class="rightChartBox" style="border: 2px solid red;">
@@ -59,7 +71,7 @@
                         <th scope="col">DIV</th>
                         <th scope="col">Roll No.</th>
                         <th scope="col">Student ID</th>
-                        <th style="width: 300px;" scope="col">Full Name</th>
+                        <th style="width: 440px; text-align:left; min-width:360px;" scope="col">Full Name</th>
                         <th class="sideColumn1" scope="col">CO1</th>
                         <th class="sideColumn1" scope="col">CO2</th>
                         <th class="sideColumn1" scope="col">CO3</th>
@@ -69,54 +81,54 @@
                     </tr>
                 </thead>
             </table>
-            <div class="SelectBox" style="height:500px; overflow-y:auto;">
-                <table class="table table-hover text-center">
-                    <tbody class="scrollDown">
-                        @if (!isset($co_total_table_details))
-                            {{"Please add some students Please"}}            
-                        @endif
-                        <form id="ia_attainment_Sheet">
+        </div>
+        <div class="SelectBox table-responsive" style="height:500px; overflow-y:auto;">
+            <table class="table table-hover text-center">
+                <tbody class="scrollDown">
+                    @if (!isset($co_total_table_details))
+                        {{"Please add some students Please"}}            
+                    @endif
+                    <form id="ia_attainment_Sheet">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Total Marks</td>
+                            @for ($i=0; $i<6; $i++)
+                                <td class="highlightTd">/{{$outof_per_co[$i]}}</td>
+                            @endfor
+                        </tr>
+                        @foreach($co_total_table_details as $key=>$student)
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>Total Marks</td>
-                                @for ($i=0; $i<6; $i++)
-                                    <td class="highlightTd">/{{$outof_per_co[$i]}}</td>
-                                @endfor
+                                <td>{{$key+1}}</td>
+                                <td>{{$student->div}}</td>
+                                <td>{{$student->roll_no}}</td>
+                                <td>{{$student->student_id}}</td>
+                                <td style="width: 440px; text-align:left; min-width:360px;">{{$student->name}}</td>
+                                <td class="sideColumn1">
+                                    {{$student->CO1}}
+                                </td>
+                                <td class="sideColumn2">
+                                    {{$student->CO2}}
+                                </td>
+                                <td class="sideColumn3">
+                                    {{$student->CO3}}
+                                </td>
+                                <td class="sideColumn4">
+                                    {{$student->CO4}}
+                                </td>
+                                <td class="sideColumn5">
+                                    {{$student->CO5}}
+                                </td>
+                                <td class="sideColumn6">
+                                    {{$student->CO6}}
+                                </td>
                             </tr>
-                            @foreach($co_total_table_details as $key=>$student)
-                                <tr>
-                                    <td>{{$key+1}}</td>
-                                    <td>{{$student->div}}</td>
-                                    <td>{{$student->roll_no}}</td>
-                                    <td>{{$student->student_id}}</td>
-                                    <td style="width: 440px; text-align:left; min-width:360px;">{{$student->name}}</td>
-                                    <td class="sideColumn1">
-                                        {{$student->CO1}}
-                                    </td>
-                                    <td class="sideColumn2">
-                                        {{$student->CO2}}
-                                    </td>
-                                    <td class="sideColumn3">
-                                        {{$student->CO3}}
-                                    </td>
-                                    <td class="sideColumn4">
-                                        {{$student->CO4}}
-                                    </td>
-                                    <td class="sideColumn5">
-                                        {{$student->CO5}}
-                                    </td>
-                                    <td class="sideColumn6">
-                                        {{$student->CO6}}
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </form>
-                    </tbody>
-                </table>
-            </div>
+                        @endforeach
+                    </form>
+                </tbody>
+            </table>
         </div>
     <div class="LowerAttainmentTable container">
          <table class="table table-hover my-4 mx-4">

@@ -130,6 +130,7 @@
                     </table>
                 </div>
             </div>
+        </div>
         <div class="LowerAttainmentTable container">
             <table class="table table-hover my-4 mx-4">
                 <tbody>
