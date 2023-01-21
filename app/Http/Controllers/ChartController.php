@@ -13,6 +13,7 @@ class ChartController extends Controller
     }
 
     public function OralChartsData(){
-        return response()->json("Oral Charts Data here");
+        
+        return response()->json();
     }
 }

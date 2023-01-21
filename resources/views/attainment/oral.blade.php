@@ -4,7 +4,7 @@
 @endpush
 <style>
     div{
-        height: 400px;
+        min-height: 300px;
     }
 </style>
 @section('upperLeft-section')

@@ -177,7 +177,7 @@ class AttainmentControl extends Controller
 
         $resArr = array($params["markCriteria"]->oral, $params["totalMarks"]->oral_total, $params["criteriaFromTotalMarks"], $numStdMoreThanCriteria, $perStdMoreThanCriteria,$oral_cos->oral_co, $attain_level);
         // Update Attainment Table
-        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get("user_id"))->update(['oral'=> json_encode(array($attain_level))]);
+        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get("user_id"))->update(['oral'=> json_encode(array($attain_level, $attain_level, $attain_level, $attain_level, $attain_level, $attain_level))]);
         return view('attainment.oral', compact('resArr'));
     }
 
@@ -199,7 +199,7 @@ class AttainmentControl extends Controller
         $resArr = array($params["markCriteria"]->endsem, $params["totalMarks"]->endsem_total, $params["criteriaFromTotalMarks"], $numStdMoreThanCriteria, $perStdMoreThanCriteria, $endsem_cos->endsem_co, $attain_level);
 
         // Update Attain Table
-        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get('user_id'))->update(['endsem' => json_encode(array($attain_level))]);
+        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get('user_id'))->update(['endsem' => json_encode(array($attain_level, $attain_level, $attain_level, $attain_level, $attain_level, $attain_level))]);
         return view('attainment.endsem', compact('resArr'));
     }
 
@@ -230,15 +230,19 @@ class AttainmentControl extends Controller
         $assign1_arr = array($numStdMoreThanCriteriaA1, $perStdMoreThanCriteriaA1, $assign1_cos, $attain_level_A1);
         $assign2_arr = array($numStdMoreThanCriteriaA2, $perStdMoreThanCriteriaA2, $assign2_cos, $attain_level_A2);
 
-        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get('user_id'))->update(['assignments' => json_encode(array($attain_level_A1, $attain_level_A2))]); 
+        $attain_level_assign = array();
+        foreach(json_decode($assign1_cos) as $co){
+            $attain_level_assigns[$co] = $attain_level_A1;
+        }
+        foreach(json_decode($assign2_cos) as $co){
+            $attain_level_assigns[$co] = $attain_level_A2;
+        }
+        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get('user_id'))->update(['assignments' => json_encode($attain_level_assigns)]); 
         return view("attainment.assignment", compact('params', 'assign1_arr', 'assign2_arr'));
     }
 
 
     public function GetCoTotalTable($sheet){
-        // Made this saperate function, so that it can be called by ajax 
-        // so for paginate, no need to calculate and update co_total_ia again and again
-        // https://stackoverflow.com/questions/36279716/how-to-set-pagination-in-laravel-without-refreshing-the-whole-page
         if($sheet == 'ia'){
             $co_total_table_details = Co_Total_Ia::join("student_details", "student_details.id", "co_total_ia.id")
                                 ->select("student_details.roll_no","student_details.student_id","student_details.name", "student_details.div", "co_total_ia.CO1", "co_total_ia.CO2", "co_total_ia.CO3", "co_total_ia.CO4", "co_total_ia.CO5", "co_total_ia.CO6" )
@@ -280,7 +284,6 @@ class AttainmentControl extends Controller
         $perStdMoreThanCriteria = round((($numStdMoreThanCriteria/$params['totalStudents'])*100), 2);
         $attain_level = $this->getAttainmentLevel($perStdMoreThanCriteria, $params['totalMarks']);
 
-        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get('user_id'))->update([$finAttainCol => json_encode(array($attain_level))]);
         return array("numStdMoreThanCriteria"=>$numStdMoreThanCriteria, "perStdMoreThanCriteria"=>$perStdMoreThanCriteria, "attain_level"=>$attain_level);
     }
 
@@ -311,6 +314,12 @@ class AttainmentControl extends Controller
             array_push($finalCoAttainments, $co_attain);    
         }
 
+        //updating attainment levl table
+        $attain_levels = array();
+        for ($i=0; $i <6 ; $i++) { 
+            array_push($attain_levels, $finalCoAttainments[$i]['attain_level']);
+        }
+        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get('user_id'))->update(['ia' => json_encode($attain_levels)]);
         return view('attainment.ia', compact('co_total_table_details', 'outof_per_co', 'all_co_params', 'finalCoAttainments'));
     }
 
@@ -343,7 +352,12 @@ class AttainmentControl extends Controller
             array_push($finalCoAttainments, $co_attain);    
         }
 
-        
+        // updating attainment level table
+        $attain_levels = array();
+        for ($i=0; $i <6 ; $i++) { 
+            array_push($attain_levels, $finalCoAttainments[$i]['attain_level']);
+        }
+        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get('user_id'))->update(['experiments' => json_encode($attain_levels)]);
         return view('attainment.expt', compact('co_total_table_details', 'outof_per_co', 'all_co_params', 'finalCoAttainments'));
     }
 }
