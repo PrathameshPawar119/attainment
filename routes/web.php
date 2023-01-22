@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttainmentControl;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CisController;
 use App\Http\Controllers\studentController;
 use App\Http\Controllers\SheetsController;
 use App\Http\Controllers\UpdateMarksController;
@@ -45,11 +46,13 @@ Route::group(["prefix"=>"/sheets", "middleware"=>"loginRedirect"], function (){
     Route::get("assignment", [SheetsController::class, "assignmentSheet"]);
     Route::get("ia", [SheetsController::class, "iaSheet"]);
     Route::get("experiments", [SheetsController::class, "experimentSheet"]);
+    Route::get("cis", [CisController::class, "CisSheet"])->middleware('NoRecordsRedirectMiddleware');
     Route::post("oral/update", [UpdateMarksController::class, "updateOralMarks"])->middleware("RefineNullInputMware")->name("updateOralMarks");
     Route::post("endsem/update", [UpdateMarksController::class, "updateEndsemMarks"])->middleware("RefineNullInputMware")->name("updateEndsemMarks");
     Route::post("assignment/update", [UpdateMarksController::class, "updateAssignmentMarks"])->middleware("RefineNullInputMware")->name("updateAssignmentMarks");
     Route::post("ia/update", [UpdateMarksController::class, "updateIaMarks"])->middleware("RefineNullInputMware")->name("updateIaMarks");
     Route::post("experiments/update", [UpdateMarksController::class, "updateExperimentMarks"])->middleware("RefineNullInputMware")->name("updateExperimentMarks");
+    
 });
 
 Route::group(["prefix"=>"/user", "middleware"=>"loginRedirect"], function(){

@@ -6,26 +6,6 @@
     .rightChartBox, .leftChartBox{
         height: 320px;
     }
-    .LowerAttainmentTable table{
-        border: 9px transparent;
-        background:linear-gradient(to right, rgb(248, 234, 248), rgb(226, 233, 247));
-        text-align: center;
-        border-radius: 8px;
-    }
-    .LowerAttainmentTable table tbody tr{
-        border-bottom: 1px;
-        border-bottom-color: white;
-        border-radius: 8px;
-    }
-    .LowerAttainmentTable table tbody tr td{
-        background:linear-gradient(to right, rgb(244, 217, 244), rgb(207, 218, 241));
-        border-radius: 8px;
-    }
-    .highlightTd{
-        background: linear-gradient(to right, rgb(255, 248, 255), rgb(245, 241, 248));
-        border:2px transparent;
-        border-radius: 4px;
-    }
     .SelectBox::-webkit-scrollbar{
         width: 12px;
     }
@@ -136,15 +116,14 @@
         <div class="LowerAttainmentTable container">
             <table class="table table-hover my-4 mx-4">
                 <tbody>
-                    <tr>
-                        <th>CO</th>
+                    <th>
                         <th>CO1</th>
                         <th>CO2</th>
                         <th>CO3</th>
                         <th>CO4</th>
                         <th>CO5</th>
                         <th>CO6</th>
-                    </tr>
+                    </th>
                     <tr>
                         <th>Total Marks For CO</th>
                         @for ($i=0; $i<6; $i++)

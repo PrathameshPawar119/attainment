@@ -2,9 +2,13 @@
 @php
     $currentUrl = url()->current();
 @endphp
-<style scoped>
+<style>
     .hideMe{
         display: none;
+    }
+    .profileImg{
+        height: 80% !important;
+        width: 80% !important;
     }
 </style>
 <ul class="nav nav-tabs">
@@ -39,7 +43,7 @@
             <a class="nav-link {{url('/user/criteriaInput')==$currentUrl?'active':''}}" href="{{url('/user/criteriaInput')}}"><b>Criteria</b></a>
         </li>
         <li class="nav-item {{session()->has('user_id') ? '': 'hideMe'}}" >
-            <a class=" nav-link" id="ProfileToggle" style="z-index: 1000;" data-bs-toggle="dropdown" aria-expanded="false"><img style="height: 80%; width:80%;" src="{{asset('images/user.png')}}" alt="Profile"></a>
+            <a class=" nav-link" id="ProfileToggle" style="z-index: 1000;" data-bs-toggle="dropdown" aria-expanded="false"><img style="height: 80%; width:80%;" class="profileImg" src="{{asset('images/user.png')}}" alt="Profile"></a>
             <ul class="dropdown-menu dropdown-menu" id="ProfileContainer">
                 <li><a class="dropdown-item" href="{{url('/user/profile')}}">Profile</a></li>
                 {{-- <li><a class="dropdown-item" href="#">Another action</a></li> --}}

@@ -27,6 +27,26 @@
       margin: 20px 80px;
       align-items: center;
     }
+    .LowerAttainmentTable table{
+        border: 9px transparent;
+        background:linear-gradient(to right, rgb(248, 234, 248), rgb(226, 233, 247));
+        text-align: center;
+        border-radius: 8px;
+    }
+    .LowerAttainmentTable table tbody tr{
+        border-bottom: 1px;
+        border-bottom-color: white;
+        border-radius: 8px;
+    }
+    .LowerAttainmentTable table tbody tr td{
+        background:linear-gradient(to right, rgb(244, 217, 244), rgb(207, 218, 241));
+        border-radius: 8px;
+    }
+    .highlightTd{
+        background: linear-gradient(to right, rgb(255, 248, 255), rgb(245, 241, 248));
+        border:2px transparent;
+        border-radius: 4px;
+    }
   </style>
   <body>
     @include('layouts.head')
