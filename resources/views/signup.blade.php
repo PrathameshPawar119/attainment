@@ -5,7 +5,7 @@
     @endpush
 
     <div class="container" style="margin-top: 40px;">
-        <div class="container signup box">
+        <div class="container signup box card p-4">
             <x-alert-component mainclass="col-12" color="primary" message="..." />
             <form method="POST" action="{{url('/auth/signup_user')}}">
                 @csrf
