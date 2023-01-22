@@ -12,6 +12,7 @@ use App\Models\CriteriaModel;
 use App\Models\CO_Oral_Endsem_Assign;
 use App\Models\CO_IA;
 use App\Models\CO_Expt;
+use App\Models\POModel;
 use App\Models\ThresholdModel;
 
 class UpdateMarksController extends Controller
@@ -217,10 +218,16 @@ class UpdateMarksController extends Controller
     }
 
     public function updateThresholdCriteria(Request $req){
-        $updateThMarks = ThresholdModel::where("user_id", "=", session()->get("user_id"))
-                            ->update([$req['column']=>$req['value']]);
+        if($req['tablename'] == 'threshold'){
+            $updateThMarks = ThresholdModel::where("user_id", "=", session()->get("user_id"))
+                                ->update([$req['column']=>$req['value']]);
+        }
+        else if($req['tablename'] == 'po'){
+            $updateThMarks = POModel::where("user_id", "=", session()->get("user_id"))
+                                ->update([$req['column']=>$req['value']]);
+        }
         if($updateThMarks){
-            echo 1;
+            echo $updateThMarks;
         }
         else{
             echo 0;

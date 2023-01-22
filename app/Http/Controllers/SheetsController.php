@@ -12,6 +12,7 @@ use App\Models\ExperimentModel;
 use App\Models\CO_Oral_Endsem_Assign;
 use App\Models\CO_IA;
 use App\Models\CO_Expt;
+use App\Models\POModel;
 use App\Models\ThresholdModel;
 
 class SheetsController extends Controller
@@ -175,6 +176,9 @@ class SheetsController extends Controller
         $condition_marks = ThresholdModel::select('oral', 'endsem', 'assigns', 'ia', 'expt')
                                 ->where("user_id", "=", session()->get("user_id"))
                                 ->first();
-        return view("threshold", compact('condition_marks'));
+        $po_levels = POModel::select("PO1", "PO2", "PO3", "PO4", "PO5", "PO6")
+                        ->where("user_id", "=", session()->get('user_id'))
+                        ->first();
+        return view("threshold", compact('condition_marks', 'po_levels'));
     }
 }

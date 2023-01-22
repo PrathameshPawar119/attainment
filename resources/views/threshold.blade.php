@@ -64,6 +64,9 @@
         }
         .inputSection{
             margin: 60px 10px 10px 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr;
         }
         .assignmentTotals .form-label{
             width: 100%;
@@ -87,7 +90,13 @@
 
     </style>
     @php
-        $sheetsArr = array('oral', 'endsem', 'assigns', 'ia', 'expt');
+        $sheetsArr1 = array('oral', 'endsem', 'assigns', 'ia', 'expt');
+        $sheetsArr2 = array('PO1', 'PO2', 'PO3', 'PO4', 'PO5', 'PO6');
+        $poAvg = 0;
+        for ($i=0; $i < 6; $i++) { 
+            $poAvg += $po_levels[$sheetsArr2[$i]];
+        }
+        $poAvg = round($poAvg/6, 3);
     @endphp
     <div class="container">
         <div class="tabLine">
@@ -120,7 +129,7 @@
             </a>
         </div>
         <div class="inputSection" id="inputSection">
-            <div class="LeftCriteriaSection col-md-3">
+            <div class="LeftCriteriaSection mx-3">
                 <table class="table my-2 table-hover">
                     <thead>
                         <th>Sheets</th>
@@ -129,32 +138,40 @@
                     <tbody>
                         @for($i=0; $i<5; $i++)
                             <tr>
-                                <td>{{ucwords($sheetsArr1[$i])}}</td>
+                                <th>{{ucwords($sheetsArr1[$i])}}</th>
                                 <td>
-                                    <input type="number" class="form-control p-3 marksInputField"  id="{{$sheetsArr1[$i]}}-student" max="100" min="0" value="{{$condition_marks[$sheetsArr1[$i]]}}" style="height: 26px;">
+                                    <input type="number" tablename="threshold" class="form-control p-3 marksInputField"  id="{{$sheetsArr1[$i]}}-student" max="100" min="0" value="{{$condition_marks[$sheetsArr1[$i]]}}" style="height: 26px;">
                                 </td>
                             </tr>
                         @endfor
+                        <tr></tr>
                     </tbody>
                 </table>
             </div>
-            <div class="rightCriteriaSection">
+            <div class="rightCriteriaSection mx-3">
                 <table class="table my-2 table-hover">
                     <thead>
-                        <th>Sheets</th>
-                        <th>Percentage Criteria /100</th>
+                        <th>POs</th>
+                        <th>PO Level</th>
                     </thead>
                     <tbody>
                         @for($i=0; $i<5; $i++)
                             <tr>
-                                <td>{{ucwords($sheetsArr[$i])}}</td>
+                                <th>{{ucwords($sheetsArr2[$i])}}</th>
                                 <td>
-                                    <input type="number" class="form-control p-3 marksInputField"  id="{{$sheetsArr[$i]}}-student" max="100" min="0" value="{{$condition_marks[$sheetsArr[$i]]}}" style="height: 26px;">
+                                    <input type="number" tablename="po" class="form-control p-3 marksInputField po"  id="{{$sheetsArr2[$i]}}-student" max="3" min="1" value="{{$po_levels[$sheetsArr2[$i]]}}"  style="height: 26px;">
                                 </td>
                             </tr>
                         @endfor
+                        <tr>
+                            <th>Avg</th>
+                            <td id="poAvg">{{$poAvg}}</td>
+                        </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="ExtraCriteriaSection mx-3">
+
             </div>
         </div>
     </div>
@@ -163,34 +180,55 @@
             $(document).on("change", ".marksInputField", debounce(function(e){
                 var stuId = e.target.getAttribute('id');
                 var column = stuId.split("-")[0];
-                var value = e.target.value > 100 ? 100 : e.target.value;
+                var tablename = e.target.getAttribute("tablename");
+                var maxVal = parseInt(e.target.getAttribute("max"));
+                var minVal = parseInt(e.target.getAttribute("min"));
+                var value = parseInt(e.target.value);
+                if(value > maxVal){
+                    value = maxVal;
+                }
+                else if(value < minVal){
+                    value = minVal
+                }
                 $.ajax({
                     url: "{{route('updateThresholdCriteria')}}",
                     type: "POST",
                     data: {
                         '_token':"{{csrf_token()}}",
+                        'tablename':tablename,
                         'column':column,
                         'value': value
                     },
                     success:(res)=>{
-                        if (res == 1 || res == '1') {
-                            e.target.style.backgroundColor = "rgb(222, 205, 248)";
-                            setTimeout(() => {
-                                e.target.style.backgroundColor = "white"
-                            }, 1500);  
-                            console.log(res);
-                        }
-                        else if(res == 0 || res == '0') 
+                        if(res == 0 || res == '0') 
                         {
                             e.target.style.backgroundColor = "red";
                             setTimeout(() => {
                                 e.target.style.backgroundColor = "white"
                             }, 3000); 
                         }  
+                        else{
+                            e.target.style.backgroundColor = "rgb(222, 205, 248)";
+                            setTimeout(() => {
+                                e.target.style.backgroundColor = "white"
+                            }, 1500);  
+                            
+                            // TO update po average on ui dynamically
+                            const sheetsArr = ['PO1', 'PO2', 'PO3', 'PO4', 'PO5', 'PO6'];
+                            var poAvg = 0;
+                            var poAvgGroup = document.getElementsByClassName("po");
+                            Array.from(poAvgGroup).forEach(element => {
+                                console.log(element.value);
+                                poAvg += parseInt(element.value);
+                            });
+                            console.log(poAvg);
+                            document.getElementById("poAvg").innerHTML = (poAvg/6).toFixed(3);
+                        }
                     }
                 })
+
                 
-            }, 500));
+            }, 300));
         })
     </script>
 @endsection
