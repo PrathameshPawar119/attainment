@@ -129,6 +129,24 @@
                     <tbody>
                         @for($i=0; $i<5; $i++)
                             <tr>
+                                <td>{{ucwords($sheetsArr1[$i])}}</td>
+                                <td>
+                                    <input type="number" class="form-control p-3 marksInputField"  id="{{$sheetsArr1[$i]}}-student" max="100" min="0" value="{{$condition_marks[$sheetsArr1[$i]]}}" style="height: 26px;">
+                                </td>
+                            </tr>
+                        @endfor
+                    </tbody>
+                </table>
+            </div>
+            <div class="rightCriteriaSection">
+                <table class="table my-2 table-hover">
+                    <thead>
+                        <th>Sheets</th>
+                        <th>Percentage Criteria /100</th>
+                    </thead>
+                    <tbody>
+                        @for($i=0; $i<5; $i++)
+                            <tr>
                                 <td>{{ucwords($sheetsArr[$i])}}</td>
                                 <td>
                                     <input type="number" class="form-control p-3 marksInputField"  id="{{$sheetsArr[$i]}}-student" max="100" min="0" value="{{$condition_marks[$sheetsArr[$i]]}}" style="height: 26px;">
@@ -137,9 +155,6 @@
                         @endfor
                     </tbody>
                 </table>
-            </div>
-            <div class="rightCriteriaSection">
-
             </div>
         </div>
     </div>

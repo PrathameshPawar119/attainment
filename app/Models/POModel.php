@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CO_Expt extends Model
+class POModel extends Model
 {
     use HasFactory;
-    protected $table = 'co_expt';
-    protected $primaryKey = 'co_expt_id';
+    protected $table = 'p_o_models';
+    protected $primaryKey = 'p_o_models_id';
 
     protected $fillable = [
-        'CO1', 'CO2', 'CO3', 'CO4', 'CO5', 'CO6', 'user_id'
+        'PO1', 'PO2', 'PO3', 'PO4', 'PO5', 'PO6', 'user_id'
     ];
 
     public function User(){

@@ -10,6 +10,7 @@ use App\Models\CO_Oral_Endsem_Assign;
 use App\Models\CO_IA;
 use App\Models\CO_Expt;
 use App\Models\FinalAttainment;
+use App\Models\POModel;
 use App\Models\ThresholdModel;
 
 class AuthController extends Controller
@@ -47,17 +48,17 @@ class AuthController extends Controller
         $co_group3s->user_id = $last_tuple['user_id'];
         $co_group3s->save();
 
-        //table for ias
+    //table for ias
         $co_ia_tuple = new CO_IA();
         $co_ia_tuple->user_id = $last_tuple['user_id'];
         $co_ia_tuple->save();
 
-        //table for experiments
+    //table for experiments
         $co_expt_tuple = new CO_Expt();
         $co_expt_tuple->user_id = $last_tuple['user_id'];
         $co_expt_tuple->save();
 
-        //table for threshold marks
+    //table for threshold marks
         $th_table = new ThresholdModel();
         $th_table->oral = 55;
         $th_table->endsem = 42;
@@ -67,10 +68,15 @@ class AuthController extends Controller
         $th_table->user_id = $last_tuple['user_id'];
         $th_table->save();
 
-        // final_attainment table
+    // final_attainment table
         $finAttain = new FinalAttainment();
         $finAttain->user_id = $last_tuple['user_id'];
         $finAttain->save();
+
+    // PO Table
+        $po_table = new POModel();
+        $po_table->user_id = $last_tuple["user_id"];
+        $po_table->save();
 
         return redirect("/students/view");
     }
