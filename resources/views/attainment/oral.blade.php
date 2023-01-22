@@ -3,8 +3,8 @@
     <title>Oral/Practical Attainment</title>
 @endpush
 <style>
-    div{
-        min-height: 300px;
+    .rightChartBox, .leftChartBox{
+        height: 320px;
     }
 </style>
 @section('upperLeft-section')

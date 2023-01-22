@@ -230,14 +230,15 @@ class AttainmentControl extends Controller
         $assign1_arr = array($numStdMoreThanCriteriaA1, $perStdMoreThanCriteriaA1, $assign1_cos, $attain_level_A1);
         $assign2_arr = array($numStdMoreThanCriteriaA2, $perStdMoreThanCriteriaA2, $assign2_cos, $attain_level_A2);
 
-        $attain_level_assign = array();
-        foreach(json_decode($assign1_cos) as $co){
-            $attain_level_assigns[$co] = $attain_level_A1;
+        // Getting assign1 and assign2 separate levels in only one array (2 hour algorithm)
+        $attain_level_assign = array(0,0,0,0,0,0);
+        foreach(json_decode($assign1_cos->assign1_co) as $co){
+            $attain_level_assign[$co-1] = $attain_level_A1;
         }
-        foreach(json_decode($assign2_cos) as $co){
-            $attain_level_assigns[$co] = $attain_level_A2;
+        foreach(json_decode($assign2_cos->assign2_co) as $co){
+            $attain_level_assign[$co-1] = $attain_level_A2;
         }
-        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get('user_id'))->update(['assignments' => json_encode($attain_level_assigns)]); 
+        $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get('user_id'))->update(['assignments' => $attain_level_assign]); 
         return view("attainment.assignment", compact('params', 'assign1_arr', 'assign2_arr'));
     }
 

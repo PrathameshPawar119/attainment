@@ -3,8 +3,8 @@
     <title>Endsem Attainment</title>
 @endpush
 <style>
-    div{
-        height: 400px;
+    .rightChartBox, .leftChartBox{
+        height: 320px;
     }
 </style>
 @section('upperLeft-section')

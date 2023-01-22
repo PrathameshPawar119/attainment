@@ -3,7 +3,9 @@
     <title>IA Attainment</title>
 @endpush
 <style>
-
+    .rightChartBox, .leftChartBox{
+        height: 320px;
+    }
     .LowerAttainmentTable table{
         border: 9px transparent;
         background:linear-gradient(to right, rgb(248, 234, 248), rgb(226, 233, 247));

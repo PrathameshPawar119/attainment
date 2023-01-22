@@ -3,6 +3,9 @@
     <title>Expt Attainment</title>
 @endpush
 <style>
+        .rightChartBox, .leftChartBox{
+        height: 320px;
+    }
 
     .LowerAttainmentTable table{
         border: 9px transparent;
