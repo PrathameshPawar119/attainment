@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\ChartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\api\Charts\ChartController;
+use App\Http\Controllers\api\Charts\TempController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,5 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(["prefix" => "charts"], function(){
         Route::get('oral', [ChartController::class, "OralChartsData"]);
-        Route::get('endsem', [ChartController::class, "EndsemChartsData"]);
 });

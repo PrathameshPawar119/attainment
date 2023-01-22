@@ -166,7 +166,7 @@
                             <div class="SelectBox" style="width:110px; max-height:90px; overflow-y:scroll; padding:4px;">
                                 @for($i = 0; $i < 6; $i++)
                                     <div class="checkBoxRow form-check">
-                                        <input type="checkbox" name="oral_checkbox" sheet="oral" column="oral_co" co="{{$i+1}}" id="{{$parameters[$i]}}-oral" class="form-check-input">
+                                        <input type="checkbox" name="oral_checkbox" sheet="oral" column="oral_co" co="{{$i+1}}" id="{{$parameters[$i]}}-oral" class="form-check-input" disabled>
                                         <label for="{{$parameters[$i]}}-oral" class="form-check-label">{{$parameters[$i]}}</label>
                                     </div>
                                 @endfor
@@ -177,7 +177,7 @@
                             <div class="SelectBox" style="width:110px; max-height:90px; overflow-y:scroll; padding:4px;">
                                 @for($i = 0; $i < 6; $i++)
                                     <div class="checkBoxRow form-check">
-                                        <input type="checkbox" name="endsem_checkbox" sheet="endsem" column="endsem_co" co="{{$i+1}}" id="{{$parameters[$i]}}-endsem" class="form-check-input">
+                                        <input type="checkbox" name="endsem_checkbox" sheet="endsem" column="endsem_co" co="{{$i+1}}" id="{{$parameters[$i]}}-endsem" class="form-check-input" disabled>
                                         <label for="{{$parameters[$i]}}-endsem" class="form-check-label">{{$parameters[$i]}}</label>
                                     </div>
                                 @endfor

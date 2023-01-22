@@ -15,6 +15,9 @@
       width: 20px;
       height: 20px;
     }
+    img:hover{
+      cursor: pointer;
+    }
 
     /* alert */
     @keyframes displayNone{

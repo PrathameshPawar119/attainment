@@ -2,6 +2,11 @@
 @php
     $currentUrl = url()->current();
 @endphp
+<style scoped>
+    .hideMe{
+        display: none;
+    }
+</style>
 <ul class="nav nav-tabs">
     <li class="nav_logo px-2"><h2><i><u>Attainment</u>.com</i></h2></li>
         <li class="nav-item">
@@ -33,8 +38,14 @@
         <li class="nav-item">
             <a class="nav-link {{url('/user/criteriaInput')==$currentUrl?'active':''}}" href="{{url('/user/criteriaInput')}}"><b>Criteria</b></a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link {{url('/user/Profile')==$currentUrl?'active':''}}" href="{{url('/user/profile')}}" style="z-index: 1000;">Logo</a>
+        <li class="nav-item {{session()->has('user_id') ? '': 'hideMe'}}" >
+            <a class=" nav-link" id="ProfileToggle" style="z-index: 1000;" data-bs-toggle="dropdown" aria-expanded="false"><img style="height: 80%; width:80%;" src="{{asset('images/user.png')}}" alt="Profile"></a>
+            <ul class="dropdown-menu dropdown-menu" id="ProfileContainer">
+                <li><a class="dropdown-item" href="{{url('/user/profile')}}">Profile</a></li>
+                {{-- <li><a class="dropdown-item" href="#">Another action</a></li> --}}
+                    <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{url('/auth/logout')}}">Log Out <img src="{{asset('images/logout.png')}}" style="height: 16%; width:16%;" alt="Log Out"> </a></li>
+            </ul>
         </li>
     </div>
 </ul>

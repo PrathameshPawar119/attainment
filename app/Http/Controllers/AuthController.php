@@ -108,6 +108,7 @@ class AuthController extends Controller
         session()->forget('user_email');
         session()->forget('user_id');
 
+        session()->flash("alertMsg", "Logged Out, Your work has been saved successfully!");
         return redirect('auth/login');
     }
 
