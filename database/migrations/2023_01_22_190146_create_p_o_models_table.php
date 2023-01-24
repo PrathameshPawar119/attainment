@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('p_o_models', function (Blueprint $table) {
             $table->id('p_o_models_id');
-            $table->integer('PO1')->default(0);
-            $table->integer('PO2')->default(0);
-            $table->integer('PO3')->default(0);
-            $table->integer('PO4')->default(0);
-            $table->integer('PO5')->default(0);
-            $table->integer('PO6')->default(0);
+            $table->integer('PO1')->default(1);
+            $table->integer('PO2')->default(1);
+            $table->integer('PO3')->default(1);
+            $table->integer('PO4')->default(1);
+            $table->integer('PO5')->default(1);
+            $table->integer('PO6')->default(1);
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('user_id')->on('signup_details');
             $table->timestamps();
