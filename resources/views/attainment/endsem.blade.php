@@ -22,6 +22,7 @@
         $values = $resArr[0]."-".$resArr[1]."-".$resArr[2]."-".$resArr[3]."-".$resArr[4]."-".$resArr[5]."-".$resArr[6];
     @endphp
     <div class="lowerSectionBox container">
+            <x-alert-component mainclass="col-12" color="primary" message="Endsem Attainment updated..." />
                 <h4><center>Endsem Attainment</center></h4>
         <x-htable values={{$values}} />
     </div>

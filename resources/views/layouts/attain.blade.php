@@ -16,6 +16,9 @@
       width: 20px;
       height: 20px;
     }
+        img:hover{
+      cursor: pointer;
+    }
     .MainContainer{
       align-items: center;
     }
@@ -66,4 +69,9 @@
     @include('layouts.foot')
 
   </body>
+
+  <script>
+        // Fade out alert component arter 2.5s
+    $('#alert-section').delay(3000).fadeOut('slow');
+  </script>
 </html>

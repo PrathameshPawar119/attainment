@@ -155,7 +155,7 @@
                         <th>PO Level</th>
                     </thead>
                     <tbody>
-                        @for($i=0; $i<5; $i++)
+                        @for($i=0; $i<6; $i++)
                             <tr>
                                 <th>{{ucwords($sheetsArr2[$i])}}</th>
                                 <td>

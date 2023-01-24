@@ -34,6 +34,7 @@
 @endsection
 @section('lower-section')
     <div class="lowerSectionBox container">
+        <x-alert-component mainclass="col-12" color="primary" message="Assignments Attainment updated..." />
         <h4><center>Assignments Attainment</center></h4>
         <table class="table table-hover my-4 mx-4">
             <tbody>

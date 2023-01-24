@@ -30,7 +30,9 @@
     </div>
 @endsection
 @section('lower-section')
+
     <div class="lowerSectionBox container">
+        <x-alert-component mainclass="col-12" color="primary" message="Experiments Attainment updated..." />
         <h4><center>Expt Attainment</center></h4>
         {{-- Table to show co_total_ia --}}
             <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
