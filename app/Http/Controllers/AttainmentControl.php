@@ -14,6 +14,7 @@ use App\Models\CriteriaModel;
 use App\Models\EndsemModel;
 use App\Models\FinalAttainment;
 use App\Models\OralModel;
+use Illuminate\Support\Benchmark;
 
 class AttainmentControl extends Controller
 {
@@ -321,10 +322,13 @@ class AttainmentControl extends Controller
             array_push($attain_levels, $finalCoAttainments[$i]['attain_level']);
         }
         $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get('user_id'))->update(['ia' => json_encode($attain_levels)]);
+
         return view('attainment.ia', compact('co_total_table_details', 'outof_per_co', 'all_co_params', 'finalCoAttainments'));
     }
 
     public function ExptAttainment(){
+                $time_start = microtime(true);
+
     // Table 1 --> For showing Marks Total per CO
         // Get Experiments in each Co
         $cos = $this->UnitsPerCo('expt');
@@ -359,6 +363,9 @@ class AttainmentControl extends Controller
             array_push($attain_levels, $finalCoAttainments[$i]['attain_level']);
         }
         $updateFinAttain = FinalAttainment::where("user_id", "=", session()->get('user_id'))->update(['experiments' => json_encode($attain_levels)]);
-        return view('attainment.expt', compact('co_total_table_details', 'outof_per_co', 'all_co_params', 'finalCoAttainments'));
+
+        $time_end = microtime(true);
+         $diff = $time_end - $time_start;
+        return view('attainment.expt', compact('co_total_table_details', 'outof_per_co', 'all_co_params', 'finalCoAttainments', 'diff'));
     }
 }
