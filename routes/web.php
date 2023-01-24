@@ -46,7 +46,6 @@ Route::group(["prefix"=>"/sheets", "middleware"=>"loginRedirect"], function (){
     Route::get("assignment", [SheetsController::class, "assignmentSheet"]);
     Route::get("ia", [SheetsController::class, "iaSheet"]);
     Route::get("experiments", [SheetsController::class, "experimentSheet"]);
-    Route::get("cis", [CisController::class, "CisSheet"])->middleware('NoRecordsRedirectMiddleware');
     Route::post("oral/update", [UpdateMarksController::class, "updateOralMarks"])->middleware("RefineNullInputMware")->name("updateOralMarks");
     Route::post("endsem/update", [UpdateMarksController::class, "updateEndsemMarks"])->middleware("RefineNullInputMware")->name("updateEndsemMarks");
     Route::post("assignment/update", [UpdateMarksController::class, "updateAssignmentMarks"])->middleware("RefineNullInputMware")->name("updateAssignmentMarks");
@@ -72,4 +71,6 @@ Route::group(["prefix"=>"/attainment", "middleware"=>["loginRedirect", "NoRecord
     Route::get("assignment", [AttainmentControl::class, "AssignAttainment"]);
     Route::get("ia", [AttainmentControl::class, "IaAttainment"]);
     Route::get("expt", [AttainmentControl::class, "ExptAttainment"]);
+    Route::get("cis", [CisController::class, "CisSheet"]);
+
 });
