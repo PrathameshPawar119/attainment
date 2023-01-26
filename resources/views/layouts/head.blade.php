@@ -47,7 +47,6 @@
             <ul class="dropdown-menu dropdown-menu" id="ProfileContainer">
                 <li><a class="dropdown-item" href="{{url('/user/profile')}}">Profile</a></li>
                 {{-- <li><a class="dropdown-item" href="#">Another action</a></li> --}}
-                    <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{{url('/auth/logout')}}">Log Out <img src="{{asset('images/logout.png')}}" style="height: 16%; width:16%;" alt="Log Out"> </a></li>
             </ul>
         </li>

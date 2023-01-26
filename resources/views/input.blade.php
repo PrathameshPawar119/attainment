@@ -14,6 +14,11 @@
         $msg = session()->get("alertMsg");
     }
 
+
+    // if ($last_tuple) {
+        
+    // }
+
 @endphp
 
 <div class="container my-4">
@@ -27,7 +32,7 @@
         </span>
         <form class="row g-3" method="POST" action="{{url("/students/input/addstudent")}}">
             @csrf
-            <x-input-component mainclass="col-md-2" id="roll_no" name="roll_no" type="number" label="Roll No." />
+            <x-vinput mainclass="col-md-2" id="roll_no" name="roll_no" type="number" label="Roll No." value="{{$total_tuples ? ($last_record->roll_no+1):1}}"/>
             <x-input-component mainclass="col-md-6" id="student_id" name="student_id" type="text" label="Student ID" />
             <div class="col-md-2">
                 <label for="inputDiv" class="form-label">DIV</label>
@@ -35,7 +40,7 @@
                     {{-- Set Default Division Feature remaining --}}
                     <option value="">Select</option>
                     @foreach ($divs as $key=>$div)
-                        <option class="p-2" value="{{$div}}">{{$div}}</option>
+                        <option class="p-2" value="{{$div}}" {{($total_tuples) && ($div==$last_record->div) ? 'selected' :''}}>{{$div}}</option>
                     @endforeach
                 </select>
                 <span class="text-danger">
