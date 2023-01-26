@@ -32,6 +32,10 @@
       animation:displayNone 1s ease;
       display: block !important;
     }
+    .dropdown:hover .dropdown-menu {
+      display: block;
+      margin-top: 0; /* remove the gap so it doesn't close */
+  }
     /* .PageLinks{
       text-decoration: none;
       font-weight: bold;
@@ -71,7 +75,7 @@
     };
 
     // Fade out alert component arter 2.5s
-    $('#alert-section').delay(3000).fadeOut('slow');
+    $('#alert-section').delay(2500).fadeOut('slow');
 
   </script>
 </html>

@@ -72,6 +72,6 @@
 
   <script>
         // Fade out alert component arter 2.5s
-    $('#alert-section').delay(3000).fadeOut('slow');
+    $('#alert-section').delay(2500).fadeOut('slow');
   </script>
 </html>

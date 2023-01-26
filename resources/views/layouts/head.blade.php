@@ -10,6 +10,11 @@
         height: 80% !important;
         width: 80% !important;
     }
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0; /* remove the gap so it doesn't close */
+        z-index: 100000;
+    }
 </style>
 <ul class="nav nav-tabs">
     <li class="nav_logo px-2"><h2><i><u>Attainment</u>.com</i></h2></li>
@@ -39,13 +44,18 @@
     </li>
 
     <div class="leftTabs" style="position:absolute; right:20px;">
-        <li class="nav-item">
+        <li class="nav-item dropdown {{session()->has('user_id') ? '': 'hideMe'}}">
             <a class="nav-link {{url('/user/criteriaInput')==$currentUrl?'active':''}}" href="{{url('/user/criteriaInput')}}"><b>Criteria</b></a>
+            <ul class="dropdown-menu mx-0">
+                <li><a class="dropdown-item" href="{{url('/user/criteriaInput')}}">Total Marks</a></li>
+                <li><a class="dropdown-item" href="{{url('/user/coinput')}}">Select COs</a></li>
+                <li><a class="dropdown-item" href="{{url('/user/thresholdMarksInput')}}">Threshold</a></li>
+            </ul>
         </li>
-        <li class="nav-item {{session()->has('user_id') ? '': 'hideMe'}}" >
+        <li class="nav-item dropdown {{session()->has('user_id') ? '': 'hideMe'}}" >
             <a class=" nav-link" id="ProfileToggle" style="z-index: 1000;" data-bs-toggle="dropdown" aria-expanded="false"><img style="height: 80%; width:80%;" class="profileImg" src="{{asset('images/user.png')}}" alt="Profile"></a>
-            <ul class="dropdown-menu dropdown-menu" id="ProfileContainer">
-                <li><a class="dropdown-item" href="{{url('/user/profile')}}">Profile</a></li>
+            <ul class="dropdown-menu" id="ProfileContainer">
+                <li><a class="dropdown-item" href="{{url('/user/profile')}}">Profile ⭕</a></li>
                 {{-- <li><a class="dropdown-item" href="#">Another action</a></li> --}}
                 <li><a class="dropdown-item" href="{{url('/auth/logout')}}">Log Out <img src="{{asset('images/logout.png')}}" style="height: 16%; width:16%;" alt="Log Out"> </a></li>
             </ul>
