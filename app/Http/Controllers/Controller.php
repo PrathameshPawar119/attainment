@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CriteriaModel;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -42,5 +43,13 @@ class Controller extends BaseController
         session()->put("username", $username);
         session()->put("user_email", $email);
         session()->put("user_id", $user_id);
+    }
+
+    public function getCriteiaTotalMarks($CriteriaColumn){
+        $ex = CriteriaModel::join('signup_details', 'signup_details.user_id', 'criteria.user_id')
+            ->select("criteria.$CriteriaColumn")
+            ->where("criteria.user_id", "=", session()->get('user_id'))
+            ->first();
+        return $ex;
     }
 }

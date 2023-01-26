@@ -23,13 +23,3 @@ if(!function_exists('get_formatted_date')){
     }
 }
 
-if (!function_exists('getCriteiaTotalMarks')) {
-    function getCriteiaTotalMarks(){
-        $ex = CriteriaModel::join('signup_details', 'signup_details.user_id', 'criteria.user_id')
-            ->select('criteria.user_id', 'criteria.oral_total', 'criteria.endsem_total', 'criteria.assign_total', 'criteria.ia1_total', 'criteria.ia2_total', 'criteria.exp_total')
-            ->where("criteria.user_id", "=", session()->get('user_id'))
-            ->first();
-
-        return $ex;
-    }
-}

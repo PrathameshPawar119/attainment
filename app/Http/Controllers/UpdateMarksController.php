@@ -64,8 +64,7 @@ class UpdateMarksController extends Controller
 
         $a1_total = $assign_record[0]->a1;
         $a2_total = $assign_record[0]->a2;
-        // $temp = $this->getCriteiaTotalMarks();
-        $temp = getCriteiaTotalMarks();
+        $temp = $this->getCriteiaTotalMarks('assign_total');
         if($student){
             echo $a1_total."+".$a2_total."+".$temp->assign_total;
         }
@@ -80,17 +79,18 @@ class UpdateMarksController extends Controller
                         ->where("user_key", "=", session()->get('user_id'))
                         ->update([$req['column_name']=>$req['value']]);
         $ia_record = IaModel::join('student_details', 'student_details.id', 'ia.id')
-                        ->select('student_details.student_id','ia.ia1', 'ia.ia2')
+                        ->select('ia.ia1', 'ia.ia2')
                         ->where("student_id", "=", $req['id'])
                         ->where("user_key", "=", session()->get('user_id'))
                         ->get();
         
         $ia1_total = $ia_record[0]->ia1;
         $ia2_total = $ia_record[0]->ia2;
-        $temp = getCriteiaTotalMarks();
+        $IA1 = $this->getCriteiaTotalMarks('ia1_total');
+        $IA2 = $this->getCriteiaTotalMarks('ia2_total');
 
         if($student){
-            echo $ia1_total."+".$ia2_total."+".$temp->ia1_total."+".$temp->ia2_total;
+            echo $ia1_total."+".$ia2_total."+".$IA1->ia1_total."+".$IA2->ia2_total;
         }
         else{
             echo "0";
@@ -107,7 +107,8 @@ class UpdateMarksController extends Controller
                 ->where("student_id", "=", $req['id'])
                 ->where("user_key", "=", session()->get('user_id'))
                 ->first();
-        $temp = getCriteiaTotalMarks();
+
+        $temp = $this->getCriteiaTotalMarks('exp_total');
 
         if($student){
             echo $ex->e1."+".$ex->e2."+".$ex->e3."+".$ex->e4."+".$ex->e5."+".$ex->e6."+".$ex->e7."+".$ex->e8."+".$ex->e9."+".$ex->e10."+".$ex->e11."+".$ex->e12."+".$temp->exp_total;
