@@ -6,6 +6,8 @@ use App\Events\StudentCreated;
 use App\Events\StudentDeleted;
 use App\Listeners\DeleteStudentInits;
 use App\Listeners\InitStudentTables;
+use App\Models\StudentDetails;
+use App\Observers\StudentObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -37,7 +39,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        StudentDetails::observe(StudentObserver::class);
     }
 
     /**
