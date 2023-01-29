@@ -30,11 +30,11 @@ class StudentsImport implements ToModel, SkipsOnFailure, WithValidation, WithHea
         
 
         return new StudentDetails([
-            'roll_no' => $row['roll_no'],
-            'student_id' => $row['student_id'],
-            'div' => $row['div'],
-            'name' => $row['name'],
-            'gender' => $row['gender'],
+            'roll_no' => $row['roll_no'] ?? $row['RN'] ?? $row['Roll Number'] ?? $row['Roll no.'] ?? $row['Roll'] ?? null,
+            'student_id' => $row['student_id'] ?? $row['Stu.ID.'] ?? $row['Student ID'] ?? null,
+            'div' => $row['div'] ?? $row['DIV'] ?? $row['Div'] ?? null,
+            'name' => $row['name'] ?? $row['Name'] ?? $row['Name of Student'] ?? $row['Student Name'] ?? null,
+            'gender' => $row['gender'] ?? $row['Gender'] ?? $row['M/F'] ?? $row['sex'] ?? $row['SEX'] ?? null,
             'user_key' => session()->get('user_id'),
             'group_key' => $group_key
         ]);
