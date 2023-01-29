@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\StudentCreated;
+use App\Events\StudentDeleted;
 use Illuminate\Http\Request;
 use App\Models\StudentDetails;
 use App\Models\OralModel;
@@ -21,16 +23,20 @@ class studentController extends Controller
     public function inputForm(){
         $total_tuples = $this->totalNumStd();
         $last_record = StudentDetails::where("user_key", "=", session()->get('user_id'))->latest()->first();
-        return view("input", compact('total_tuples', 'last_record'));
+        $divs = StudentDetails::Divs;
+        $genders = StudentDetails::Genders;
+        return view("input", compact('total_tuples', 'last_record', 'divs', 'genders'));
     }
     
     public function addStudent(Request $req){
+        $divs = StudentDetails::Divs;
+        $genders = StudentDetails::Genders;
         $req->validate([
             'roll_no'=> 'required',
             'student_id'=>'required | unique:student_details',
-            'div' => 'required | in:A,B',
+            'div' => 'required | in:'.current($divs).','.next($divs).','.next($divs).','.next($divs),
             'student_name' => 'required | min:5 | max:80',
-            'gender' => 'required | in:M,F'
+            'gender' => 'required | in:'.current($genders).','.next($genders).','.next($genders).','.next($genders)
         ]);
         
         // Group key is composite of roll_no + div + user_key
@@ -52,42 +58,13 @@ class studentController extends Controller
             $student->save();
 
             
-            $last_tuple = StudentDetails::where("user_key", "=", session()->get('user_id'))->latest()->first();
-        // init oral entry
-            $oral_tuple = new OralModel();
-            $oral_tuple->oral_marks = 0;
-            $oral_tuple->id = $last_tuple['id'];
-            $oral_tuple->save();
+            $last_tuple = StudentDetails::select('id')->where("user_key", "=", session()->get('user_id'))->latest()->first();
 
-        //init endsem entry
-            $endsem_tuple = new EndsemModel();
-            $endsem_tuple->endsem_mark = 0;
-            $endsem_tuple->id = $last_tuple['id'];
-            $endsem_tuple->save();
-            
-        //init assignments entry
-            $assign_tuple = new  AssignmentModel();
-            $assign_tuple->id = $last_tuple['id'];
-            $assign_tuple->save();
-
-        // init ia entry
-            $ia_tuple = new IaModel();
-            $ia_tuple->id = $last_tuple['id'];
-            $ia_tuple->save();
-
-        // init experiments entry
-            $expt_tuple = new ExperimentModel();
-            $expt_tuple->id = $last_tuple['id'];
-            $expt_tuple->save();
-
-        // init co_total_ia table
-            $co_ia_tuple = new Co_Total_Ia();
-            $co_ia_tuple->id = $last_tuple['id'];
-            $co_ia_tuple->save();
-        // init co_total_expt_ table
-            $co_expt_table = new Co_Total_Expt();
-            $co_expt_table->id =  $last_tuple['id'];
-            $co_expt_table->save();
+            $data = array('id'=>$last_tuple->id);
+            if($student){
+                // Init student entries in all associative tables
+                event(new StudentCreated($data));
+            }
 
             session()->flash("alertMsg", "Student - $student->name ($student->student_id) saved successfully !");
             return redirect()->back();
@@ -131,13 +108,11 @@ class studentController extends Controller
     }
 
     public function permDelete($id){
-        $oral_record = OralModel::where("id", "=", $id)->delete();
-        $endsem_record = EndsemModel::where("id", "=", $id)->delete();
-        $assign_record = AssignmentModel::where("id", "=", $id)->delete();
-        $ia_record = IaModel::where("id", "=", $id)->delete();
-        $expt_record = ExperimentModel::where("id", "=", $id)->delete();
-        $co_ia_record = Co_Total_Ia::where("id", "=", $id)->delete();
-        $co_expt_record = Co_Total_Expt::where("id", "=", $id)->delete();
+        if($id){
+            // Delete Student from all associative tables
+            $data = array('id' => $id);
+            event(new StudentDeleted($data));
+        }
         
         $student = StudentDetails::onlyTrashed()->find($id);
         if (!is_null($student)) {

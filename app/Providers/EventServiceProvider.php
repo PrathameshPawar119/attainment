@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\StudentCreated;
+use App\Events\StudentDeleted;
+use App\Listeners\DeleteStudentInits;
+use App\Listeners\InitStudentTables;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,6 +22,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        StudentCreated::class => [
+            InitStudentTables::class
+        ],
+        StudentDeleted::class => [
+            DeleteStudentInits::class
+        ]
     ];
 
     /**
