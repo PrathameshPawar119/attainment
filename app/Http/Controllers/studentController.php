@@ -22,7 +22,7 @@ class studentController extends Controller
 
     public function inputForm(){
         $total_tuples = $this->totalNumStd();
-        $last_record = StudentDetails::where("user_key", "=", session()->get('user_id'))->latest()->first();
+        $last_record = StudentDetails::where("user_key", "=", session()->get('user_id'))->orderBy('roll_no', 'Desc')->first() ;
         $divs = StudentDetails::Divs;
         $genders = StudentDetails::Genders;
         return view("input", compact('total_tuples', 'last_record', 'divs', 'genders'));
