@@ -7,6 +7,7 @@ use App\Http\Controllers\CisController;
 use App\Http\Controllers\studentController;
 use App\Http\Controllers\SheetsController;
 use App\Http\Controllers\UpdateMarksController;
+use App\Http\Controllers\UploadsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,5 +73,10 @@ Route::group(["prefix"=>"/attainment", "middleware"=>["loginRedirect", "NoRecord
     Route::get("ia", [AttainmentControl::class, "IaAttainment"]);
     Route::get("expt", [AttainmentControl::class, "ExptAttainment"]);
     Route::get("cis", [CisController::class, "CisSheet"]);
+});
 
+Route::group(["prefix"=>"/upload", "middleware"=>["loginRedirect"]], function(){
+    Route::get("file", [UploadsController::class, "xlsView"]);
+    Route::post("submit-file", [UploadsController::class, "importStudents"]);
+    
 });
