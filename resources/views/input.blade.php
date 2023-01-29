@@ -15,6 +15,15 @@
 
 <div class="container my-4">
     <x-alert-component mainclass="col-12" color="primary" message="{{$msg}}" />
+    <div class="viewUpperBox col-12" style="margin:12px 0px; display:flex; flex-direction:row; justify-content:space-between;">
+        <div class="input-group mx-1" style="width: 50%;">
+            <h6></h6>
+        </div>
+        <div class="upperBoxBtns" style="display: inline-block;">
+            <a href="{{url("/upload/file")}}" class="mx-2"><button class="btn btn-outline-secondary"> 😎 Upload File</button></a>
+            <button class="btn btn-outline-secondary" type="submit" value="update" >Refresh</button>
+        </div>
+    </div>
     <div class="card p-4">
         <h2>{{ucwords(session()->get('username'))}}</h2>
         <span class="text-danger">

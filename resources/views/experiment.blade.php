@@ -13,7 +13,7 @@
         margin: 0; 
     }
     .StdNameCol{
-        min-width: 340px !important;
+        min-width: 400px !important;
     }
     .table-responsive table {
         min-width: 1400px;
@@ -51,7 +51,7 @@
                 <th scope="col">DIV</th>
                 <th scope="col">Roll No.</th>
                 <th scope="col">Student ID</th>
-                <th style="width: 300px;" scope="col">Full Name</th>
+                <th style="width: 400px;" scope="col">Full Name</th>
                 @for ($i=1; $i <= 12 ; $i++)
                         <th class='sideColumn{{$i}}' scope='col'>R1</th>
                         <th class='sideColumn{{$i}}' scope='col'>R2</th>
