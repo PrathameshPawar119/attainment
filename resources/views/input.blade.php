@@ -6,18 +6,10 @@
 @endpush
 
 @php
-    $divs = array("A", "B");
-    $genders = array("M", "F");
-
     $msg = "...";
     if (session()->has("alertMsg")) {
         $msg = session()->get("alertMsg");
     }
-
-
-    // if ($last_tuple) {
-        
-    // }
 
 @endphp
 

@@ -18,6 +18,24 @@ class StudentDetails extends Model
     ];
 
 
+    // Divisions
+    public const A = 'A';
+    public const B = 'B';
+
+    public const Divs = [
+        self::A => 'A',
+        self::B => 'B',
+    ];
+
+    // Genders
+    public const M = 'M';
+    public const F = 'F';
+
+    public const Genders = [
+        self::M => 'M',
+        self::F => 'F',
+    ];
+
     //  Mutators **************************
     // this function capitalies each leteters 1st char
     public function setNameAttribute($value){
