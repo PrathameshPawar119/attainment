@@ -122,7 +122,7 @@
                                 </div>
                             </td>
                             <td class="mainColumn2" style="background-color: aliceblue; cursor: pointer;" id="{{$student->id}}+ia2">{{$student->ia2}}</td>
-                            <td id="{{$student->student_id}}+avg+ia1ia2">{{round((($student->ia1+$student->ia2)*20)/($ia_total_max->ia1_total+$ia_total_max->ia2_total))}}</td>
+                            <td id="{{$student->id}}+avg+ia1ia2">{{round((($student->ia1+$student->ia2)*20)/($ia_total_max->ia1_total+$ia_total_max->ia2_total))}}</td>
                         </tr>
                     @endforeach
                 </form>

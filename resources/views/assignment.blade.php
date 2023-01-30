@@ -106,8 +106,8 @@
                                 </div>
                             </td>
                             <td class="mainColumn2" style="background-color: aliceblue; cursor: pointer;" id="{{$student->id}}+a2">{{$student->a2}}</td>
-                            <td id="{{$student->student_id}}+a1a2">{{$student->a1+$student->a2}}</td>
-                            <td id="{{$student->student_id}}+avg+a1a2">{{round((($student->a1+$student->a2)*5)/(($assign_total_max->assign_total*2)))}}</td>
+                            <td id="{{$student->id}}+a1a2">{{$student->a1+$student->a2}}</td>
+                            <td id="{{$student->id}}+avg+a1a2">{{round((($student->a1+$student->a2)*5)/(($assign_total_max->assign_total*2)))}}</td>
                         </tr>
                     @endforeach
                 </form>

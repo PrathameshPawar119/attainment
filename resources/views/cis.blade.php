@@ -81,7 +81,7 @@
 @section('main-section')
     <div class="cisContainer">
     <x-alert-component mainclass="col-12" color="primary" message="{{$msg}}" />
-        <div class="AttainmentTable container table-responsive my-4">
+        <div class="AttainmentTable container table-responsive my-2">
             <h5>Assesment Tools for attainment</h5>
             <table class="table my-2 table-hover text-center">
                 <tbody>
