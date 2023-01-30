@@ -82,46 +82,46 @@
                             <td style="width: 440px; text-align:left;" class="StdNameCol">{{$student->name}}</td>
                             <td class="sideColumn1">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:52px;">
-                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->student_id}}+ia1q1"  id="{{$student->group_key}}+ia1q1" max="{{$ia_total_max->ia1_q1}}" min="0" value="{{$student->ia1q1}}">
+                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->id}}+ia1q1"  id="{{$student->group_key}}+ia1q1" max="{{$ia_total_max->ia1_q1}}" min="0" value="{{$student->ia1q1}}">
                                 </div>
                             </td>
                             <td class="sideColumn1">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:52px;">
-                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->student_id}}+ia1q2"  id="{{$student->group_key}}+ia2q2" max="{{$ia_total_max->ia1_q2}}" min="0" value="{{$student->ia1q2}}">
+                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->id}}+ia1q2"  id="{{$student->group_key}}+ia2q2" max="{{$ia_total_max->ia1_q2}}" min="0" value="{{$student->ia1q2}}">
                                 </div>
                             </td>
                             <td class="sideColumn1">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:52px;">
-                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->student_id}}+ia1q3"  id="{{$student->group_key}}+ia1q3" max="{{$ia_total_max->ia1_q3}}" min="0" value="{{$student->ia1q3}}">
+                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->id}}+ia1q3"  id="{{$student->group_key}}+ia1q3" max="{{$ia_total_max->ia1_q3}}" min="0" value="{{$student->ia1q3}}">
                                 </div>
                             </td>
                             <td class="sideColumn1">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:52px;">
-                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->student_id}}+ia1q4"  id="{{$student->group_key}}+ia1q4" max="{{$ia_total_max->ia1_q4}}" min="0" value="{{$student->ia1q4}}">
+                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->id}}+ia1q4"  id="{{$student->group_key}}+ia1q4" max="{{$ia_total_max->ia1_q4}}" min="0" value="{{$student->ia1q4}}">
                                 </div>
                             </td>
-                            <td class="mainColumn1" style="background-color: aliceblue; cursor: pointer;" id="{{$student->student_id}}+ia1">{{$student->ia1}}</td>
+                            <td class="mainColumn1" style="background-color: aliceblue; cursor: pointer;" id="{{$student->id}}+ia1">{{$student->ia1}}</td>
                             <td class="sideColumn2">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:52px;">
-                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->student_id}}+ia2q1"  id="{{$student->group_key}}+ia2q1" max="{{$ia_total_max->ia2_q1}}" min="0" value="{{$student->ia2q1}}">
-                                </div>
-                            </td>
-                            <td class="sideColumn2">
-                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:52px;">
-                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->student_id}}+ia2q2"  id="{{$student->group_key}}+ia2q2" max="{{$ia_total_max->ia2_q2}}" min="0" value="{{$student->ia2q2}}">
+                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->id}}+ia2q1"  id="{{$student->group_key}}+ia2q1" max="{{$ia_total_max->ia2_q1}}" min="0" value="{{$student->ia2q1}}">
                                 </div>
                             </td>
                             <td class="sideColumn2">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:52px;">
-                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->student_id}}+ia2q3"  id="{{$student->group_key}}+ia2q3" max="{{$ia_total_max->ia2_q3}}" min="0" value="{{$student->ia2q3}}">
+                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->id}}+ia2q2"  id="{{$student->group_key}}+ia2q2" max="{{$ia_total_max->ia2_q2}}" min="0" value="{{$student->ia2q2}}">
                                 </div>
                             </td>
                             <td class="sideColumn2">
                                 <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:52px;">
-                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->student_id}}+ia2q4"  id="{{$student->group_key}}+ia2q4" max="{{$ia_total_max->ia2_q4}}" min="0" value="{{$student->ia2q4}}">
+                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->id}}+ia2q3"  id="{{$student->group_key}}+ia2q3" max="{{$ia_total_max->ia2_q3}}" min="0" value="{{$student->ia2q3}}">
                                 </div>
                             </td>
-                            <td class="mainColumn2" style="background-color: aliceblue; cursor: pointer;" id="{{$student->student_id}}+ia2">{{$student->ia2}}</td>
+                            <td class="sideColumn2">
+                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:52px;">
+                                    <input type="number" class="form-control my-0 py-2 marksInputField" name="{{$student->id}}+ia2q4"  id="{{$student->group_key}}+ia2q4" max="{{$ia_total_max->ia2_q4}}" min="0" value="{{$student->ia2q4}}">
+                                </div>
+                            </td>
+                            <td class="mainColumn2" style="background-color: aliceblue; cursor: pointer;" id="{{$student->id}}+ia2">{{$student->ia2}}</td>
                             <td id="{{$student->student_id}}+avg+ia1ia2">{{round((($student->ia1+$student->ia2)*20)/($ia_total_max->ia1_total+$ia_total_max->ia2_total))}}</td>
                         </tr>
                     @endforeach

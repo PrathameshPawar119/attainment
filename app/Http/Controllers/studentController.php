@@ -13,6 +13,8 @@ use App\Models\Co_Total_Expt;
 use App\Models\Co_Total_Ia;
 use App\Models\IaModel;
 use App\Models\ExperimentModel;
+use Illuminate\Validation\ValidationException;
+
 
 class studentController extends Controller
 {
@@ -33,12 +35,18 @@ class studentController extends Controller
         $genders = StudentDetails::Genders;
         $req->validate([
             'roll_no'=> 'required',
-            'student_id'=>'required | unique:student_details',
+            'student_id'=>'required',
             'div' => 'required | in:'.current($divs).','.next($divs).','.next($divs).','.next($divs),
             'student_name' => 'required | min:5 | max:80',
             'gender' => 'required | in:'.current($genders).','.next($genders).','.next($genders).','.next($genders)
         ]);
-        
+
+        $student_dups = StudentDetails::where("user_key", "=", session()->get('user_id'))->where('student_id', "=", $req['student_id'])->distinct('id')->count();
+        if($student_dups){
+            throw ValidationException::withMessages(["student_id" => "Student with same ID is present"]);
+            return redirect()->back();
+        }
+
         // Group key is composite of roll_no + div + user_key
         // it will be useful to avoid duplictate entries for per user pre div
         $group_key = strval($req['roll_no'])."-".strval($req['div'])."-".strval(session()->get('user_id'));
@@ -149,25 +157,22 @@ class studentController extends Controller
     }
 
     public function updateStudentData($id, Request $req){
-        $student = StudentDetails::find($id);
 
-        if ($req->student_id === $student->student_id) {
-            $req->validate([
-                'roll_no'=> 'required',
-                'student_id'=>'required',
-                'div' => 'required | in:A,B',
-                'student_name' => 'required | min:5 | max:80',
-                'gender' => 'required | in:M,F'
-            ]);
-        }
-        else{
-            $req->validate([
-                'roll_no'=> 'required',
-                'student_id'=>'required | unique:student_details',
-                'div' => 'required | in:A,B',
-                'student_name' => 'required | min:5 | max:80',
-                'gender' => 'required | in:M,F'
-            ]); 
+        $req->validate([
+            'roll_no'=> 'required',
+            'student_id'=>'required',
+            'div' => 'required | in:A,B',
+            'student_name' => 'required | min:5 | max:80',
+            'gender' => 'required | in:M,F'
+        ]);
+
+        $student = StudentDetails::find($id);
+        
+        // If there is any student other than $id-student then return duplication error
+        $student_dups = StudentDetails::where("user_key", "=", session()->get('user_id'))->where('student_id', "=", $req['student_id'])->where("student_id", "!=", $student->student_id)->distinct('id')->count();
+        if($student_dups){
+            throw ValidationException::withMessages(["student_id" => "Student with same ID is present"]);
+            return redirect()->back();
         }
 
         // Group key is composite of roll_no + div + user_key
@@ -194,6 +199,12 @@ class studentController extends Controller
             session()->flash("duplicateRecordError", "Student with Roll number $req->roll_no in Div $req->div allready present, check again please !");
             return redirect()->back();
         }
+    }
+
+    public function studentProfile(Request $req){
+        // $student = StudentDetails::withoutTrashed()->find($req['id']);
+
+        echo "ok";
     }
     
 }

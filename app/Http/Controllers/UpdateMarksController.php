@@ -27,7 +27,7 @@ class UpdateMarksController extends Controller
     public function updateOralMarks(Request $req){   
 
         $student = OralModel::join('student_details', 'student_details.id', 'oral.id')
-                        ->where('student_id', '=', $req['id'])
+                        ->where('student_details.id', '=', $req['id'])
                         ->where('user_key', '=', session()->get('user_id'))
                         ->update(['oral_marks'=>$req['value']]);
         if($student){
@@ -40,7 +40,7 @@ class UpdateMarksController extends Controller
 
     public function updateEndsemMarks(Request $req){
         $student = EndsemModel::join('student_details', 'student_details.id', 'endsem.id')
-                        ->where("student_id", "=", $req['id'])
+                        ->where("student_details.id", "=", $req['id'])
                         ->where("user_key", "=", session()->get('user_id'))
                         ->update(['endsem_mark'=>$req['value']]);
         if ($student) {
@@ -53,17 +53,17 @@ class UpdateMarksController extends Controller
 
     public function updateAssignmentMarks(Request $req){
         $student = AssignmentModel::join('student_details', 'student_details.id', 'assignments.id')
-                        ->where("student_id", "=", $req['id'])
+                        ->where("student_details.id", "=", $req['id'])
                         ->where("user_key", "=", session()->get('user_id'))
                         ->update([$req['column_name']=>$req['value']]);
         $assign_record = AssignmentModel::join('student_details', 'student_details.id', 'assignments.id')
                 ->select('assignments.a1', 'assignments.a2')
-                ->where("student_id", "=", $req['id'])
+                ->where("student_details.id", "=", $req['id'])
                 ->where("user_key", "=", session()->get('user_id'))
-                ->get();
+                ->first();
 
-        $a1_total = $assign_record[0]->a1;
-        $a2_total = $assign_record[0]->a2;
+        $a1_total = $assign_record->a1;
+        $a2_total = $assign_record->a2;
         $temp = $this->getCriteiaTotalMarks('assign_total');
         if($student){
             echo $a1_total."+".$a2_total."+".$temp->assign_total;
@@ -75,12 +75,12 @@ class UpdateMarksController extends Controller
     
     public function updateIaMarks(Request $req){
         $student = IaModel::join('student_details', 'student_details.id', 'ia.id')
-                        ->where("student_id", "=", $req['id'])
+                        ->where("student_details.id", "=", $req['id'])
                         ->where("user_key", "=", session()->get('user_id'))
                         ->update([$req['column_name']=>$req['value']]);
         $ia_record = IaModel::join('student_details', 'student_details.id', 'ia.id')
                         ->select('ia.ia1', 'ia.ia2')
-                        ->where("student_id", "=", $req['id'])
+                        ->where("student_details.id", "=", $req['id'])
                         ->where("user_key", "=", session()->get('user_id'))
                         ->get();
         
@@ -99,12 +99,12 @@ class UpdateMarksController extends Controller
     
     public function updateExperimentMarks(Request $req){
         $student = ExperimentModel::join('student_details', 'student_details.id', 'experiments.id')
-                        ->where("student_id", "=", $req['id'])
+                        ->where("student_details.id", "=", $req['id'])
                         ->where("user_key", "=", session()->get('user_id'))
                         ->update([$req['column_name']=>$req['value']]);
         $ex = ExperimentModel::join('student_details', 'student_details.id', 'experiments.id')
                 ->select('experiments.e1', 'experiments.e2', 'experiments.e3', 'experiments.e4', 'experiments.e5', 'experiments.e6', 'experiments.e7', 'experiments.e8', 'experiments.e9', 'experiments.e10', 'experiments.e11', 'experiments.e12')
-                ->where("student_id", "=", $req['id'])
+                ->where("student_details.id", "=", $req['id'])
                 ->where("user_key", "=", session()->get('user_id'))
                 ->first();
 

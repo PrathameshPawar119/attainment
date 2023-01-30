@@ -51,7 +51,7 @@
                         <td>{{$student->name}}</td>
                         <td>
                             <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:80px;">
-                                <input type="number" class="form-control my-0 marksInputField" name="{{$student->student_id}}"  id="{{$student->group_key}}-student" max="{{$oral_total_max[0]->oral_total}}" min="0" value="{{$student->oral_marks}}" style="height: 26px;">
+                                <input type="number" class="form-control my-0 marksInputField" name="{{$student->id}}"  id="{{$student->group_key}}-student" max="{{$oral_total_max[0]->oral_total}}" min="0" value="{{$student->oral_marks}}" style="height: 26px;">
                             </div>
                         </td>
                     </tr>
