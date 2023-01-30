@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Dotenv\Exception\ValidationException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -45,8 +46,14 @@ class StudentDetails extends Model
     // capitalize whole student id 
     // student_id --> StudentId for mutators 🥲
     public function setStudentIdAttribute($value){
+        // $student_dups = StudentDetails::where("user_key", "=", session()->get('user_id'))->where('student_id', $value)->distinct('id')->count();
+        // if($student_dups > 1){
+        //     throw ValidationException::withMessages(["student_id" => "Student with same ID is present"]);
+        //     return redirect()->back();
+        // }
         $this->attributes['student_id'] = strtoupper($value);
     }
+
 
 
 }

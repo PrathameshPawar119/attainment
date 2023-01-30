@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use App\Models\StudentDetails;
+use Illuminate\Validation\Rule;
 
 class StudentsImport implements ToModel, SkipsOnFailure, WithValidation, WithHeadingRow
 {
@@ -26,7 +27,6 @@ class StudentsImport implements ToModel, SkipsOnFailure, WithValidation, WithHea
         // Group key is composite of roll_no + div + user_key
         // it will be useful to avoid duplictate entries for per user pre div
         $group_key = strval($row['roll_no'])."-".strval($row['div'])."-".strval(session()->get('user_id'));
-        // $duplicate = StudentDetails::where('group_key','=', $group_key)->get();
         
 
         return new StudentDetails([
@@ -54,7 +54,9 @@ class StudentsImport implements ToModel, SkipsOnFailure, WithValidation, WithHea
             'student_id'  =>[
                 'required',
                 'string',
-                'unique:student_details'
+                Rule::unique('student_details')->where(function ($query) {
+                    return $query->where('user_key', session()->get("user_id"));
+                })
             ],
             'div' =>[
                 'required',
