@@ -18,6 +18,14 @@
     img:hover{
       cursor: pointer;
     }
+    .SwitchColumns{
+        display: none;
+    }
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
 
     /* alert */
     @keyframes displayNone{

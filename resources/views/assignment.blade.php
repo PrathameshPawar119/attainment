@@ -4,14 +4,7 @@
 @endpush
 @section('main-section')
 <style>
-    .SwitchColumns{
-        display: none;
-    }
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
-        -webkit-appearance: none; 
-        margin: 0; 
-    }
+
     .StdNameCol{
         min-width: 360px;
     }
@@ -75,33 +68,33 @@
                             <td>{{$student->student_id}}</td>
                             <td style="width: 440px; text-align:left;" class="StdNameCol">{{$student->name}}</td>
                             <td class="sideColumn1">
-                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
+                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:60px;">
                                     <input type="number" class="form-control my-0 marksInputField" name="{{$student->id}}+a1p1"  id="{{$student->group_key}}+a1p1" max="{{$assign_total_max->assign_p1}}" min="0" value="{{$student->a1p1}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="sideColumn1">
-                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
+                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:60px;">
                                     <input type="number" class="form-control my-0 marksInputField" name="{{$student->id}}+a1p2"  id="{{$student->group_key}}+a1p2" max="{{$assign_total_max->assign_p2}}" min="0" value="{{$student->a1p2}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="sideColumn1">
-                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
+                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:60px;">
                                     <input type="number" class="form-control my-0 marksInputField" name="{{$student->id}}+a1p3"  id="{{$student->group_key}}+a1p3" max="{{$assign_total_max->assign_p3}}" min="0" value="{{$student->a1p3}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="mainColumn1" style="background-color: aliceblue; cursor: pointer;" id="{{$student->id}}+a1">{{$student->a1}}</td>
                             <td class="sideColumn2">
-                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
+                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:60px;">
                                     <input type="number" class="form-control my-0 marksInputField" name="{{$student->id}}+a2p1"  id="{{$student->group_key}}+a2p1" max="{{$assign_total_max->assign_p1}}" min="0" value="{{$student->a2p1}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="sideColumn2">
-                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
+                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:60px;">
                                     <input type="number" class="form-control my-0 marksInputField" name="{{$student->id}}+a2p2"  id="{{$student->group_key}}+a2p2" max="{{$assign_total_max->assign_p2}}" min="0" value="{{$student->a2p2}}" style="height: 26px;">
                                 </div>
                             </td>
                             <td class="sideColumn2">
-                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:40px;">
+                                <div class="smallInputField center my-0" style="border:2px solid rgb(86, 3, 114); border-radius:6px; width:60px;">
                                     <input type="number" class="form-control my-0 marksInputField" name="{{$student->id}}+a2p3"  id="{{$student->group_key}}+a2p3" max="{{$assign_total_max->assign_p3}}" min="0" value="{{$student->a2p3}}" style="height: 26px;">
                                 </div>
                             </td>
@@ -152,43 +145,45 @@
             var max_assign_limit = parseInt(e.target.getAttribute("max"));
             var stuId = e.target.getAttribute("name");
             var stdVal = parseInt(e.target.value);
-            if (stdVal > max_assign_limit) {
-                stdVal = max_assign_limit;
-            }
             var stuGroupKey = e.target.getAttribute("id");
-            
-            $.ajax({
-                url: "{{route('updateAssignmentMarks')}}",
-                type:"POST",
-                data: {
-                    '_token': "{{csrf_token()}}",
-                    'id':stuId.split("+")[0],
-                    'value':stdVal,
-                    'column_name':`${stuId.split("+")[1]}`
-                },
-                success: function(res){
-                    if(res == '0' ||  res == 0){
-                        e.target.parentNode.style.borderColor = "red";
-                        setTimeout(() => {
-                            e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
-                        }, 5000);                        
-                    }
-                    else{
-                        e.target.parentNode.style.borderColor = "cyan";
-                        setTimeout(() => {
-                            e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
-                        }, 2000); 
+            if (stdVal > max_assign_limit) {
+                e.target.parentNode.style.borderColor = "red";
+            }
+            else{
 
-                        var a1_total = parseInt(res.split("+")[0]);
-                        var a2_total = parseInt(res.split("+")[1]);
-                        var assign_total = parseInt(res.split("+")[2]);
-                        document.getElementById(`${stuId.split("+")[0]}+a1`).innerHTML = a1_total;
-                        document.getElementById(`${stuId.split("+")[0]}+a2`).innerHTML= a2_total;
-                        document.getElementById(`${stuId.split("+")[0]}+a1a2`).innerHTML = a1_total+a2_total;
-                        document.getElementById(`${stuId.split("+")[0]}+avg+a1a2`).innerHTML = (((a1_total+a2_total)*5)/(assign_total*2)).toFixed();
+                $.ajax({
+                    url: "{{route('updateAssignmentMarks')}}",
+                    type:"POST",
+                    data: {
+                        '_token': "{{csrf_token()}}",
+                        'id':stuId.split("+")[0],
+                        'value':stdVal,
+                        'column_name':`${stuId.split("+")[1]}`
+                    },
+                    success: function(res){
+                        if(res == '0' ||  res == 0){
+                            e.target.parentNode.style.borderColor = "red";
+                            setTimeout(() => {
+                                e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            }, 5000);                        
+                        }
+                        else{
+                            e.target.parentNode.style.borderColor = "cyan";
+                            setTimeout(() => {
+                                e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            }, 2000); 
+    
+                            var a1_total = parseInt(res.split("+")[0]);
+                            var a2_total = parseInt(res.split("+")[1]);
+                            var assign_total = parseInt(res.split("+")[2]);
+                            document.getElementById(`${stuId.split("+")[0]}+a1`).innerHTML = a1_total;
+                            document.getElementById(`${stuId.split("+")[0]}+a2`).innerHTML= a2_total;
+                            document.getElementById(`${stuId.split("+")[0]}+a1a2`).innerHTML = a1_total+a2_total;
+                            document.getElementById(`${stuId.split("+")[0]}+avg+a1a2`).innerHTML = (((a1_total+a2_total)*5)/(assign_total*2)).toFixed();
+                        }
                     }
-                }
-            });
+                });
+            }
         }, 300));
     });
 </script>

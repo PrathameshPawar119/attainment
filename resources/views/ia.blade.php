@@ -4,14 +4,6 @@
 @endpush
 @section('main-section')
 <style>
-    .SwitchColumns{
-        display: none;
-    }
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
-        -webkit-appearance: none; 
-        margin: 0; 
-    }
     .StdNameCol{
         min-width: 360px;
     }
@@ -167,42 +159,44 @@
             var iaQMax = parseInt(e.target.getAttribute("max"));
             var stuId = e.target.getAttribute("name");
             var stdVal = parseInt(e.target.value);
-            if (stdVal > iaQMax) {
-                stdVal = iaQMax;
-            }
             var stuGroupKey = e.target.getAttribute("id");
-            $.ajax({
-                url: "{{route('updateIaMarks')}}",
-                type:"POST",
-                data: {
-                    '_token': "{{csrf_token()}}",
-                    'id':stuId.split("+")[0],
-                    'value':stdVal,
-                    'column_name':`${stuId.split("+")[1]}`
-                },
-                success: function(res){
-                    if(res == '0' ||  res == 0){
-                        e.target.parentNode.style.borderColor = "red";
-                        setTimeout(() => {
-                            e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
-                        }, 5000);                        
+            if (stdVal > iaQMax) {
+                e.target.parentNode.style.borderColor = "red";
+            }
+            else{
+                $.ajax({
+                    url: "{{route('updateIaMarks')}}",
+                    type:"POST",
+                    data: {
+                        '_token': "{{csrf_token()}}",
+                        'id':stuId.split("+")[0],
+                        'value':stdVal,
+                        'column_name':`${stuId.split("+")[1]}`
+                    },
+                    success: function(res){
+                        if(res == '0' ||  res == 0){
+                            e.target.parentNode.style.borderColor = "red";
+                            setTimeout(() => {
+                                e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            }, 5000);                        
+                        }
+                        else{
+                            e.target.parentNode.style.borderColor = "cyan";
+                            setTimeout(() => {
+                                e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            }, 2000); 
+                            var parsedRes = res.split("+");
+                            var ia1_total = parseInt(parsedRes[0]);
+                            var ia2_total = parseInt(parsedRes[1]);
+                            var ia1_limit = parseInt(parsedRes[2]);
+                            var ia2_limit = parseInt(parsedRes[3]);
+                            document.getElementById(`${stuId.split("+")[0]}+ia1`).innerHTML = ia1_total;
+                            document.getElementById(`${stuId.split("+")[0]}+ia2`).innerHTML= ia2_total;
+                            document.getElementById(`${stuId.split("+")[0]}+avg+ia1ia2`).innerHTML = ((ia1_total+ia2_total)*20/(ia1_limit+ia2_limit)).toFixed();
+                        }
                     }
-                    else{
-                        e.target.parentNode.style.borderColor = "cyan";
-                        setTimeout(() => {
-                            e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
-                        }, 2000); 
-                        var parsedRes = res.split("+");
-                        var ia1_total = parseInt(parsedRes[0]);
-                        var ia2_total = parseInt(parsedRes[1]);
-                        var ia1_limit = parseInt(parsedRes[2]);
-                        var ia2_limit = parseInt(parsedRes[3]);
-                        document.getElementById(`${stuId.split("+")[0]}+ia1`).innerHTML = ia1_total;
-                        document.getElementById(`${stuId.split("+")[0]}+ia2`).innerHTML= ia2_total;
-                        document.getElementById(`${stuId.split("+")[0]}+avg+ia1ia2`).innerHTML = ((ia1_total+ia2_total)*20/(ia1_limit+ia2_limit)).toFixed();
-                    }
-                }
-            });
+                });
+            }
         }, 200));
     });
 </script>

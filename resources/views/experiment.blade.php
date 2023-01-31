@@ -4,14 +4,6 @@
 @endpush
 @section('main-section')
 <style>
-    .SwitchColumns{
-        display: none;
-    }
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
-        -webkit-appearance: none; 
-        margin: 0; 
-    }
     .StdNameCol{
         min-width: 400px !important;
     }
@@ -143,46 +135,48 @@
             var expMarR = parseInt(e.target.getAttribute("max"));
             var stuId = e.target.getAttribute("name").split("+");
             var stdVal = parseInt(e.target.value);
-            if (stdVal > expMarR) {
-                stdVal = expMarR;
-            }
             var stuGroupKey = e.target.getAttribute("id");
-            $.ajax({
-                url: "{{route('updateExperimentMarks')}}",
-                type:"POST",
-                data: {
-                    '_token': "{{csrf_token()}}",
-                    'id':stuId[0],
-                    'value':stdVal,
-                    'column_name':`${stuId[1]}`
-                },
-                success: function(res){
-                    if(res == '0' ||  res == 0){
-                        e.target.parentNode.style.borderColor = "red";
-                        setTimeout(() => {
-                            e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
-                        }, 5000);                        
-                    }
-                    else{
-                        e.target.parentNode.style.borderColor = "cyan";
-                        setTimeout(() => {
-                            e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
-                        }, 2000); 
-
-                        var exp_total = 0;
-                        var all_exp_total = 0;
-                        var parsedRes = res.split("+");
-                        console.log(res);
-                        var exp_limit = parseInt(parsedRes[12]);
-                        for (let i = 0; i < 12; i++) {
-                            exp_total = parseInt(parsedRes[i]);
-                            document.getElementById(`${stuId[0]}+e${i+1}`).innerHTML = exp_total;
-                            all_exp_total += exp_total;
+            if (stdVal > expMarR) {
+                e.target.parentNode.style.borderColor = "red";
+            }
+            else{
+                $.ajax({
+                    url: "{{route('updateExperimentMarks')}}",
+                    type:"POST",
+                    data: {
+                        '_token': "{{csrf_token()}}",
+                        'id':stuId[0],
+                        'value':stdVal,
+                        'column_name':`${stuId[1]}`
+                    },
+                    success: function(res){
+                        if(res == '0' ||  res == 0){
+                            e.target.parentNode.style.borderColor = "red";
+                            setTimeout(() => {
+                                e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            }, 5000);                        
                         }
-                        document.getElementById(`${stuId[0]}+avg`).innerHTML = (((all_exp_total)*15)/(exp_limit*12)).toFixed();
+                        else{
+                            e.target.parentNode.style.borderColor = "cyan";
+                            setTimeout(() => {
+                                e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
+                            }, 2000); 
+    
+                            var exp_total = 0;
+                            var all_exp_total = 0;
+                            var parsedRes = res.split("+");
+                            console.log(res);
+                            var exp_limit = parseInt(parsedRes[12]);
+                            for (let i = 0; i < 12; i++) {
+                                exp_total = parseInt(parsedRes[i]);
+                                document.getElementById(`${stuId[0]}+e${i+1}`).innerHTML = exp_total;
+                                all_exp_total += exp_total;
+                            }
+                            document.getElementById(`${stuId[0]}+avg`).innerHTML = (((all_exp_total)*15)/(exp_limit*12)).toFixed();
+                        }
                     }
-                }
-            });
+                });
+            }
         }, 250));
     });
 </script>

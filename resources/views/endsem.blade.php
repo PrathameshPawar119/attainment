@@ -69,35 +69,37 @@
             var endsem_max_limit = parseInt("<?php echo $endsem_total_max[0]->endsem_total; ?>");
             var stuId = e.target.getAttribute("name");
             var stdVal = parseInt(e.target.value);
-            if (stdVal > endsem_max_limit) {
-                stdVal = endsem_max_limit;
-            }
             var stuGroupKey = e.target.getAttribute("id");
-            $.ajax({
-                url: "{{route('updateEndsemMarks')}}",
-                type:"POST",
-                data: {
-                    '_token': "{{csrf_token()}}",
-                    'id':stuId,
-                    'value':stdVal
-                },
-                success: function(res){
-                        if(res == '0' ||  res == 0){
-                            e.target.parentNode.style.borderColor = "red";
-                            setTimeout(() => {
-                                e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
-                            }, 5000);                        }
-                        else if(res == '1'|| res == 1){
-                            e.target.parentNode.style.borderColor = "cyan";
-                            setTimeout(() => {
-                                e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
-                            }, 1500); 
-                        }
-                        else{
-                            console.log(res);
-                        }
-                }
-            });
+            if (stdVal > endsem_max_limit) {
+                e.target.parentNode.style.borderColor = "red";
+            }
+            else{
+                $.ajax({
+                    url: "{{route('updateEndsemMarks')}}",
+                    type:"POST",
+                    data: {
+                        '_token': "{{csrf_token()}}",
+                        'id':stuId,
+                        'value':stdVal
+                    },
+                    success: function(res){
+                            if(res == '0' ||  res == 0){
+                                e.target.parentNode.style.borderColor = "red";
+                                setTimeout(() => {
+                                    e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
+                                }, 5000);                        }
+                            else if(res == '1'|| res == 1){
+                                e.target.parentNode.style.borderColor = "cyan";
+                                setTimeout(() => {
+                                    e.target.parentNode.style.borderColor = "rgb(86, 3, 114)";
+                                }, 1500); 
+                            }
+                            else{
+                                console.log(res);
+                            }
+                    }
+                });
+            }
         }, 300));
     });
 </script>
