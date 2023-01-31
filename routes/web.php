@@ -39,6 +39,7 @@ Route::group(["prefix"=>"/students", "middleware"=>'loginRedirect'], function(){
     Route::get("view/restore/{id}", [studentController::class, "restoreFromTrash"]);
     Route::get("view/edit/{id}", [studentController::class, "editStudent"]);
     Route::post("view/updatestudent/{id}", [studentController::class, "updateStudentData"]);
+    Route::get("profile/view", [studentController::class, "studentProfile"]);
 });
 
 Route::group(["prefix"=>"/sheets", "middleware"=>"loginRedirect"], function (){

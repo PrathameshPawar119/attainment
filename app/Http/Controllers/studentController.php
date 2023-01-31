@@ -202,9 +202,38 @@ class studentController extends Controller
     }
 
     public function studentProfile(Request $req){
-        // $student = StudentDetails::withoutTrashed()->find($req['id']);
+        $student = StudentDetails::withoutTrashed()->find($req['id']);
+        $oral_marks = OralModel::join("student_details", "student_details.id", "oral.id")
+                            ->select("oral_marks")
+                            ->where("user_key", session()->get("user_id"))
+                            ->where("student_details.id", $req['id'])->first();
+        $endsem_marks = EndsemModel::join("student_details", "student_details.id", "endsem.id")
+                            ->select("endsem_mark")
+                            ->where("user_key", session()->get("user_id"))
+                            ->where("student_details.id", $req['id'])->first();
+        $assign_marks = AssignmentModel::join("student_details", "student_details.id", "assignments.id")
+                            ->select("a1", "a2")
+                            ->where("user_key", session()->get("user_id"))
+                            ->where("student_details.id", $req['id'])->first();
+        $ia_marks = IaModel::join("student_details", "student_details.id", "ia.id")
+                        ->select("ia1q1", "ia1q2", "ia1q3", "ia1q4", "ia1", "ia2q1", "ia2q2", "ia2q3", "ia2q4", "ia2")
+                        ->where("user_key", session()->get("user_id"))
+                        ->where("student_details.id", $req['id'])->first();
+        $expt_marks = ExperimentModel::join("student_details", "student_details.id", "experiments.id")
+                        ->select("e1", "e2", "e3", "e4", "e5", "e6", "e7", "e8", "e9", "e10", "e11", "e12")
+                        ->where("user_key", session()->get("user_id"))
+                        ->where("student_details.id", $req['id'])->first();
+        
 
-        echo "ok";
+            
+        return  json_encode(array(
+            "student" => $student->name,
+            "oral" => $oral_marks->oral_marks,
+            "endsem" => $endsem_marks->endsem_mark,
+            "assign" => ($assign_marks),
+            "ia" => $ia_marks,
+            "expt" => $expt_marks
+        ));
     }
     
 }

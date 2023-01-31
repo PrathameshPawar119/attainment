@@ -1,3 +1,8 @@
-.body{
-    background-color: aquamarine;
+.studentModalBtn{
+    transition: all 0.3s ease;
+} 
+
+.studentModalBtn:hover {
+    cursor: pointer;
+    background: linear-gradient();
 }

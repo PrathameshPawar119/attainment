@@ -73,7 +73,7 @@
                             <small>Sequence need not to be same.</small>
                         </li>
                         <li><strong>Same or duplicate entries will be skipped.</strong> </li>
-                        <li>Wait some time and check <a href="{{url('/students/view')}}">here</a> after Complete.</li>
+                        <li><strong>Wait a little</strong>  and check <a href="{{url('/students/view')}}">here</a> after Complete.</li>
                     </ul>
                 </p>
             </div>

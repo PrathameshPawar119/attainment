@@ -10,6 +10,18 @@
         $msg = session()->get("alertMsg");
     }
 @endphp
+<style>
+.studentModalBtn{
+    transition: all 0.3s ease;
+} 
+
+.studentModalBtn:hover {
+    cursor: pointer;
+    background: linear-gradient( 90deg,  rgb(247, 242, 247), rgb(239, 235, 243));
+
+}
+</style>
+
 <x-alert-component mainclass="col-12" color="primary" message={{$msg}} />
 <div class="container viewStudents">
     <div class="viewUpperBox col-12" style="margin:16px 0px 0px 0px; display:flex; flex-direction:row; justify-content:space-between;">
@@ -47,7 +59,8 @@
                     <td>{{$student->div}}</td>
                     <td>{{$student->roll_no}}</td>
                     <td>{{$student->student_id}}</td>
-                    <td>{{$student->name}}</td>
+                    {{-- --}}
+                    <td><div id="{{$student->id}}" class="studentModalBtn"  data-bs-toggle="modal" data-bs-target="#studentProfileModal" >{{$student->name}}</div> </td>
                     <td>@if (($student->gender)=='M')
                         Male
                         @else
@@ -66,7 +79,104 @@
     <div class="row center p-2" style="align-items: center; text-align:center;">
         {{$students->links('pagination::bootstrap-5')}}
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="studentProfileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="studentModalHead">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="studentModalBody">
+                Wait...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Download</button>
+            </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        $(document).on("click", ".studentModalBtn", debounce((e)=>{
+            var id = e.target.getAttribute("id");
+            $.ajax({
+                url: "{{url('/students/profile/view')}}",
+                type: "GET",
+                data:{
+                    "id" : id
+                },
+                success:(res)=>{
+                    var res = JSON.parse(res);
+                    var modalHtml = `
+                        <div class="card">
+                                <div class="card-header">
+                                    <strong>${res['student']}</strong>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <th>Oral</th>
+                                                <th>Endsem</th>
+                                                <th>Assign-1</th>
+                                                <th>Assign-2</th>                                    
+                                            </thead>
+                                            <tbody>
+                                                <td>${res['oral']}</td>
+                                                <td>${res['endsem']}</td>
+                                                <td>${res['assign']['a1']}</td>
+                                                <td>${res['assign']['a2']}</td>
+                                            </tbody>
+                                        </table>
+                                        <table class="table table-hover" >
+                                            <thead>
+                                                <th>Q1</th>
+                                                <th>Q2</th>
+                                                <th>Q4</th>
+                                                <th>Q4</th>
+                                                <th class="text-primary">IA1</th>
+                                                <th>Q1</th>
+                                                <th>Q2</th>
+                                                <th>Q3</th>
+                                                <th>Q4</th>
+                                                <th class="text-primary">IA2</th>
+                                            </thead>
+                                            <tbody>
+                                                <td>${res['ia']['ia1q1']}</td>
+                                                <td>${res['ia']['ia1q2']}</td>
+                                                <td>${res['ia']['ia1q3']}</td>
+                                                <td>${res['ia']['ia1q4']}</td>
+                                                <td class="text-primary">${res['ia']['ia1']}</td>
+                                                <td>${res['ia']['ia2q1']}</td>
+                                                <td>${res['ia']['ia2q2']}</td>
+                                                <td>${res['ia']['ia2q3']}</td>
+                                                <td>${res['ia']['ia2q4']}</td>
+                                                <td class="text-primary">${res['ia']['ia2']}</td>
+                                            </tbody>
+                                        </table>
+                                        `;
+                    modalHtml += "<div class='table-responsive'> <table class='table'> <thead>";
+                    for (let i = 1; i <= 12; i++) {
+                       modalHtml += `<th>E${i}<th>`;
+                    }
+                    modalHtml += "</thead>   <tbody>";
+                    for (let i = 1; i <= 12; i++) {
+                        modalHtml += `<td>${res['expt']['e'+i]}</td>`;
+                        
+                    }
+                    modalHtml += "</tbody>  </table> </div> </li>  </ul> </div>";
+
+
+                    document.getElementById("studentModalBody").innerHTML = modalHtml;
+                }
+            })
+        }, 1000));
+    });
+</script>
 
     
 @endsection
