@@ -15,10 +15,17 @@
         margin-top: 0; /* remove the gap so it doesn't close */
         z-index: 100000;
     }
+    .mylogo{
+        width: 56%;
+        height: 96%;
+        display: inline-block;
+    }
 </style>
-<ul class="nav nav-tabs">
-    <li class="nav_logo px-2"><h2><i><u>Attainment</u>.com</i></h2></li>
-        <li class="nav-item">
+<ul class="nav nav-tabs"style="display:flex; flex-direction:row;">
+    <li class="nav-item ml-4" style="width: 30%;">
+        <img class="mylogo" src="{{asset('images/mylogo.png')}}" alt="Attainment">
+    </li>
+    <li>
         <a class="nav-link {{url('/students/view')==$currentUrl?'active':''}} " aria-current="page" href="{{url('/students/view')}}">Students</a>
     </li>
     <li class="nav-item">
@@ -43,16 +50,16 @@
         <a class="nav-link {{url('/attainment/cis')==$currentUrl?'active':''}}" href="{{url('/attainment/cis')}}"><b>CIS</b></a>
     </li>
 
-    <div class="leftTabs" style="position:absolute; right:20px;">
-        <li class="nav-item dropdown {{session()->has('user_id') ? '': 'hideMe'}}">
-            <a class="nav-link {{url('/user/criteriaInput')==$currentUrl?'active':''}}" href="{{url('/user/criteriaInput')}}"><b>Criteria</b></a>
-            <ul class="dropdown-menu mx-0">
-                <li><a class="dropdown-item" href="{{url('/user/criteriaInput')}}">Total Marks</a></li>
-                <li><a class="dropdown-item" href="{{url('/user/coinput')}}">Select COs</a></li>
-                <li><a class="dropdown-item" href="{{url('/user/thresholdMarksInput')}}">Threshold</a></li>
-            </ul>
-        </li>
-        <li class="nav-item dropdown {{session()->has('user_id') ? '': 'hideMe'}}" >
+    <li class="nav-item dropdown {{session()->has('user_id') ? '': 'hideMe'}}">
+        <a class="nav-link {{url('/user/criteriaInput')==$currentUrl?'active':''}}" href="{{url('/user/criteriaInput')}}"><b>Criteria</b></a>
+        <ul class="dropdown-menu mx-0">
+            <li><a class="dropdown-item" href="{{url('/user/criteriaInput')}}">Total Marks</a></li>
+            <li><a class="dropdown-item" href="{{url('/user/coinput')}}">Select COs</a></li>
+            <li><a class="dropdown-item" href="{{url('/user/thresholdMarksInput')}}">Threshold</a></li>
+        </ul>
+    </li>
+    <div class="leftTabs" style="position:absolute; right:20px; top:32px;">
+        <li class="nav-item dropdown {{session()->has('user_id') ? '': 'hideMe'}}" style="z-index: 2;">
             <a class=" nav-link" id="ProfileToggle" style="z-index: 1000;" data-bs-toggle="dropdown" aria-expanded="false"><img style="height: 80%; width:80%;" class="profileImg" src="{{asset('images/user.png')}}" alt="Profile"></a>
             <ul class="dropdown-menu" id="ProfileContainer">
                 <li><a class="dropdown-item" href="{{url('/user/profile')}}">Profile ⭕</a></li>
