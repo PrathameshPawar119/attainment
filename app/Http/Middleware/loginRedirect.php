@@ -17,8 +17,8 @@ class loginRedirect
      */
     public function handle(Request $request, Closure $next)
     {
-        $userConnection = signup_details::where('username', session()->get('username'))->where('user_id', session()->get('user_id'))->select('user_id')->distinct()->count();
-        if (session()->has('username') && session()->has('user_id') && $userConnection==1) {
+        $userConnection = signup_details::where('username', session()->get('username'))->first();
+        if (session()->has('username') && session()->has('user_id') && $userConnection ){
             return $next($request);
         }
         else{
