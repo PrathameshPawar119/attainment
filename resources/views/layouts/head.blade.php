@@ -10,10 +10,12 @@
         height: 80% !important;
         width: 80% !important;
     }
-    .dropdown:hover .dropdown-menu {
-        display: block;
+    .dropdown-menu{
         margin-top: 0; /* remove the gap so it doesn't close */
         z-index: 100000;
+    }
+    .dropdown:hover .dropdown-menu {
+        display: block;
     }
     .mylogo{
         width: 56%;
