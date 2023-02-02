@@ -4,16 +4,16 @@
 @endpush
 <style>
     .rightChartBox, .leftChartBox{
-        height: 320px;
+        height: 300px;
     }
 </style>
 @section('upperLeft-section')
-    <div class="rightChartBox" style="border: 2px solid red;">
+    <div class="leftChartBox">
         <canvas id="leftChart"></canvas>
     </div>
 @endsection
 @section('upperRight-section')
-    <div class="rightChartBox" style="border: 2px solid red; margin:4px;">
+    <div class="rightChartBox" style="margin:8px; border: 2px solid red;">
         <canvas id="rightChart"></canvas>
     </div>
 @endsection
@@ -29,19 +29,19 @@
 
 
     <script>
-        $(document).ready(function(){
-            $.ajax({
-                url:"{{url('/api/charts/oral')}}",
-                type:"GET",
-                success: (res)=>{
-                    console.log(res);
-                }
-            })
-        })
+        // $(document).ready(function(){
+        //     $.ajax({
+        //         url:"{{route('oral-chart')}}",
+        //         type:"GET",
+        //         success: (res)=>{
+        //             console.log(res);
+        //         }
+        //     })
+        // })
 
         const leftChart = document.getElementById("leftChart");
         const Attain_level = "<?php echo $resArr[6]; ?>";
-        console.log(Attain_level);
+        // console.log(Attain_level);
 
         new Chart(leftChart, {
             type: "bar",  

@@ -8,12 +8,12 @@
     }
 </style>
 @section('upperLeft-section')
-    <div class="rightChartBox" style="border: 2px solid red;">
-
+    <div class="leftChartBox" style="margin: 8px;">
+        <canvas id="leftChart"></canvas>
     </div>
 @endsection
 @section('upperRight-section')
-    <div class="leftChartBox" style="border: 2px solid red;">
+    <div class="rightChartBox" style="border: 2px solid red;">
 
     </div>
 @endsection
@@ -26,4 +26,33 @@
                 <h4><center>Endsem Attainment</center></h4>
         <x-htable values={{$values}} />
     </div>
+
+    <script>
+        const leftChart = document.getElementById("leftChart");
+        const Attain_level = "<?php echo $resArr[6]; ?>";
+        // console.log(Attain_level);
+
+        new Chart(leftChart, {
+            type: "bar",  
+            data :{
+                labels: ['CO1', 'CO2', 'CO3', 'CO4', 'CO5', 'CO6'],
+                datasets: [{
+                    label: 'Oral/Pract Attainment levels',
+                    data: [Attain_level, Attain_level, Attain_level, Attain_level, Attain_level, Attain_level],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+            scales: {
+                y: {
+                beginAtZero: true,
+                suggestedMax: 3.0
+                },
+                x: {
+
+                }
+            }
+            }
+        })
+    </script>
 @endsection
