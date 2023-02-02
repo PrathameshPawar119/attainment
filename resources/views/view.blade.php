@@ -32,7 +32,7 @@
             </div>
         </form>
         <div class="upperBoxBtns" style="display: inline-block;">
-            <a href="{{url("/students/input")}}" class="mx-2"><button class="btn btn-outline-secondary">Add Student</button></a>
+            <a href="{{$addStdURL}}" class="mx-2"><button class="btn btn-outline-secondary">{{$addStdBtn}}</button></a>
             <a href="{{$trashURL}}" class="mx-2"><button class="btn btn-outline-secondary">{{$trashBtn}}</button></a>
         </div>
     </div>
@@ -84,7 +84,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="studentModalHead">Modal title</h1>
+                <h1 class="modal-title fs-5" id="studentModalHead">Subject Name</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="studentModalBody">
@@ -159,9 +159,9 @@
                                             </tbody>
                                         </table>
                                         `;
-                    modalHtml += "<div class='table-responsive'> <table class='table'> <thead>";
+                    modalHtml += "<div class='table-responsive'> <table class='table table-bordered'> <thead>";
                     for (let i = 1; i <= 12; i++) {
-                       modalHtml += `<th>E${i}<th>`;
+                       modalHtml += `<th>E${i}</th>`;
                     }
                     modalHtml += "</thead>   <tbody>";
                     for (let i = 1; i <= 12; i++) {

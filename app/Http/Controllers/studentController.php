@@ -91,12 +91,17 @@ class studentController extends Controller
         }
         
         $viewEditBtn = "Edit";
-        $viewEditURL = url('/students/view/edit');               
+        $viewEditURL = url('/students/view/edit');
+
         $viewDeleteBtn = "Trash";
         $viewDeleteURL = url('/students/view/delete');
+
         $trashBtn = "Trash Data";
         $trashURL = url("/students/trash");
-        return view('view')->with(compact('students', 'viewEditBtn', 'viewEditURL', 'viewDeleteBtn', 'viewDeleteURL', 'trashBtn', 'trashURL'));
+
+        $addStdBtn = "➕ Add Student";
+        $addStdURL = url("/students/input");
+        return view('view')->with(compact('students', 'viewEditBtn', 'viewEditURL', 'viewDeleteBtn', 'viewDeleteURL', 'trashBtn', 'trashURL', 'addStdBtn', 'addStdURL'));
     }
 
     // soft deleting student (Moving to Trash)
@@ -110,16 +115,14 @@ class studentController extends Controller
     }
 
     public function permDelete($id){
-        if($id){
-            // Delete Student from all associative tables
-            $data = array('id' => $id);
-            event(new StudentDeleted($data));
-        }
-        
+        $data = array('id' => $id);
+        event(new StudentDeleted($data));
+
         $student = StudentDetails::onlyTrashed()->find($id);
         if (!is_null($student)) {
             $student->forceDelete();
         }
+        //  record from all associative tables will be deleted by observer and event
         session()->flash("alertMsg", "Student - $student->name ($student->student_id) deleted permnantly.");
         return redirect()->back();
     }
@@ -135,14 +138,34 @@ class studentController extends Controller
 
     // View Student trash
     public function viewStudentTrash(){
-        $students = StudentDetails::onlyTrashed()->where("user_key", "=", (session()->get('user_id')))->paginate(10);
+        $students = StudentDetails::onlyTrashed()->where("user_key", (session()->get('user_id')))->paginate(10);
         $viewEditBtn = "Restore";
         $viewEditURL = url('/students/view/restore');
+
         $viewDeleteBtn = "Delete";
         $viewDeleteURL = url('/students/view/permdelete');
+
         $trashBtn = "Back to Students";
         $trashURL = url("/students/view");
-        return view('view')->with(compact('students', 'viewEditBtn', 'viewEditURL', 'viewDeleteBtn', 'viewDeleteURL', 'trashBtn', 'trashURL'));
+
+        $addStdBtn = "🫗 Empty Trash";
+        $addStdURL = url("/students/empty-trash");
+        return view('view')->with(compact('students', 'viewEditBtn', 'viewEditURL', 'viewDeleteBtn', 'viewDeleteURL', 'trashBtn', 'trashURL', 'addStdBtn', 'addStdURL'));
+    }
+
+    public function emptyTrash(){
+        $AllTrash = StudentDetails::onlyTrashed()->where("user_key", session()->get("user_id"))->get();
+        foreach($AllTrash as $elem){
+            $data = array("id" => $elem->id);
+            event(new StudentDeleted($data));
+        }
+        $deleteAllTrash = StudentDetails::onlyTrashed()->where("user_key", session()->get("user_id"))->forceDelete();
+
+        if(!$deleteAllTrash){
+            session()->flash("alertMsg", "Unable to perform mass deletion.");
+        }
+        session()->flash("alertMsg", "Mass deletion successfull");
+        return redirect()->back();
     }
 
     // Edit the student
@@ -169,7 +192,7 @@ class studentController extends Controller
         $student = StudentDetails::find($id);
         
         // If there is any student other than $id-student then return duplication error
-        $student_dups = StudentDetails::where("user_key", "=", session()->get('user_id'))->where('student_id', "=", $req['student_id'])->where("student_id", "!=", $student->student_id)->distinct('id')->count();
+        $student_dups = StudentDetails::where("user_key", session()->get('user_id'))->where('student_id', "=", $req['student_id'])->where("student_id", "!=", $student->student_id)->distinct('id')->count();
         if($student_dups){
             throw ValidationException::withMessages(["student_id" => "Student with same ID is present"]);
             return redirect()->back();

@@ -36,6 +36,7 @@ Route::group(["prefix"=>"/students", "middleware"=>'loginRedirect'], function(){
     Route::get("input", [studentController::class, 'inputForm']);
     Route::post("input/addstudent", [studentController::class, "addStudent"]);
     Route::get("trash", [studentController::class, "viewStudentTrash"]);
+    Route::get("empty-trash", [studentController::class, "emptyTrash"]);
     Route::get("view/restore/{id}", [studentController::class, "restoreFromTrash"]);
     Route::get("view/edit/{id}", [studentController::class, "editStudent"]);
     Route::post("view/updatestudent/{id}", [studentController::class, "updateStudentData"]);
