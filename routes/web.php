@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\Charts\ChartController;
 use App\Http\Controllers\AttainmentControl;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -75,10 +76,17 @@ Route::group(["prefix"=>"/attainment", "middleware"=>["loginRedirect", "NoRecord
     Route::get("ia", [AttainmentControl::class, "IaAttainment"]);
     Route::get("expt", [AttainmentControl::class, "ExptAttainment"]);
     Route::get("cis", [CisController::class, "CisSheet"]);
+
+    Route::group(["prefix" => "charts"], function (){
+        Route::get("oral", [ChartController::class, "OralChartsData"]);
+        Route::get("endsem", [ChartController::class, "EndsemChartsData"]);
+        Route::get("assign", [ChartController::class, "AssignChartsData"]);
+        Route::get("IA", [ChartController::class, "IAChartsData"]);
+        Route::get("expt", [ChartController::class, "ExptChartsData"]);
+    });
 });
 
 Route::group(["prefix"=>"/upload", "middleware"=>["loginRedirect"]], function(){
     Route::get("file", [UploadsController::class, "xlsView"]);
     Route::post("submit-file", [UploadsController::class, "importStudents"]);
-    
 });

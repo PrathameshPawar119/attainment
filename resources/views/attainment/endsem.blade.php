@@ -29,30 +29,44 @@
 
     <script>
         const leftChart = document.getElementById("leftChart");
-        const Attain_level = "<?php echo $resArr[6]; ?>";
-        // console.log(Attain_level);
+        var ctx = leftChart.getContext("2d");
+        ctx.font = "30px Cursive";
+        ctx.fillText("Wait ...", 50, 50);
 
-        new Chart(leftChart, {
-            type: "bar",  
-            data :{
-                labels: ['CO1', 'CO2', 'CO3', 'CO4', 'CO5', 'CO6'],
-                datasets: [{
-                    label: 'Oral/Pract Attainment levels',
-                    data: [Attain_level, Attain_level, Attain_level, Attain_level, Attain_level, Attain_level],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-            scales: {
-                y: {
-                beginAtZero: true,
-                suggestedMax: 3.0
-                },
-                x: {
+        $(document).ready(function(){
+            $.ajax({
+                url:"{{url('/attainment/charts/endsem')}}",
+                type:"GET",
+                success: (res)=>{
 
+
+                    new Chart(leftChart, {
+                        type: "bar",  
+                        data :{
+                            labels: ['CO1', 'CO2', 'CO3', 'CO4', 'CO5', 'CO6'],
+                            datasets: [{
+                                label: 'End Sem Attainment levels',
+                                data: JSON.parse(res['levels']['endsem']),
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                        scales: {
+                            y: {
+                            beginAtZero: true,
+                            suggestedMax: 3.0
+                            },
+                            x: {
+
+                            }
+                        }
+                        }
+                    })
                 }
-            }
-            }
+            })
         })
+
+
+
     </script>
 @endsection

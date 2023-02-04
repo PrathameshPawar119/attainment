@@ -20,12 +20,12 @@
     }
 </style>
 @section('upperLeft-section')
-    <div class="rightChartBox" style="border: 2px solid red;">
-
+    <div class="leftChartBox" style="margin: 8px;">
+        <canvas id="leftChart"></canvas>
     </div>
 @endsection
 @section('upperRight-section')
-    <div class="leftChartBox" style="border: 2px solid red;">
+    <div class="rightChartBox" style="border: 2px solid red;">
 
     </div>
 @endsection
@@ -161,4 +161,47 @@
         </table> 
         </div>
     </div>
+
+    <script>
+        const leftChart = document.getElementById("leftChart");
+        var ctx = leftChart.getContext("2d");
+        ctx.font = "30px Cursive";
+        ctx.fillText("Wait ...", 50, 50);
+
+        $(document).ready(function(){
+            $.ajax({
+                url:"{{url('/attainment/charts/expt')}}",
+                type:"GET",
+                success: (res)=>{
+
+
+                    new Chart(leftChart, {
+                        type: "bar",  
+                        data :{
+                            labels: ['CO1', 'CO2', 'CO3', 'CO4', 'CO5', 'CO6'],
+                            datasets: [{
+                                label: 'Experiments Attainment levels',
+                                data: JSON.parse(res['levels']['experiments']),
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                        scales: {
+                            y: {
+                            beginAtZero: true,
+                            suggestedMax: 3.0
+                            },
+                            x: {
+
+                            }
+                        }
+                        }
+                    })
+                }
+            })
+        })
+
+
+    </script>
+
 @endsection
