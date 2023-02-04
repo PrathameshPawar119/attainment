@@ -17,18 +17,18 @@ class loginRedirect
      */
     public function handle(Request $request, Closure $next)
     {
-        $userConnection = signup_details::where('username', session()->get('username'))->first();
-        if (session()->has('username') && session()->has('user_id') && $userConnection ){
-            return $next($request);
-        }
-        else{
-            return redirect('/auth/login');
-        }
-        // if (session()->has('username') && session()->has('user_id')) {
+        // $userConnection = signup_details::where('username', session()->get('username'))->first();
+        // if (session()->has('username') && session()->has('user_id') && $userConnection ){
         //     return $next($request);
         // }
         // else{
         //     return redirect('/auth/login');
         // }
+        if (session()->has('username') && session()->has('user_id')) {
+            return $next($request);
+        }
+        else{
+            return redirect('/auth/login');
+        }
     }
 }
