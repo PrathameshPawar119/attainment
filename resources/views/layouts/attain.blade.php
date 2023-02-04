@@ -16,7 +16,7 @@
       width: 20px;
       height: 20px;
     }
-        img:hover{
+    img:hover{
       cursor: pointer;
     }
     .MainContainer{
@@ -27,7 +27,7 @@
       grid-template-columns: 2fr 3fr;
       grid-template-rows: 1fr;
       grid-gap: 14px;
-      margin: 20px 80px;
+      margin: 4px auto;
       align-items: center;
     }
     .LowerAttainmentTable table{
@@ -54,7 +54,7 @@
   <body>
     @include('layouts.head')
     <div class="MainContainer">
-        <div class="upperSection">
+        <div class="upperSection container">
             <div class="upperLeft">
               @yield('upperLeft-section')
             </div>

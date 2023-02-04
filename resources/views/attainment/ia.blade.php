@@ -3,8 +3,16 @@
     <title>IA Attainment</title>
 @endpush
 <style>
-    .rightChartBox, .leftChartBox{
-        height: 320px;
+     .leftChartBox{
+        height: 300px;
+    }
+    .rightChartBox{
+        height: 300px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
     }
     .SelectBox::-webkit-scrollbar{
         width: 12px;
@@ -20,13 +28,14 @@
     }
 </style>
 @section('upperLeft-section')
-    <div class="leftChartBox" style="margin: 8px;">
+    <div class="leftChartBox">
         <canvas id="leftChart"></canvas>
     </div>
 @endsection
 @section('upperRight-section')
-    <div class="rightChartBox" style="border: 2px solid red;">
-
+    <div class="rightChartBox px-3">
+        <canvas id="rightChart1"></canvas>
+        <canvas id="rightChart2"></canvas>
     </div>
 @endsection
 @section('lower-section')
@@ -168,21 +177,41 @@
         ctx.font = "30px Cursive";
         ctx.fillText("Wait ...", 50, 50);
 
+        const rightChart = document.getElementById("rightChart1");
+        var ctx = leftChart.getContext("2d");
+        ctx.font = "30px Cursive";
+        ctx.fillText("Wait ...", 50, 50);
+
         $(document).ready(function(){
             $.ajax({
                 url:"{{url('/attainment/charts/IA')}}",
                 type:"GET",
                 success: (res)=>{
 
-
                     new Chart(leftChart, {
                         type: "bar",  
                         data :{
                             labels: ['CO1', 'CO2', 'CO3', 'CO4', 'CO5', 'CO6'],
                             datasets: [{
-                                label: 'IA Attainment levels',
+                                label: 'Assignment Attainment levels',
                                 data: JSON.parse(res['levels']['ia']),
-                                borderWidth: 1
+                                borderWidth: 1,
+                                backgroundColor:[
+                                    'rgb(153, 102, 215, 0.5)',
+                                    'rgb(150, 102, 225, 0.5)',
+                                    'rgb(153, 109, 235, 0.5)',
+                                    'rgb(168, 102, 245, 0.5)',
+                                    'rgb(153, 118, 255, 0.5)',
+                                    'rgb(163, 112, 205, 0.5)'
+                                ],
+                                borderColor:[
+                                    'rgb(153, 102, 255)',
+                                    'rgb(153, 102, 255)',
+                                    'rgb(153, 102, 255)',
+                                    'rgb(153, 102, 255)',
+                                    'rgb(153, 102, 255)',
+                                    'rgb(153, 102, 255)'
+                                ]
                             }]
                         },
                         options: {
@@ -194,9 +223,66 @@
                                 x: {
 
                                 }
-                            }
+                            },
+
+                        }
+                    });
+
+                    new Chart(rightChart1, {
+                        type: 'polarArea',
+                        data: {
+                            labels: JSON.parse(res['constraints1']),
+                            datasets: [{
+                                label: "Students",
+                                data: (res['data1']),
+                                backgroundColor:[
+                                    'rgb(113, 112, 215, 0.9)',
+                                    'rgb(120, 132, 225, 0.9)',
+                                    'rgb(133, 159, 235, 0.9)',
+                                    'rgb(148, 172, 245, 0.9)',
+                                    'rgb(153, 198, 255, 0.9)',
+                                    'rgb(163, 212, 205, 0.9)'
+                                ],
+                            }]
                         },
-                    })
+                        options: {
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'right'
+                                }
+                            }
+                        }
+
+                    });
+
+                    new Chart(rightChart2, {
+                        type: 'polarArea',
+                        data: {
+                            labels: JSON.parse(res['constraints2']),
+                            datasets: [{
+                                label: "Students",
+                                data: (res['data2']),
+                                backgroundColor:[
+                                    'rgb(113, 112, 215, 0.9)',
+                                    'rgb(120, 132, 225, 0.9)',
+                                    'rgb(133, 159, 235, 0.9)',
+                                    'rgb(148, 172, 245, 0.9)',
+                                    'rgb(153, 198, 255, 0.9)',
+                                    'rgb(163, 212, 205, 0.9)'
+                                ],
+                            }]
+                        },
+                        options: {
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'right'
+                                }
+                            }
+                        }
+
+                    });
                 }
             })
         })

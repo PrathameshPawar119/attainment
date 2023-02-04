@@ -3,22 +3,27 @@
     <title>Oral/Practical Attainment</title>
 @endpush
 <style>
-    .rightChartBox, .leftChartBox{
+     .leftChartBox{
         height: 300px;
+    }
+    .rightChartBox{
+        height: 400px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>
 @section('upperLeft-section')
     <div class="leftChartBox">
         <canvas id="leftChart">
-            {{-- <div class="spinner-grow text-secondary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div> --}}
         </canvas>
     </div>
 @endsection
 @section('upperRight-section')
-    <div class="rightChartBox" style="margin:8px; border: 2px solid red;">
-        <canvas id="rightChart"></canvas>
+    <div class="rightChartBox">
+        <canvas id="rightChart">
+        </canvas>
     </div>
 @endsection
 @section('lower-section')
@@ -34,9 +39,15 @@
 
     <script>
         const leftChart = document.getElementById("leftChart");
-        var ctx = leftChart.getContext("2d");
-        ctx.font = "30px Cursive";
-        ctx.fillText("Wait ...", 50, 50);
+        var ctx1 = leftChart.getContext("2d");
+        ctx1.font = "30px Cursive";
+        ctx1.fillText("Wait ...", 50, 50);
+
+        const rightChart = document.getElementById("rightChart");
+        var ctx2 = rightChart.getContext("2d");
+        ctx2.font = "30px Cursive";
+        ctx2.fillText("Wait ...", 50, 50);
+
 
         $(document).ready(function(){
             $.ajax({
@@ -44,7 +55,7 @@
                 type:"GET",
                 success: (res)=>{
 
-
+                    console.log(JSON.parse(res['constraints']));
                     new Chart(leftChart, {
                         type: "bar",  
                         data :{
@@ -52,21 +63,68 @@
                             datasets: [{
                                 label: 'Oral/Pract Attainment levels',
                                 data: JSON.parse(res['levels']['oral']),
-                                borderWidth: 1
+                                borderWidth: 1,
+                                backgroundColor:[
+                                    'rgb(153, 102, 215, 0.5)',
+                                    'rgb(150, 102, 225, 0.5)',
+                                    'rgb(153, 109, 235, 0.5)',
+                                    'rgb(168, 102, 245, 0.5)',
+                                    'rgb(153, 118, 255, 0.5)',
+                                    'rgb(163, 112, 205, 0.5)'
+                                ],
+                                borderColor:[
+                                    'rgb(153, 102, 255)',
+                                    'rgb(153, 102, 255)',
+                                    'rgb(153, 102, 255)',
+                                    'rgb(153, 102, 255)',
+                                    'rgb(153, 102, 255)',
+                                    'rgb(153, 102, 255)'
+                                ]
                             }]
                         },
                         options: {
-                        scales: {
-                            y: {
-                            beginAtZero: true,
-                            suggestedMax: 3.0
-                            },
-                            x: {
+                            scales: {
+                                y: {
+                                beginAtZero: true,
+                                suggestedMax: 3.0
+                                },
+                                x: {
 
+                                }
+                            },
+
+                        }
+                    });
+
+                    
+                    new Chart(rightChart, {
+                        type: 'polarArea',
+                        data: {
+                            labels: JSON.parse(res['constraints']),
+                            datasets: [{
+                                label: "Students",
+                                data: (res['data']),
+                                backgroundColor:[
+                                    'rgb(113, 112, 215, 0.9)',
+                                    'rgb(120, 132, 225, 0.9)',
+                                    'rgb(133, 159, 235, 0.9)',
+                                    'rgb(148, 172, 245, 0.9)',
+                                    'rgb(153, 198, 255, 0.9)',
+                                    'rgb(163, 212, 205, 0.9)'
+                                ],
+                            }]
+                        },
+                        options: {
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'right'
+                                }
                             }
                         }
-                        }
-                    })
+
+                    });
+                
                 }
             })
         })
