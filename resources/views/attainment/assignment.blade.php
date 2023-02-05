@@ -202,7 +202,7 @@
                                 }
                             },
                             animation: {
-                                animateScale:true
+
                             }
                         }
 

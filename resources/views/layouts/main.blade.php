@@ -26,6 +26,16 @@
         -webkit-appearance: none; 
         margin: 0; 
     }
+    .btn-primary{
+        background: linear-gradient(to right, blueviolet, rgb(111, 0, 255));
+        border: 3px transparent;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+    .btn-primary:hover{
+        background: linear-gradient(to right, rgb(148, 61, 229), rgb(120, 21, 251));
+        box-shadow: 2px 3px 3px gray;
+    }
 
     /* alert */
     @keyframes displayNone{
