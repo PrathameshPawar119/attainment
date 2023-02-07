@@ -24,6 +24,7 @@
                 <div class="loginLogo col-12">
                     <img src="{{asset('images/mylogo.png')}}" alt="">
                 </div>
+                <h4>Sign Up</h4>
                 <form method="POST" action="{{url('/auth/signup_user')}}">
                     @csrf
                     <x-input-component id="new_email" name="email" type="email" label="Enter Email" mainclass="mb-3"/>

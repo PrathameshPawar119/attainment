@@ -23,8 +23,6 @@ class UploadsController extends Controller
         // dd($req);
         session()->flash("alertMsg", "All Students Added successfully, goto Students section.");
         return redirect()->back();
-
-
         
     }
 }

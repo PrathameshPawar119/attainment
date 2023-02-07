@@ -153,6 +153,21 @@ class studentController extends Controller
         return view('view')->with(compact('students', 'viewEditBtn', 'viewEditURL', 'viewDeleteBtn', 'viewDeleteURL', 'trashBtn', 'trashURL', 'addStdBtn', 'addStdURL'));
     }
 
+    public function moveAllToTrash(){
+        $AllTrash = StudentDetails::withoutTrashed()->where("user_key", session()->get("user_id"))->get();
+        // foreach($AllTrash as $elem){
+        //     $data = array("id" => $elem->id);
+        //     event(new StudentDeleted($data));
+        // }
+        $deleteAllTrash = StudentDetails::withoutTrashed()->where("user_key", session()->get("user_id"))->delete();
+
+        if(!$deleteAllTrash){
+            session()->flash("alertMsg", "Unable to perform mass deletion.");
+        }
+        session()->flash("alertMsg", "Mass deletion successfull, All moved to trash.");
+        return redirect()->back();
+    }
+
     public function emptyTrash(){
         $AllTrash = StudentDetails::onlyTrashed()->where("user_key", session()->get("user_id"))->get();
         foreach($AllTrash as $elem){
@@ -258,5 +273,6 @@ class studentController extends Controller
             "expt" => $expt_marks
         ));
     }
+
     
 }

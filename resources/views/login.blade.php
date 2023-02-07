@@ -31,6 +31,7 @@
                 <div class="loginLogo col-12">
                     <img src="{{asset('images/mylogo.png')}}" alt="">
                 </div>
+                <h4>Sign In</h4>
                 <form action="{{url('/auth/login_user')}}" method="POST" class="my-3">
                     @csrf
                     <x-input-component type="text" id="login_varify" name="user_credential" label="Email or Username " mainclass="mb-3" />

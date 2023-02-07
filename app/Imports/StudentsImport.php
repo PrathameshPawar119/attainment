@@ -29,6 +29,8 @@ class StudentsImport implements ToModel, SkipsOnFailure, WithValidation, WithHea
         $group_key = strval($row['roll_no'])."-".strval($row['div'])."-".strval(session()->get('user_id'));
         // $duplicate_grp = StudentDetails::where('group_key','=', $group_key)->groupBy('id')->count();        
 
+        // if($duplicate_grp){
+        // }
         return new StudentDetails([
             'roll_no' => $row['roll_no'] ?? $row['RN'] ?? $row['Roll Number'] ?? $row['Roll no.'] ?? $row['Roll'] ?? null,
             'student_id' => $row['student_id'] ?? $row['Stu.ID.'] ?? $row['Student ID'] ?? null,
@@ -66,7 +68,7 @@ class StudentsImport implements ToModel, SkipsOnFailure, WithValidation, WithHea
                 'required',
                 'integer',
                 Rule::unique('student_details', 'roll_no')->where(function ($query){
-                    return $query->where("user_key", session()->get("user_id"));
+                    return $query->where("user_key", session()->get("user_id"))->distinct('div');
                 })
             ],
             'name' => [
