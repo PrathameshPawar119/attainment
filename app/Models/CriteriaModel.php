@@ -14,4 +14,8 @@ class CriteriaModel extends Model
     public function getDummyAttribute(){
         return 0;
     }
+
+    public function user(){
+        return $this->belongsTo(signup_details::class);
+    }
 }

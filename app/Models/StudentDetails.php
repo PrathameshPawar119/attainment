@@ -54,6 +54,41 @@ class StudentDetails extends Model
         $this->attributes['student_id'] = strtoupper($value);
     }
 
+    public function oral()
+    {
+        return $this->hasOne(OralModel::class);
+    }
+    public function endsem()
+    {
+        return $this->hasOne(EndsemModel::class);
+    }
+    public function ia()
+    {
+        return $this->hasOne(IaModel::class);
+    }
+    public function assignment()
+    {
+        return $this->hasOne(AssignmentModel::class);
+    }
+    public function experiment()
+    {
+        return $this->hasOne(ExperimentModel::class);
+    }
+    public function co_total_ia()
+    {
+        return $this->hasOne(Co_Total_Ia::class);
+    }
+    public function co_total_expt()
+    {
+        return $this->hasOne(Co_Total_Expt::class);
+    }
+    
+
+    public function user()
+    {
+        return $this->belongsTo(signup_details::class);
+    }
+   
 
 
 }

@@ -15,7 +15,7 @@ class CO_IA extends Model
         'CO1', 'CO2', 'CO3', 'CO4', 'CO5', 'CO6', 'user_id'
     ];
 
-    public function User(){
-        return $this->hasone(signup_details::class, "user_id");
+    public function user(){
+        return $this->belongsTo(signup_details::class);
     }
 }

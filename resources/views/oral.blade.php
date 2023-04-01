@@ -10,6 +10,9 @@
         $msg = session()->get("alertMsg");
     }
 
+    $searchText = $searchText ?? "";
+    $trashBtn = $trashBtn ?? ""
+    
 @endphp
 
 <div class="container oralPage">

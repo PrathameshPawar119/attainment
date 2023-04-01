@@ -16,8 +16,8 @@ class EndsemModel extends Model
         'id'
     ];
 
-    public function User(){
-        return $this->hasOne(StudentDetails::class, 'id');
+    public function student(){
+        return $this->belongsTo(StudentDetails::class);
     }
     
 }

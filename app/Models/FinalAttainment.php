@@ -20,8 +20,8 @@ class FinalAttainment extends Model
         'user_id'
     ];
 
-    public function User(){
-        return $this->hasOne('signup_details', 'user_id');
+    public function user(){
+        return $this->belongsTo(signup_details::class);
     }
 
 }

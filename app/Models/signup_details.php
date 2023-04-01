@@ -24,20 +24,40 @@ class signup_details extends Model
         $this->attributes['password'] = password_hash($password, constant($hash_method));
     }
 
-    public function Students(){
+    public function students(){
         return $this->hasMany(StudentDetails::class);
     }
 
     public function threshold(){
-        return $this->hasOne(ThresholdModel::class, 'user_id');
+        return $this->hasOne(ThresholdModel::class);
     }
 
     public function criteria(){
-        return $this->hasOne(CriteriaModel::class, 'user_id');
+        return $this->hasOne(CriteriaModel::class);
     }
 
-    public function FinalAttainment(){
-        return $this->hasOne(FinalAttainment::class, 'user_id');
+    public function final_attainment(){
+        return $this->hasOne(FinalAttainment::class);
+    }
+
+    public function po_models()
+    {
+        return $this->hasOne(POModel::class);
+    }
+
+
+
+    public function co_expt()
+    {
+        return $this->hasOne(CO_Expt::class);
+    }
+    public function co_ia()
+    {
+        return $this->hasOne(CO_IA::class);
+    }
+    public function co_oral_endsem_assign()
+    {
+        return $this->hasOne(CO_Oral_Endsem_Assign::class);
     }
     
 }

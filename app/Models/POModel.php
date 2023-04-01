@@ -15,7 +15,7 @@ class POModel extends Model
         'PO1', 'PO2', 'PO3', 'PO4', 'PO5', 'PO6', 'user_id'
     ];
 
-    public function User(){
-        return $this->hasone(signup_details::class, "user_id");
+    public function user(){
+        return $this->belongsTo(signup_details::class);
     }
 }

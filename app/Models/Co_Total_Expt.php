@@ -15,7 +15,7 @@ class Co_Total_Expt extends Model
         'CO1', 'CO2', 'CO3', 'CO4', 'CO5', 'CO6', 'id'
     ];
 
-    public function User(){
-        return $this->hasone(StudentDetails::class, "user_id");
+    public function student(){
+        return $this->belongsTo(StudentDetails::class);
     }
 }

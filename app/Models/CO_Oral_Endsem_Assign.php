@@ -15,7 +15,7 @@ class CO_Oral_Endsem_Assign extends Model
         'oral_co', 'endsem_co', 'assign1_co', 'assign2_co', 'user_id'
     ];
 
-    public function User(){
-        return $this->hasone(signup_details::class, "user_id");
+    public function user(){
+        return $this->belongsTo(signup_details::class);
     }
 }
