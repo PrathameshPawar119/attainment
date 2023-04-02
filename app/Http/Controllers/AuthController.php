@@ -16,15 +16,17 @@ use App\Models\ThresholdModel;
 class AuthController extends Controller
 {
 
-    public function index(){
+    public function index()
+    {
         return view('signup');
     }
 
-    public function signup_user(Request $request){
+    public function signup_user(Request $request)
+    {
         $request->validate([
-            'email'=> 'required | email',
-            'username'=>'required | unique:signup_details',
-            'password'=>'required | min:6| confirmed'
+            'email' => 'required | email',
+            'username' => 'required | unique:signup_details',
+            'password' => 'required | min:6| confirmed'
         ]);
 
         $user = new signup_details(); // new user
@@ -37,28 +39,28 @@ class AuthController extends Controller
 
         $last_tuple = signup_details::select('user_id')->where('username', "=", $user->username)->first();
 
-    // init criteria marks entry
+        // init criteria marks entry
         $crt_tuple = new CriteriaModel();
         $crt_tuple->user_id = $last_tuple['user_id'];
         $crt_tuple->save();
 
-    // init Co tables entry
+        // init Co tables entry
         // table common for oral, endsem, assigns
         $co_group3s = new CO_Oral_Endsem_Assign();
         $co_group3s->user_id = $last_tuple['user_id'];
         $co_group3s->save();
 
-    //table for ias
+        //table for ias
         $co_ia_tuple = new CO_IA();
         $co_ia_tuple->user_id = $last_tuple['user_id'];
         $co_ia_tuple->save();
 
-    //table for experiments
+        //table for experiments
         $co_expt_tuple = new CO_Expt();
         $co_expt_tuple->user_id = $last_tuple['user_id'];
         $co_expt_tuple->save();
 
-    //table for threshold marks
+        //table for threshold marks
         $th_table = new ThresholdModel();
         $th_table->oral = 55;
         $th_table->endsem = 42;
@@ -68,12 +70,12 @@ class AuthController extends Controller
         $th_table->user_id = $last_tuple['user_id'];
         $th_table->save();
 
-    // final_attainment table
+        // final_attainment table
         $finAttain = new FinalAttainment();
         $finAttain->user_id = $last_tuple['user_id'];
         $finAttain->save();
 
-    // PO Table
+        // PO Table
         $po_table = new POModel();
         $po_table->user_id = $last_tuple["user_id"];
         $po_table->save();
@@ -81,35 +83,35 @@ class AuthController extends Controller
         return redirect("/students/view");
     }
 
-    public function login_user(Request $request){
+    public function login_user(Request $request)
+    {
         $request->validate([
-            'user_credential'=> 'required',
-            'login_password'=>'required | min:6'
+            'user_credential' => 'required',
+            'login_password' => 'required | min:6'
         ]);
 
         $user = signup_details::where('email', '=', $request['user_credential'])->orwhere('username', '=', $request['user_credential'])->first();
         if ($user) {
             $varify = password_verify($request['login_password'], $user->password);
-            if($varify){
+            if ($varify) {
 
                 // Put UserDetails in session
                 $this->PutUserSession($user->username, $user->email, $user->user_id);
 
                 session()->flash("alertMsg", "Welcome $user->username");
                 return redirect("students/input");
-            }
-            else {
+            } else {
                 session()->flash("alertMsg", "Wrong credentials, Please try again !");
                 return redirect()->back();
             }
-        }
-        else{
+        } else {
             session()->flash("alertMsg", "Wrong credentials, User not found !");
             return redirect()->back();
         }
     }
 
-    public function logout_user(){
+    public function logout_user()
+    {
         session()->forget('username');
         session()->forget('user_email');
         session()->forget('user_id');
@@ -117,8 +119,4 @@ class AuthController extends Controller
         session()->flash("alertMsg", "Logged Out, Your work has been saved successfully!");
         return redirect('auth/login');
     }
-
-
-
-
 }

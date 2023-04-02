@@ -21,136 +21,136 @@ class UpdateMarksController extends Controller
     // {
     //     parent::$criteiaTotalMarks;
     //     $this->criteiaTotalMarks = parent::$criteiaTotalMarks;
-        
+
     // }
 
-    public function updateOralMarks(Request $req){   
+    public function updateOralMarks(Request $req)
+    {
 
         $student = OralModel::join('student_details', 'student_details.id', 'oral.id')
-                        ->where('student_details.id', '=', $req['id'])
-                        ->where('user_key', '=', session()->get('user_id'))
-                        ->update(['oral_marks'=>$req['value']]);
-        if($student){
-            echo "1";
-        }
-        else{
-            echo "0";
-        }
-    }
-
-    public function updateEndsemMarks(Request $req){
-        $student = EndsemModel::join('student_details', 'student_details.id', 'endsem.id')
-                        ->where("student_details.id", "=", $req['id'])
-                        ->where("user_key", "=", session()->get('user_id'))
-                        ->update(['endsem_mark'=>$req['value']]);
+            ->where('student_details.id', '=', $req['id'])
+            ->where('user_key', '=', session()->get('user_id'))
+            ->update(['oral_marks' => $req['value']]);
         if ($student) {
             echo "1";
-        }
-        else{
+        } else {
             echo "0";
         }
     }
 
-    public function updateAssignmentMarks(Request $req){
+    public function updateEndsemMarks(Request $req)
+    {
+        $student = EndsemModel::join('student_details', 'student_details.id', 'endsem.id')
+            ->where("student_details.id", "=", $req['id'])
+            ->where("user_key", "=", session()->get('user_id'))
+            ->update(['endsem_mark' => $req['value']]);
+        if ($student) {
+            echo "1";
+        } else {
+            echo "0";
+        }
+    }
+
+    public function updateAssignmentMarks(Request $req)
+    {
         $student = AssignmentModel::join('student_details', 'student_details.id', 'assignments.id')
-                        ->where("student_details.id", "=", $req['id'])
-                        ->where("user_key", "=", session()->get('user_id'))
-                        ->update([$req['column_name']=>$req['value']]);
+            ->where("student_details.id", "=", $req['id'])
+            ->where("user_key", "=", session()->get('user_id'))
+            ->update([$req['column_name'] => $req['value']]);
         $assign_record = AssignmentModel::join('student_details', 'student_details.id', 'assignments.id')
-                ->select('assignments.a1', 'assignments.a2')
-                ->where("student_details.id", "=", $req['id'])
-                ->where("user_key", "=", session()->get('user_id'))
-                ->first();
+            ->select('assignments.a1', 'assignments.a2')
+            ->where("student_details.id", "=", $req['id'])
+            ->where("user_key", "=", session()->get('user_id'))
+            ->first();
 
         $a1_total = $assign_record->a1;
         $a2_total = $assign_record->a2;
         $temp = $this->getCriteiaTotalMarks('assign_total');
-        if($student){
-            echo $a1_total."+".$a2_total."+".$temp->assign_total;
-        }
-        else{
+        if ($student) {
+            echo $a1_total . "+" . $a2_total . "+" . $temp->assign_total;
+        } else {
             echo "0";
         }
     }
-    
-    public function updateIaMarks(Request $req){
+
+    public function updateIaMarks(Request $req)
+    {
         $student = IaModel::join('student_details', 'student_details.id', 'ia.id')
-                        ->where("student_details.id", "=", $req['id'])
-                        ->where("user_key", "=", session()->get('user_id'))
-                        ->update([$req['column_name']=>$req['value']]);
+            ->where("student_details.id", "=", $req['id'])
+            ->where("user_key", "=", session()->get('user_id'))
+            ->update([$req['column_name'] => $req['value']]);
         $ia_record = IaModel::join('student_details', 'student_details.id', 'ia.id')
-                        ->select('ia.ia1', 'ia.ia2')
-                        ->where("student_details.id", "=", $req['id'])
-                        ->where("user_key", "=", session()->get('user_id'))
-                        ->get();
-        
+            ->select('ia.ia1', 'ia.ia2')
+            ->where("student_details.id", "=", $req['id'])
+            ->where("user_key", "=", session()->get('user_id'))
+            ->get();
+
         $ia1_total = $ia_record[0]->ia1;
         $ia2_total = $ia_record[0]->ia2;
         $IA1 = $this->getCriteiaTotalMarks('ia1_total');
         $IA2 = $this->getCriteiaTotalMarks('ia2_total');
 
-        if($student){
-            echo $ia1_total."+".$ia2_total."+".$IA1->ia1_total."+".$IA2->ia2_total;
-        }
-        else{
+        if ($student) {
+            echo $ia1_total . "+" . $ia2_total . "+" . $IA1->ia1_total . "+" . $IA2->ia2_total;
+        } else {
             echo "0";
         }
     }
-    
-    public function updateExperimentMarks(Request $req){
+
+    public function updateExperimentMarks(Request $req)
+    {
         $student = ExperimentModel::join('student_details', 'student_details.id', 'experiments.id')
-                        ->where("student_details.id", "=", $req['id'])
-                        ->where("user_key", "=", session()->get('user_id'))
-                        ->update([$req['column_name']=>$req['value']]);
+            ->where("student_details.id", "=", $req['id'])
+            ->where("user_key", "=", session()->get('user_id'))
+            ->update([$req['column_name'] => $req['value']]);
         $ex = ExperimentModel::join('student_details', 'student_details.id', 'experiments.id')
-                ->select('experiments.e1', 'experiments.e2', 'experiments.e3', 'experiments.e4', 'experiments.e5', 'experiments.e6', 'experiments.e7', 'experiments.e8', 'experiments.e9', 'experiments.e10', 'experiments.e11', 'experiments.e12')
-                ->where("student_details.id", "=", $req['id'])
-                ->where("user_key", "=", session()->get('user_id'))
-                ->first();
+            ->select('experiments.e1', 'experiments.e2', 'experiments.e3', 'experiments.e4', 'experiments.e5', 'experiments.e6', 'experiments.e7', 'experiments.e8', 'experiments.e9', 'experiments.e10', 'experiments.e11', 'experiments.e12')
+            ->where("student_details.id", "=", $req['id'])
+            ->where("user_key", "=", session()->get('user_id'))
+            ->first();
 
         $temp = $this->getCriteiaTotalMarks('exp_total');
 
-        if($student){
-            echo $ex->e1."+".$ex->e2."+".$ex->e3."+".$ex->e4."+".$ex->e5."+".$ex->e6."+".$ex->e7."+".$ex->e8."+".$ex->e9."+".$ex->e10."+".$ex->e11."+".$ex->e12."+".$temp->exp_total;
-        }
-        else{
+        if ($student) {
+            echo $ex->e1 . "+" . $ex->e2 . "+" . $ex->e3 . "+" . $ex->e4 . "+" . $ex->e5 . "+" . $ex->e6 . "+" . $ex->e7 . "+" . $ex->e8 . "+" . $ex->e9 . "+" . $ex->e10 . "+" . $ex->e11 . "+" . $ex->e12 . "+" . $temp->exp_total;
+        } else {
             echo "0";
         }
     }
 
-    public function updateCriteriaMarks(Request $req){
+    public function updateCriteriaMarks(Request $req)
+    {
         $student = CriteriaModel::join('signup_details', 'signup_details.user_id', 'criteria.user_id')
-                        ->where("criteria.user_id", "=", session()->get('user_id'))
-                        ->update([$req['column']=>$req['value']]);
+            ->where("criteria.user_id", "=", session()->get('user_id'))
+            ->update([$req['column'] => $req['value']]);
         $ex = CriteriaModel::join('signup_details', 'signup_details.user_id', 'criteria.user_id')
-                    ->select('criteria.assign_total', 'criteria.ia1_total', 'criteria.ia2_total', 'criteria.exp_total')
-                    ->where("criteria.user_id", "=", session()->get('user_id'))
-                    ->get();
+            ->select('criteria.assign_total', 'criteria.ia1_total', 'criteria.ia2_total', 'criteria.exp_total')
+            ->where("criteria.user_id", "=", session()->get('user_id'))
+            ->get();
 
-        if($student){
-            echo $ex[0]->assign_total."+".$ex[0]->ia1_total."+".$ex[0]->ia2_total."+".$ex[0]->exp_total;
-        }
-        else{
+        if ($student) {
+            echo $ex[0]->assign_total . "+" . $ex[0]->ia1_total . "+" . $ex[0]->ia2_total . "+" . $ex[0]->exp_total;
+        } else {
             echo "0";
         }
     }
 
     // function to update Cos for oral, endsem and assignments (as they have same input style)
-    public function updateCoInputCheck1(Request $req){
+    public function updateCoInputCheck1(Request $req)
+    {
         $co_tuple = CO_Oral_Endsem_Assign::join("signup_details", "signup_details.user_id", "co_oral_endsem_assign.user_id")
-                        ->select($req['column'])
-                        ->where("co_oral_endsem_assign.user_id", "=", session()->get('user_id'))
-                        ->first();
+            ->select($req['column'])
+            ->where("co_oral_endsem_assign.user_id", "=", session()->get('user_id'))
+            ->first();
 
         $previous_co_arr = json_decode($co_tuple[$req['column']]);
         $current_co = (int)$req['coInput'];
-        
+
         // decide remove or add according to checked status
-        if($req['status'] == "true"){
+        if ($req['status'] == "true") {
             array_unshift($previous_co_arr, $current_co);
-        }
-        else{
-            foreach(array_keys($previous_co_arr, $current_co) as $key){
+        } else {
+            foreach (array_keys($previous_co_arr, $current_co) as $key) {
                 unset($previous_co_arr[$key]);
             }
         }
@@ -160,39 +160,38 @@ class UpdateMarksController extends Controller
         $tempArr = json_encode($tempArr);
 
         $co_tuple_update = CO_Oral_Endsem_Assign::join("signup_details", "signup_details.user_id", "co_oral_endsem_assign.user_id")
-                ->where("co_oral_endsem_assign.user_id", "=", session()->get('user_id'))
-                ->update([$req['column']=>$tempArr]);
+            ->where("co_oral_endsem_assign.user_id", "=", session()->get('user_id'))
+            ->update([$req['column'] => $tempArr]);
         if ($co_tuple_update) {
             echo true;
-        }
-        else{
+        } else {
             echo 0;
         }
     }
 
     // update cos for sheets - ia and expt
-    public function updateCoInputCheck2(Request $req){
+    public function updateCoInputCheck2(Request $req)
+    {
         if ($req['sheet'] == 'co_ia') {
-        $co_tuple = CO_IA::join("signup_details", "signup_details.user_id", "co_ia.user_id")
-                        ->select($req['coInput'])
-                        ->where("co_ia.user_id", "=", session()->get('user_id'))
-                        ->first();        }
-        else if($req['sheet'] == 'co_expt'){
+            $co_tuple = CO_IA::join("signup_details", "signup_details.user_id", "co_ia.user_id")
+                ->select($req['coInput'])
+                ->where("co_ia.user_id", "=", session()->get('user_id'))
+                ->first();
+        } else if ($req['sheet'] == 'co_expt') {
             $co_tuple = CO_Expt::join("signup_details", "signup_details.user_id", "co_expt.user_id")
-                    ->select($req['coInput'])
-                    ->where("co_expt.user_id", "=", session()->get('user_id'))
-                    ->first();
+                ->select($req['coInput'])
+                ->where("co_expt.user_id", "=", session()->get('user_id'))
+                ->first();
         }
 
         $previous_co_arr = json_decode($co_tuple[$req['coInput']]);
         $current_co = $req['column'];
 
         // decide remove or add according to checked status
-        if($req['status'] == "true"){
+        if ($req['status'] == "true") {
             array_unshift($previous_co_arr, $current_co);
-        }
-        else{
-            foreach(array_keys($previous_co_arr, $current_co) as $key){
+        } else {
+            foreach (array_keys($previous_co_arr, $current_co) as $key) {
                 unset($previous_co_arr[$key]);
             }
         }
@@ -200,41 +199,35 @@ class UpdateMarksController extends Controller
         $tempArr = array_unique($previous_co_arr);
         sort($tempArr);
         $tempArr = json_encode($tempArr);
-        if($req['sheet'] == 'co_ia'){
+        if ($req['sheet'] == 'co_ia') {
             $co_tuple_update = CO_IA::join("signup_details", "signup_details.user_id", "co_ia.user_id")
-            ->where("co_ia.user_id", "=", session()->get('user_id'))
-            ->update([$req['coInput']=>$tempArr]);
-        }
-        else if($req['sheet'] == 'co_expt'){
+                ->where("co_ia.user_id", "=", session()->get('user_id'))
+                ->update([$req['coInput'] => $tempArr]);
+        } else if ($req['sheet'] == 'co_expt') {
             $co_tuple_update = CO_Expt::join("signup_details", "signup_details.user_id", "co_expt.user_id")
-            ->where("co_expt.user_id", "=", session()->get('user_id'))
-            ->update([$req['coInput']=>$tempArr]);
+                ->where("co_expt.user_id", "=", session()->get('user_id'))
+                ->update([$req['coInput'] => $tempArr]);
         }
-        if($co_tuple_update){
+        if ($co_tuple_update) {
             echo $tempArr;
-        }
-        else{
+        } else {
             echo 0;
         }
     }
 
-    public function updateThresholdCriteria(Request $req){
-        if($req['tablename'] == 'threshold'){
+    public function updateThresholdCriteria(Request $req)
+    {
+        if ($req['tablename'] == 'threshold') {
             $updateThMarks = ThresholdModel::where("user_id", "=", session()->get("user_id"))
-                                ->update([$req['column']=>$req['value']]);
-        }
-        else if($req['tablename'] == 'po'){
+                ->update([$req['column'] => $req['value']]);
+        } else if ($req['tablename'] == 'po') {
             $updateThMarks = POModel::where("user_id", "=", session()->get("user_id"))
-                                ->update([$req['column']=>$req['value']]);
+                ->update([$req['column'] => $req['value']]);
         }
-        if($updateThMarks){
+        if ($updateThMarks) {
             echo $updateThMarks;
-        }
-        else{
+        } else {
             echo 0;
         }
-        
     }
-
-
 }

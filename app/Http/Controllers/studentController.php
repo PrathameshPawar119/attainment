@@ -18,43 +18,44 @@ use Illuminate\Validation\ValidationException;
 
 class studentController extends Controller
 {
-    public function index(){
-
+    public function index()
+    {
     }
 
-    public function inputForm(){
+    public function inputForm()
+    {
         $total_tuples = $this->totalNumStd();
-        $last_record = StudentDetails::where("user_key", "=", session()->get('user_id'))->orderBy('roll_no', 'Desc')->first() ;
+        $last_record = StudentDetails::where("user_key", "=", session()->get('user_id'))->orderBy('roll_no', 'Desc')->first();
         $divs = StudentDetails::Divs;
         $genders = StudentDetails::Genders;
         return view("input", compact('total_tuples', 'last_record', 'divs', 'genders'));
     }
-    
-    public function addStudent(Request $req){
+
+    public function addStudent(Request $req)
+    {
         $divs = StudentDetails::Divs;
         $genders = StudentDetails::Genders;
         $req->validate([
-            'roll_no'=> 'required',
-            'student_id'=>'required',
-            'div' => 'required | in:'.current($divs).','.next($divs).','.next($divs).','.next($divs),
+            'roll_no' => 'required',
+            'student_id' => 'required',
+            'div' => 'required | in:' . current($divs) . ',' . next($divs) . ',' . next($divs) . ',' . next($divs),
             'student_name' => 'required | min:5 | max:80',
-            'gender' => 'required | in:'.current($genders).','.next($genders).','.next($genders).','.next($genders)
+            'gender' => 'required | in:' . current($genders) . ',' . next($genders) . ',' . next($genders) . ',' . next($genders)
         ]);
 
         $student_dups = StudentDetails::where("user_key", "=", session()->get('user_id'))->where('student_id', "=", $req['student_id'])->distinct('id')->count();
-        if($student_dups){
+        if ($student_dups) {
             throw ValidationException::withMessages(["student_id" => "Student with same ID is present"]);
             return redirect()->back();
         }
 
         // Group key is composite of roll_no + div + user_key
         // it will be useful to avoid duplictate entries for per user pre div
-        $group_key = strval($req['roll_no'])."-".strval($req['div'])."-".strval(session()->get('user_id'));
-        $duplicate = StudentDetails::where('group_key','=', $group_key)->get();
+        $group_key = strval($req['roll_no']) . "-" . strval($req['div']) . "-" . strval(session()->get('user_id'));
+        $duplicate = StudentDetails::where('group_key', '=', $group_key)->get();
 
-        
-        if(count($duplicate)=== 0)                       
-        {
+
+        if (count($duplicate) === 0) {
             $student = new StudentDetails();
             $student->roll_no = $req['roll_no'];
             $student->student_id = $req['student_id'];
@@ -70,26 +71,22 @@ class studentController extends Controller
 
             session()->flash("alertMsg", "Student - $student->name ($student->student_id) saved successfully !");
             return redirect()->back();
-            
-        }
-        else{
+        } else {
             //flashing duplicate error to students view 
             session()->flash("duplicateRecordError", "Student with Roll number $req->roll_no in Div $req->div allready present, check again please !");
             return redirect()->back();
-        } 
-        
-    }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-    public function viewStudents(Request $req){
-        $search = $req['searchForm'] ?? ""; // can be or cannt
-        if($search != "")
-        {
-            $students = StudentDetails::where("user_key", "=", (session()->get('user_id')))->where("name", "LIKE", "%$search%")->paginate(10);
         }
-        else{
+    }
+
+    public function viewStudents(Request $req)
+    {
+        $search = $req['searchForm'] ?? ""; // can be or cannt
+        if ($search != "") {
+            $students = StudentDetails::where("user_key", "=", (session()->get('user_id')))->where("name", "LIKE", "%$search%")->paginate(10);
+        } else {
             $students = StudentDetails::where("user_key", "=", (session()->get('user_id')))->orderBy('roll_no', 'ASC')->paginate(10);
         }
-        
+
         $viewEditBtn = "Edit";
         $viewEditURL = url('/students/view/edit');
 
@@ -105,7 +102,8 @@ class studentController extends Controller
     }
 
     // soft deleting student (Moving to Trash)
-    public function deleteStudent($id){
+    public function deleteStudent($id)
+    {
         $student = StudentDetails::withoutTrashed()->find($id);
         if (!is_null($student)) {
             $student->delete();
@@ -114,7 +112,8 @@ class studentController extends Controller
         return redirect()->back();
     }
 
-    public function permDelete($id){
+    public function permDelete($id)
+    {
         $data = array('id' => $id);
         event(new StudentDeleted($data));
 
@@ -127,7 +126,8 @@ class studentController extends Controller
         return redirect()->back();
     }
 
-    public function restoreFromTrash($id){
+    public function restoreFromTrash($id)
+    {
         $student = StudentDetails::onlyTrashed()->find($id);
         if ($student) {
             $student->restore();
@@ -137,7 +137,8 @@ class studentController extends Controller
     }
 
     // View Student trash
-    public function viewStudentTrash(){
+    public function viewStudentTrash()
+    {
         $students = StudentDetails::onlyTrashed()->where("user_key", (session()->get('user_id')))->paginate(10);
         $viewEditBtn = "Restore";
         $viewEditURL = url('/students/view/restore');
@@ -153,7 +154,8 @@ class studentController extends Controller
         return view('view')->with(compact('students', 'viewEditBtn', 'viewEditURL', 'viewDeleteBtn', 'viewDeleteURL', 'trashBtn', 'trashURL', 'addStdBtn', 'addStdURL'));
     }
 
-    public function moveAllToTrash(){
+    public function moveAllToTrash()
+    {
         $AllTrash = StudentDetails::withoutTrashed()->where("user_key", session()->get("user_id"))->get();
         // foreach($AllTrash as $elem){
         //     $data = array("id" => $elem->id);
@@ -161,22 +163,23 @@ class studentController extends Controller
         // }
         $deleteAllTrash = StudentDetails::withoutTrashed()->where("user_key", session()->get("user_id"))->delete();
 
-        if(!$deleteAllTrash){
+        if (!$deleteAllTrash) {
             session()->flash("alertMsg", "Unable to perform mass deletion.");
         }
         session()->flash("alertMsg", "Mass deletion successfull, All moved to trash.");
         return redirect()->back();
     }
 
-    public function emptyTrash(){
+    public function emptyTrash()
+    {
         $AllTrash = StudentDetails::onlyTrashed()->where("user_key", session()->get("user_id"))->get();
-        foreach($AllTrash as $elem){
+        foreach ($AllTrash as $elem) {
             $data = array("id" => $elem->id);
             event(new StudentDeleted($data));
         }
         $deleteAllTrash = StudentDetails::onlyTrashed()->where("user_key", session()->get("user_id"))->forceDelete();
 
-        if(!$deleteAllTrash){
+        if (!$deleteAllTrash) {
             session()->flash("alertMsg", "Unable to perform mass deletion.");
         }
         session()->flash("alertMsg", "Mass deletion successfull");
@@ -184,42 +187,43 @@ class studentController extends Controller
     }
 
     // Edit the student
-    public function editStudent($id){
+    public function editStudent($id)
+    {
         $student = StudentDetails::find($id);
         if (is_null($student)) {
             return redirect()->back();
-        }
-        else{
+        } else {
             return view('edit-input')->with(compact('student'));
         }
     }
 
-    public function updateStudentData($id, Request $req){
+    public function updateStudentData($id, Request $req)
+    {
 
         $req->validate([
-            'roll_no'=> 'required',
-            'student_id'=>'required',
+            'roll_no' => 'required',
+            'student_id' => 'required',
             'div' => 'required | in:A,B',
             'student_name' => 'required | min:5 | max:80',
             'gender' => 'required | in:M,F'
         ]);
 
         $student = StudentDetails::find($id);
-        
+
         // If there is any student other than $id-student then return duplication error
         $student_dups = StudentDetails::where("user_key", session()->get('user_id'))->where('student_id', "=", $req['student_id'])->where("student_id", "!=", $student->student_id)->distinct('id')->count();
-        if($student_dups){
+        if ($student_dups) {
             throw ValidationException::withMessages(["student_id" => "Student with same ID is present"]);
             return redirect()->back();
         }
 
         // Group key is composite of roll_no + div + user_key
         // it will be useful to avoid duplictate entries for per user pre div
-        $group_key = strval($req['roll_no'])."-".strval($req['div'])."-".strval(session()->get('user_id'));
-        $duplicate_grp = StudentDetails::where('group_key','=', $group_key)->get();
+        $group_key = strval($req['roll_no']) . "-" . strval($req['div']) . "-" . strval(session()->get('user_id'));
+        $duplicate_grp = StudentDetails::where('group_key', '=', $group_key)->get();
 
 
-        if (count($duplicate_grp)<2) {
+        if (count($duplicate_grp) < 2) {
             $student->roll_no = $req['roll_no'];
             $student->student_id = $req['student_id'];
             $student->div = $req['div'];
@@ -228,42 +232,42 @@ class studentController extends Controller
             $student->user_key = session()->get('user_id');
             $student->group_key = $group_key;
             $student->save();
-            
+
             session()->flash("alertMsg", "Student Information of - $student->name ($student->student_id) updated.");
             return redirect('/students/view');
-        }
-        else{
+        } else {
             //flashing duplicate entry error to students view only once 
             session()->flash("duplicateRecordError", "Student with Roll number $req->roll_no in Div $req->div allready present, check again please !");
             return redirect()->back();
         }
     }
 
-    public function studentProfile(Request $req){
+    public function studentProfile(Request $req)
+    {
         $student = StudentDetails::withoutTrashed()->find($req['id']);
         $oral_marks = OralModel::join("student_details", "student_details.id", "oral.id")
-                            ->select("oral_marks")
-                            ->where("user_key", session()->get("user_id"))
-                            ->where("student_details.id", $req['id'])->first();
+            ->select("oral_marks")
+            ->where("user_key", session()->get("user_id"))
+            ->where("student_details.id", $req['id'])->first();
         $endsem_marks = EndsemModel::join("student_details", "student_details.id", "endsem.id")
-                            ->select("endsem_mark")
-                            ->where("user_key", session()->get("user_id"))
-                            ->where("student_details.id", $req['id'])->first();
+            ->select("endsem_mark")
+            ->where("user_key", session()->get("user_id"))
+            ->where("student_details.id", $req['id'])->first();
         $assign_marks = AssignmentModel::join("student_details", "student_details.id", "assignments.id")
-                            ->select("a1", "a2")
-                            ->where("user_key", session()->get("user_id"))
-                            ->where("student_details.id", $req['id'])->first();
+            ->select("a1", "a2")
+            ->where("user_key", session()->get("user_id"))
+            ->where("student_details.id", $req['id'])->first();
         $ia_marks = IaModel::join("student_details", "student_details.id", "ia.id")
-                        ->select("ia1q1", "ia1q2", "ia1q3", "ia1q4", "ia1", "ia2q1", "ia2q2", "ia2q3", "ia2q4", "ia2")
-                        ->where("user_key", session()->get("user_id"))
-                        ->where("student_details.id", $req['id'])->first();
+            ->select("ia1q1", "ia1q2", "ia1q3", "ia1q4", "ia1", "ia2q1", "ia2q2", "ia2q3", "ia2q4", "ia2")
+            ->where("user_key", session()->get("user_id"))
+            ->where("student_details.id", $req['id'])->first();
         $expt_marks = ExperimentModel::join("student_details", "student_details.id", "experiments.id")
-                        ->select("e1", "e2", "e3", "e4", "e5", "e6", "e7", "e8", "e9", "e10", "e11", "e12")
-                        ->where("user_key", session()->get("user_id"))
-                        ->where("student_details.id", $req['id'])->first();
-        
+            ->select("e1", "e2", "e3", "e4", "e5", "e6", "e7", "e8", "e9", "e10", "e11", "e12")
+            ->where("user_key", session()->get("user_id"))
+            ->where("student_details.id", $req['id'])->first();
 
-            
+
+
         return  json_encode(array(
             "student" => $student->name,
             "oral" => $oral_marks->oral_marks,
@@ -273,6 +277,4 @@ class studentController extends Controller
             "expt" => $expt_marks
         ));
     }
-
-    
 }
