@@ -1,3 +1,4 @@
+
 # Steps to clone and run this project
 #### Clone project & put in xampp/htdocs
 #### Go to the folder application using cd command on your cmd or terminal
@@ -10,3 +11,14 @@
 #### Go to http://localhost:8000/
 
 if got any doubt contact --> https://www.linkedin.com/in/prathamesh-pawar-a87744215/
+
+
+
+
+![Screenshot 2023-06-27 003837](https://github.com/PrathameshPawar119/attainment/assets/104665278/d9c03698-ea04-4bc0-bc4a-95862729f57f)
+![Screenshot 2023-06-27 003908](https://github.com/PrathameshPawar119/attainment/assets/104665278/176d78d8-131d-4f06-9ab7-4d1346f64016)
+![Screenshot 2023-06-27 003950](https://github.com/PrathameshPawar119/attainment/assets/104665278/7bf58ce0-e4d0-4917-9934-581b0c4859db)
+![Screenshot 2023-06-27 004111](https://github.com/PrathameshPawar119/attainment/assets/104665278/1784b377-16e7-4bdf-8a63-e3169e27d04a)
+![Screenshot 2023-06-27 004151](https://github.com/PrathameshPawar119/attainment/assets/104665278/f7234c4c-e81b-4d19-a0a8-e7aa57526642)
+![image](https://github.com/PrathameshPawar119/attainment/assets/104665278/c31706d3-f8eb-422f-b1f0-4b6b8f61d3a9)
+
