@@ -47,4 +47,14 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function report(Throwable $exception)
+    {
+
+    }
+    public function render($request, Throwable $exception)
+    {
+
+    }
+
 }
