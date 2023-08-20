@@ -1,5 +1,5 @@
 
-# Steps to clone and run this project
+# Steps to clone and run this project (main branch)
 #### Clone project & put in xampp/htdocs
 #### Go to the folder application using cd command on your cmd or terminal
 #### Run 'composer install' on your cmd or terminal
