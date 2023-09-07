@@ -7,10 +7,9 @@ Guidance - Dr. Amol Pande, HOD of CSE at DMCE
 Tech-stack - Laravel | PHP | MySQL | HTML-CSS-Blade | Bootstrap-5 | Ajax | Jquery
 Deployed using AWS EC2 machine and ubuntu server.
 
-For demo use following-
-username -> jenny 
-
-password -> jenny123
+For demo use following-                   
+username -> jenny ,               
+password -> jenny123,                
 
 login -> http://15.206.117.30/auth/login
 
