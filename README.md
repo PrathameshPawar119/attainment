@@ -1,13 +1,17 @@
 
 
 Project 'Attainment' is a web tool to calculate attainment and structural storage of marks or professors. It is structured according to course outcome structure for engineering academics of Mumbai University.
+
 Guidance - Dr. Amol Pande, HOD of CSE at DMCE
+
 Tech-stack - Laravel | PHP | MySQL | HTML-CSS-Blade | Bootstrap-5 | Ajax | Jquery
 Deployed using AWS EC2 machine and ubuntu server.
 
 For demo use following-
 username -> jenny 
+
 password -> jenny123
+
 login -> http://15.206.117.30/auth/login
 
 
