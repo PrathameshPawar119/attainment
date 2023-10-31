@@ -1,6 +1,4 @@
 
-Certainly, here's an improved GitHub README for your project 'Attainment':
-
 # Attainment: Engineering Academic Performance Tool
 
 [![Demo](https://img.shields.io/badge/Demo-Access%20Now-brightgreen)](http://15.206.117.30/auth/login)
