@@ -76,7 +76,7 @@ Follow these simple steps to clone and run this project on your local machine:
 
 ## Contact
 
-If you have any questions or need further assistance, feel free to reach out to Dr. Amol Pande, the Head of the Department of Computer Science and Engineering at DMCE, or connect with the project's developer, Prathamesh Pawar, on [LinkedIn](https://www.linkedin.com/in/prathamesh-pawar-a87744215/).
+If you have any questions or need further assistance, feel free to reach out to project's developer, Prathamesh Pawar, on [LinkedIn](https://www.linkedin.com/in/prathamesh-pawar-a87744215/).
 
 ---
 
