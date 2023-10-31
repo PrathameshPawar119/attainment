@@ -4,6 +4,10 @@ Certainly, here's an improved GitHub README for your project 'Attainment':
 # Attainment: Engineering Academic Performance Tool
 
 [![Demo](https://img.shields.io/badge/Demo-Access%20Now-brightgreen)](http://15.206.117.30/auth/login)
+## Demo Credentials
+
+- **Username:** jenny
+- **Password:** jenny123
 
 **Attainment** is a powerful web tool designed for calculating academic attainment and structurally storing marks for engineering academics under the Mumbai University curriculum. This project is aimed at making the assessment and tracking of student performance more efficient and effective, especially in the context of engineering education.
 
@@ -69,10 +73,6 @@ Follow these simple steps to clone and run this project on your local machine:
 
 9. Open your web browser and access the application at [http://localhost:8000/](http://localhost:8000/).
 
-## Demo Credentials
-
-- **Username:** jenny
-- **Password:** jenny123
 
 ## Contact
 
